@@ -10,7 +10,7 @@ import com.taobao.exchange.secondhand.Secondhand;
 /**
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 обнГ6:05:30
+ * 2012-7-4
  *
  */
 public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {

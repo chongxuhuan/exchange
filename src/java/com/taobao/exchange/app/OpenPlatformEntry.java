@@ -1,9 +1,10 @@
 package com.taobao.exchange.app;
 
 /**
+ * 平台实体定义，包含对应的app信息
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 ����4:23:26
+ * 2012-7-4
  *
  */
 public class OpenPlatformEntry {
@@ -12,7 +13,7 @@ public class OpenPlatformEntry {
 	private String apiEntry;
 	private String authEntry;
 	private String appKey;
-	private String appSecretcode;
+	private String appSecret;
 	private String callbackUrl;
 	
 	
@@ -40,17 +41,17 @@ public class OpenPlatformEntry {
 	public void setAppKey(String appKey) {
 		this.appKey = appKey;
 	}
-	public String getAppSecretcode() {
-		return appSecretcode;
-	}
-	public void setAppSecretcode(String appSecretcode) {
-		this.appSecretcode = appSecretcode;
-	}
 	public String getCallbackUrl() {
 		return callbackUrl;
 	}
 	public void setCallbackUrl(String callbackUrl) {
 		this.callbackUrl = callbackUrl;
+	}
+	public String getAppSecret() {
+		return appSecret;
+	}
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
 	}
 	
 

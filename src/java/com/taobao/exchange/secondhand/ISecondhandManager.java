@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 обнГ5:39:30
+ * 2012-7-4
  *
  */
 public interface ISecondhandManager {

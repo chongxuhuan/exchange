@@ -10,7 +10,7 @@ import com.taobao.exchange.secondhand.Secondhand;
 /**
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 обнГ6:01:26
+ * 2012-7-4
  *
  */
 public class QualityPoolDigger implements ISecondhandDigger<QualityPoolDigCondition> {

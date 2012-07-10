@@ -9,29 +9,42 @@ import com.taobao.exchange.util.AppClientException;
 
 
 /**
- * Ó¦ÓÃ¿Í»§¶Ë½Ó¿Ú£¬ÊµÏÖ·şÎñµ÷ÓÃ£¬ÓÃ»§ÊÚÈ¨Î¬»¤µÈ¹¦ÄÜ
+ * åº”ç”¨å¼€æ”¾å¹³å°æ¥å£
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 ÏÂÎç6:09:07
+ * 2012-7-4
  *
  */
 public interface IAppClient {
 	
 	/**
-	 * ·¢Æğ·şÎñµ÷ÓÃ
-	 * @param Æ½Ì¨id
-	 * @param ÓÃ»§id£¬Èç¹ûµ÷ÓÃ²»ĞèÒªÓÃ»§ÊÚÈ¨µÄ·şÎñ¿ÉÒÔ´«Èë¿Õ
-	 * @param httpµÄ·½·¨£¬Ö§³ÖgetºÍpost
-	 * @param httpheaderÖĞµÄÄÚÈİ
-	 * @param ÏµÍ³ºÍÒµÎñ²ÎÊı
+	 * æœåŠ¡è°ƒç”¨æ¥å£
+	 * @param å¹³å°idç”¨æ¥æ¢å¾—å¹³å°å…¥å£ä¿¡æ¯å’Œå¯¹åº”çš„åº”ç”¨ä¿¡æ¯
+	 * @param ç”¨æˆ·èº«ä»½idï¼Œå¦‚æœä¸éœ€è¦æˆæƒçš„æœåŠ¡ï¼Œå¯ä»¥ä¸ä¼ å…¥
+	 * @param httpæ–¹æ³•ç±»å‹ï¼Œæ”¯æŒgetå’Œpost
+	 * @param æœåŠ¡åç§°
+	 * @param httpæ¶ˆæ¯å¤´ä¸­çš„å†…å®¹
+	 * @param httpè¯·æ±‚æ¶ˆæ¯ä½“çš„å†…å®¹ï¼Œå¦‚æœæ˜¯æ–‡ä»¶ç±»å‹ï¼Œåˆ™ç”¨AppRequestAttachmentæ¥å°è£…
 	 * @return
 	 */
-	public String api(String platformId,String userId,String httpMethod,Map<String, String> headers
+	public String api(String platformId,String userId,String httpMethod,String apiName,Map<String, String> headers
 			,Map<String,Object> params) throws AppClientException;
 	
+	
 	/**
-	 * Ôö¼ÓÊÚÈ¨ĞÅÏ¢µ½clientÖĞ
-	 * @param ½«ÊÚÈ¨ºóµÃµ½µÄauth·ÅÈëµ½clientÖĞ
+	 * OAuth2æµç¨‹ä¸­ç”¨codeæ¢accessToken
+	 * @param å¹³å°idç”¨æ¥æ¢å¾—å¹³å°å…¥å£ä¿¡æ¯å’Œå¯¹åº”çš„åº”ç”¨ä¿¡æ¯
+	 * @param oauth2ç¬¬ä¸€æ­¥æµç¨‹ä¸­çš„code
+	 * @param å‚çœ‹Oauth2åè®®
+	 * @param å‚çœ‹Oauth2åè®®
+	 * @param å‚çœ‹Oauth2åè®®
+	 * @return
+	 */
+	public AppAuthEntity getAccessTokenByCode(String platformId,String code,String scope,String state,String view) throws AppClientException;
+	
+	/**
+	 * å°†æˆæƒå¢åŠ åˆ°å¹³å°å®¢æˆ·ç«¯ä¸­ï¼Œä¸ºåç»­æœåŠ¡è°ƒç”¨ä½¿ç”¨
+	 * @param æˆæƒå¯¹è±¡
 	 */
 	public void addAuthToClient(AppAuthEntity auth);
 

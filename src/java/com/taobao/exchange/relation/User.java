@@ -6,7 +6,7 @@ package com.taobao.exchange.relation;
 /**
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-4 обнГ5:47:23
+ * 2012-7-4
  *
  */
 public class User {

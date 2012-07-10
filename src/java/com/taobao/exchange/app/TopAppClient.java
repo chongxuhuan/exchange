@@ -3,6 +3,7 @@
  */
 package com.taobao.exchange.app;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.taobao.exchange.util.AppClientException;
@@ -12,15 +13,16 @@ import com.taobao.exchange.util.Constants;
 
 
 /**
+ * 淘宝开放平台实现
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-5 ����3:12:25
+ * 2012-7-5
  *
  */
 public class TopAppClient extends AppClient {
 
 	@Override
-	public String api(String platformId,String userId,String httpMethod,Map<String, String> headers
+	public String api(String platformId,String userId,String httpMethod,String apiName,Map<String, String> headers
 			,Map<String,Object> params) throws AppClientException{
 		
 		if (OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId) == null)
@@ -29,8 +31,11 @@ public class TopAppClient extends AppClient {
 		if (userId != null && authPools.get(userId) == null)
 			throw new AppClientException(Constants.CLIENT_EXCEPTION_AUTH_USER_NOT_EXIST);
 		
-		if(!params.containsKey(Constants.SYS_PARAMETER_APINAME))
+		if(apiName == null)
 			throw new AppClientException(Constants.CLIENT_EXCEPTION_APINAME_IS_NULL);
+		
+		if (params == null)
+			params = new HashMap<String,Object>();
 		
 		String response = null;
 		
@@ -39,6 +44,7 @@ public class TopAppClient extends AppClient {
 		else
 			httpMethod = httpMethod.toUpperCase();
 		
+		params.put(Constants.SYS_PARAMETER_APINAME, apiName);
 		
 		if (userId != null)
 			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authPools.get(userId).getAccessToken());

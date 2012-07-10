@@ -7,9 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * å¹³å°å¯¹è±¡ç®¡ç†ç±»
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-5 ÏÂÎç3:27:04
+ * 2012-7-5
  *
  */
 public class OpenPlatformManager {
@@ -29,7 +30,7 @@ public class OpenPlatformManager {
 			entry = new OpenPlatformEntry();
 			entry.setApiEntry(apiEntry);
 			entry.setAppKey(appKey);
-			entry.setAppSecretcode(appSecretcode);
+			entry.setAppSecret(appSecretcode);
 			entry.setAuthEntry(authEntry);
 			entry.setCallbackUrl(callbackUrl);
 			entry.setId(id);
