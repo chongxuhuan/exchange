@@ -22,6 +22,7 @@ import com.taobao.exchange.util.Constants;
 public abstract class AppClient implements IAppClient{
 	
 	ConcurrentMap<String,AppAuthEntity> authPools;
+	OpenPlatformEntry openPlatformEntry;
 	
 	public AppClient()
 	{
@@ -29,27 +30,45 @@ public abstract class AppClient implements IAppClient{
 		
 		authPools = new ConcurrentHashMap<String,AppAuthEntity>();
 	}
+		
+	/**
+	 * 获取内在平台信息
+	 * @return
+	 */
+	public OpenPlatformEntry getOpenPlatformEntry()
+	{
+		return openPlatformEntry;
+	}
+	
+	
+	/**
+	 * 设置平台信息
+	 * @param 平台信息
+	 */
+	public void setOpenPlatformEntry(OpenPlatformEntry openPlatformEntry)
+	{
+		this.openPlatformEntry = openPlatformEntry;
+	}
 
 	public void addAuthToClient(AppAuthEntity auth)
 	{
 		authPools.put(auth.getUid(), auth);
 	}
 	
-	public AppAuthEntity getAccessTokenByCode(String platformId,String code,String scope,String state,String view) throws AppClientException
+	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException
 	{
-		if (OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId) == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORM_NOT_REGISTER);
+		if (openPlatformEntry == null)
+			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		AppAuthEntity entity = new AppAuthEntity();
-		entity.setPlatformId(platformId);
 				
 		Map<String,Object> params = new HashMap<String,Object>();
 		
-		params.put(Constants.SYS_AUTH_PARAMETER_CLIENTID, OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId).getAppKey());
-		params.put(Constants.SYS_AUTH_PARAMETER_SECRETCODE, OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId).getAppSecret());
+		params.put(Constants.SYS_AUTH_PARAMETER_CLIENTID, openPlatformEntry.getAppKey());
+		params.put(Constants.SYS_AUTH_PARAMETER_SECRETCODE, openPlatformEntry.getAppSecret());
 		
-		if (OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId).getCallbackUrl() != null)
-			params.put(Constants.SYS_AUTH_PARAMETER_REDIRECT_URI, OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId).getCallbackUrl());
+		if (openPlatformEntry.getCallbackUrl() != null)
+			params.put(Constants.SYS_AUTH_PARAMETER_REDIRECT_URI, openPlatformEntry.getCallbackUrl());
 		
 		params.put(Constants.SYS_AUTH_PARAMETER_GRANT,"authorization_code");
 		params.put(Constants.SYS_AUTH_PARAMETER_CODE, code);
@@ -64,7 +83,7 @@ public abstract class AppClient implements IAppClient{
 			params.put(Constants.SYS_AUTH_PARAMETER_VIEW, view);
 		
 		
-		String result = AppClientUtil.sendRequest(OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId).getAuthEntry()
+		String result = AppClientUtil.sendRequest(openPlatformEntry.getAuthEntry()
 				, "POST", null, params);
 		
 		

@@ -9,20 +9,12 @@ package com.taobao.exchange.app;
  */
 public class OpenPlatformEntry {
 	
-	private String id;
 	private String apiEntry;
 	private String authEntry;
 	private String appKey;
 	private String appSecret;
 	private String callbackUrl;
 	
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getApiEntry() {
 		return apiEntry;
 	}

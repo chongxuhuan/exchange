@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public class AppAuthEntity {
 	
-	private String platformId;
 	private String uid;
 	private String accessToken;
 	private int expireTime;
@@ -24,19 +23,6 @@ public class AppAuthEntity {
 	private int r2ExpireTime;
 	private int w1ExpireTime;
 	private int w2ExpireTime;
-	
-	public static void main(String[] args)
-	{
-		AppAuthEntity entity = new AppAuthEntity();
-		
-		String content = "{\"w2_expires_in\": 86400,\"taobao_user_id\": \"24006395\",\"taobao_user_nick\": \"cenwenchu\",\"w1_expires_in\": 86400,\"re_expires_in\": 0,\"r2_expires_in\": 86400,\"expires_in\": 86400,\"token_type\": \"Bearer\",\"refresh_token\": \"6200222a65a76bfcb50408dff4bb10ZZ3b143e56b07ceac24006395\",\"access_token\": \"6201122c2bfe7cdc58debd240267f0ZZb8c4971ed621d0b24006395\",\"r1_expires_in\": 86400}";
-		String content2 = "{ \"access_token\":\"SlAV32hkKG\", \"expires_in\":3600 }";
-		
-		entity.loadAuthInfoFromJsonString(content2);
-		entity.loadAuthInfoFromJsonString(content);
-		
-		System.out.println(entity);
-	}
 	
 	public void loadAuthInfoFromJsonString(String content)
 	{
@@ -158,12 +144,6 @@ public class AppAuthEntity {
 	public void setW2ExpireTime(int w2ExpireTime) {
 		this.w2ExpireTime = w2ExpireTime;
 	}
-	public String getPlatformId() {
-		return platformId;
-	}
-	public void setPlatformId(String platformId) {
-		this.platformId = platformId;
-	}
 	public String getUid() {
 		return uid;
 	}
@@ -175,6 +155,18 @@ public class AppAuthEntity {
 	}
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
+	}
+	
+	public String toString()
+	{
+		return new StringBuilder().append("uid=").append(uid).append(" , ")
+				.append("accessToken=").append(accessToken).append(" , ")
+				.append("refreshToken=").append(refreshToken).append(" , ")
+				.append("refreshExpireTime=").append(refreshExpireTime).append(" , ")
+				.append("r1ExpireTime=").append(r1ExpireTime).append(" , ")
+				.append("r2ExpireTime=").append(r2ExpireTime).append(" , ")
+				.append("w1ExpireTime=").append(w1ExpireTime).append(" , ")
+				.append("w2ExpireTime=").append(w2ExpireTime).append(" , ").toString();
 	}
 
 }

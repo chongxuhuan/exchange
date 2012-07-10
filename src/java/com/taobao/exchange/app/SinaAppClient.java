@@ -21,11 +21,11 @@ import com.taobao.exchange.util.Constants;
 public class SinaAppClient extends AppClient{
 
 	@Override
-	public String api(String platformId,String userId,String httpMethod,String apiName,Map<String, String> headers
+	public String api(String userId,String httpMethod,String apiName,Map<String, String> headers
 			,Map<String,Object> params) throws AppClientException{
 
-		if (OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId) == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORM_NOT_REGISTER);
+		if (openPlatformEntry == null)
+			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		if (userId != null && authPools.get(userId) == null)
 			throw new AppClientException(Constants.CLIENT_EXCEPTION_AUTH_USER_NOT_EXIST);
@@ -44,8 +44,7 @@ public class SinaAppClient extends AppClient{
 			params = new HashMap<String,Object>();
 		
 		
-		OpenPlatformEntry platformEntry = OpenPlatformManager.getOpenPlatformEntryFromPoolsById(platformId);
-		String url = new StringBuilder(platformEntry.getApiEntry()).append("/2/").append(apiName).append(".json").toString();
+		String url = new StringBuilder(openPlatformEntry.getApiEntry()).append("/2/").append(apiName).append(".json").toString();
 		
 		if (userId != null)
 		{		

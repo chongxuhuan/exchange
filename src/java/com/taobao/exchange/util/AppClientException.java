@@ -6,7 +6,7 @@ package com.taobao.exchange.util;
 /**
  * @author fangweng
  * @email: fangweng@taobao.com
- * 2012-7-9 обнГ9:17:36
+ * 2012-7-9
  *
  */
 public class AppClientException extends Exception{

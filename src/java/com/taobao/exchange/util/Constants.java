@@ -11,14 +11,10 @@ package com.taobao.exchange.util;
  */
 public class Constants {
 	
-	public final static String OPENPLATFORM_SINA = "sina";
-	public final static String OPENPLATFORM_TAOBAO = "taobao";
-	public final static String OPENPLATFORM_RENREN = "renren";
 	
-	public final static String CLIENT_EXCEPTION_PLATFORM_NOT_REGISTER = "platformNotRegister"; 
 	public final static String CLIENT_EXCEPTION_AUTH_USER_NOT_EXIST = "authUserNotExist"; 
 	public final static String CLIENT_EXCEPTION_APINAME_IS_NULL = "apiNameIsNull"; 
-	
+	public final static String CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST = "platformEntryNotExist";
 	
 	public final static String SYS_PARAMETER_ACCESS_TOKEN = "access_token";
 	public final static String SYS_PARAMETER_VERSION = "v";
