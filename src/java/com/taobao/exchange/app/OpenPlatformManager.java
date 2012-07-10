@@ -16,7 +16,7 @@ public class OpenPlatformManager {
 	
 	static ConcurrentMap<String,OpenPlatformEntry> pools = new ConcurrentHashMap<String,OpenPlatformEntry>();
 	
-	OpenPlatformEntry register(String id ,String apiEntry,String authEntry,String appKey,String appSecretcode,String callbackUrl)
+	public static OpenPlatformEntry register(String id ,String apiEntry,String authEntry,String appKey,String appSecretcode,String callbackUrl)
 	{
 		OpenPlatformEntry entry = null;
 		
@@ -41,7 +41,7 @@ public class OpenPlatformManager {
 	}
 	
 	
-	OpenPlatformEntry getOpenPlatformEntryFromPoolsById(String id)
+	public static OpenPlatformEntry getOpenPlatformEntryFromPoolsById(String id)
 	{
 		return pools.get(id);
 	}
