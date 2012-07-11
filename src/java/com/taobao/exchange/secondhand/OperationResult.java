@@ -3,8 +3,6 @@
  */
 package com.taobao.exchange.secondhand;
 
-import com.taobao.exchange.util.AppClientException;
-
 /**
  * 操作结果
  * @author fangweng
@@ -19,17 +17,61 @@ public class OperationResult implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 197705969719026714L;
 	
-	private String iid;
+	private String item_id;
 	private String created;
 	private String detail_url;
-	private AppClientException error;
 	
-	public String getIid() {
-		return iid;
+	public void loadFromString(String jsonStr)
+	{
+		if (jsonStr == null)
+			return;
+		
+		if (jsonStr.indexOf("\"created\":") > 0)
+		{	
+			created = getContentFromJsonStr(jsonStr,"\"created\":");
+		}
+		
+		if (jsonStr.indexOf("\"item_id\":") > 0)
+		{	
+			item_id = getContentFromJsonStr(jsonStr,"\"item_id\":");
+		}
+		
+		if (jsonStr.indexOf("\"num_iid\":") > 0)
+		{	
+			item_id = getContentFromJsonStr(jsonStr,"\"num_iid\":");
+		}
+
+		if (jsonStr.indexOf("\"detail_url\":") > 0)
+		{
+			detail_url = getContentFromJsonStr(jsonStr,"\"detail_url\":");
+		}
+		
+		System.out.println(jsonStr);
 	}
-	public void setIid(String iid) {
-		this.iid = iid;
+	
+	String getContentFromJsonStr(String json,String name)
+	{
+		String c = json.substring(json.indexOf(name) + name.length());
+		
+		if (c.indexOf(",") > 0)
+			c = c.substring(0,c.indexOf(","));
+		else
+			c = c.substring(0,c.indexOf("}"));
+		
+		if (c.indexOf("\"") >= 0)
+			c = c.substring(1,c.length()-1);
+		
+		return c;
 	}
+	
+	public String getItem_id() {
+		return item_id;
+	}
+
+	public void setItem_id(String item_id) {
+		this.item_id = item_id;
+	}
+
 	public String getCreated() {
 		return created;
 	}
@@ -41,12 +83,6 @@ public class OperationResult implements java.io.Serializable{
 	}
 	public void setDetail_url(String detail_url) {
 		this.detail_url = detail_url;
-	}
-	public AppClientException getError() {
-		return error;
-	}
-	public void setError(AppClientException error) {
-		this.error = error;
 	}
 
 }

@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.taobao.exchange.util.AppClientException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -20,6 +23,8 @@ import com.taobao.exchange.util.Constants;
  *
  */
 public abstract class AppClient implements IAppClient{
+	
+	private static final Log logger = LogFactory.getLog(AppClient.class);
 	
 	ConcurrentMap<String,AppAuthEntity> authPools;
 	OpenPlatformEntry openPlatformEntry;
@@ -58,7 +63,7 @@ public abstract class AppClient implements IAppClient{
 	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException
 	{
 		if (openPlatformEntry == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST);
+			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		AppAuthEntity entity = new AppAuthEntity();
 				
@@ -90,7 +95,11 @@ public abstract class AppClient implements IAppClient{
 		if (result == null || (result != null && result.indexOf("access_token") < 0))
 			return null;
 		else
+		{
 			entity.loadAuthInfoFromJsonString(result);
+			 
+			logger.info(result);
+		}
 		
 		return entity;
 	}

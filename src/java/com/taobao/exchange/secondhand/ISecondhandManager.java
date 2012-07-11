@@ -6,6 +6,7 @@ package com.taobao.exchange.secondhand;
 import java.util.List;
 
 import com.taobao.exchange.app.IAppClient;
+import com.taobao.exchange.util.AppClientException;
 
 
 
@@ -26,46 +27,57 @@ public interface ISecondhandManager<C extends IAppClient> {
 	void setAppClient(C appClient);
 	
 	/**
+	 * 获取二手商品类目
+	 * @return
+	 */
+	Category[] getSecondhandCategory() throws AppClientException;
+	
+	/**
 	 * 发布二手商品
+	 * @param 卖家id
 	 * @param 二手商品
 	 * @return
 	 */
-	OperationResult publish(Secondhand secondhand);
+	OperationResult publish(String userId,Secondhand secondhand) throws AppClientException;
 	
 	/**
 	 * 更新二手商品
+	 * @param 卖家id
 	 * @param 二手商品
 	 * @return
 	 */
-	OperationResult update(Secondhand secondhand);
+	OperationResult update(String userId,Secondhand secondhand) throws AppClientException;
 	
 	/**
 	 * 删除二手商品
+	 * @param 卖家id
 	 * @param 商品id
 	 * @return
 	 */
-	OperationResult delete(String iid);
+	OperationResult delete(String userId,String iid) throws AppClientException;
 	
 	/**
 	 * 对二手商品做出评价
+	 * @param 用户id
 	 * @param 商品id
 	 * @param content
+	 * @param title
 	 * @return
 	 */
-	OperationResult comment(String iid,String content);
+	boolean comment(String userId,String iid,String content,String title) throws AppClientException;
 	
 	/**
 	 * 根据用户获得二手商品
 	 * @param userId
 	 * @return
 	 */
-	List<Secondhand> getSecondhandsByUser(String userId);
+	List<Secondhand> getSecondhandsByUser(String userId) throws AppClientException;
 	
 	/**
 	 * 获取二手详细信息
 	 * @param 商品id
 	 * @return
 	 */
-	Secondhand getSecondhandById(String iid);
+	Secondhand getSecondhandById(String iid) throws AppClientException;
 
 }

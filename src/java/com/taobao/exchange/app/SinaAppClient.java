@@ -25,13 +25,13 @@ public class SinaAppClient extends AppClient{
 			,Map<String,Object> params) throws AppClientException{
 
 		if (openPlatformEntry == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST);
+			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		if (userId != null && authPools.get(userId) == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_AUTH_USER_NOT_EXIST);
+			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		if(apiName == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_APINAME_IS_NULL);
+			throw new AppClientException(Constants.EXCEPTION_APINAME_IS_NULL);
 		
 		String response = null;
 		

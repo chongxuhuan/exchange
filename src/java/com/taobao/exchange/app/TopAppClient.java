@@ -26,13 +26,13 @@ public class TopAppClient extends AppClient {
 			,Map<String,Object> params) throws AppClientException{
 		
 		if (openPlatformEntry == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_PLATFORMENTRY_NOT_EXIST);
+			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		if (userId != null && authPools.get(userId) == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_AUTH_USER_NOT_EXIST);
+			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		if(apiName == null)
-			throw new AppClientException(Constants.CLIENT_EXCEPTION_APINAME_IS_NULL);
+			throw new AppClientException(Constants.EXCEPTION_APINAME_IS_NULL);
 		
 		if (params == null)
 			params = new HashMap<String,Object>();
@@ -46,14 +46,32 @@ public class TopAppClient extends AppClient {
 		
 		params.put(Constants.SYS_PARAMETER_APINAME, apiName);
 		
-		if (userId != null)
-			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authPools.get(userId).getAccessToken());
-		
 		if (!params.containsKey(Constants.SYS_PARAMETER_VERSION))
 			params.put(Constants.SYS_PARAMETER_VERSION, "2.0");
 			
 		if (!params.containsKey(Constants.SYS_PARAMETER_FORMAT))
 			params.put(Constants.SYS_PARAMETER_FORMAT, "json");
+		
+		if (userId != null)
+			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authPools.get(userId).getAccessToken());
+		else
+		{
+			//这里还要用普通的签名方式
+			params.put(Constants.SYS_PARAMETER_APPKEY, openPlatformEntry.getAppKey());
+			params.put(Constants.SYS_PARAMETER_TIMESTAMP, String.valueOf(System.currentTimeMillis()));
+			params.put(Constants.SYS_PARAMETER_SIGNMETHOD, "md5");
+			
+			try
+			{
+				params.put(Constants.SYS_PARAMETER_SIGN,AppClientUtil
+						.signature(params, openPlatformEntry.getAppSecret(), false, Constants.SYS_PARAMETER_SIGN));
+			}
+			catch(Exception ex)
+			{
+				throw new AppClientException(ex);
+			}
+			
+		}
 		
 		response = AppClientUtil.sendRequest(openPlatformEntry.getApiEntry(),httpMethod,headers,params);
 		

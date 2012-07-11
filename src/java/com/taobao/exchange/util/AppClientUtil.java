@@ -6,16 +6,25 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import com.taobao.exchange.app.AppRequestAttachment;
 
@@ -196,6 +205,93 @@ public class AppClientUtil {
 		}
 			
 		
+	}
+	
+	/**
+	 * 生成有效签名
+	 * 
+	 * @param params
+	 * @param secret
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws InvalidKeyException 
+	 * @throws Exception 
+	 */
+	public static String signature(Map<String, Object> params, String secret,
+			boolean isHMac, String signName) throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException{
+		params.remove(signName);
+		String[] names = params.keySet().toArray(ArrayUtils.EMPTY_STRING_ARRAY);
+		Arrays.sort(names);
+		StringBuilder sb = new StringBuilder();
+		// append if not hmac
+		if (!isHMac) 
+		{
+			sb.append(secret);
+		}
+		
+		for (int i = 0; i < names.length; i++) 
+		{
+			String name = names[i];
+			sb.append(name);
+			sb.append(params.get(name));
+		}
+		
+		if (!isHMac)
+		{
+			sb.append(secret);
+		}
+		
+		String sign = null;
+
+		if(isHMac) {
+			//hmac
+			sign = byte2hex(encryptHMAC(sb.toString().getBytes("utf-8"), secret.getBytes("utf-8")));
+		} else {
+			//md5
+		sign = DigestUtils.md5Hex(sb.toString().getBytes("utf-8"))
+				.toUpperCase();
+		}
+
+		return sign;
+	}
+	
+	/**
+	 * HMAC加密
+	 * 
+	 * @param data
+	 * @param key
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 * @throws InvalidKeyException 
+	 * @throws Exception 
+	 * @throws Exception
+	 */
+	public static byte[] encryptHMAC(byte[] data, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException {
+		SecretKey secretKey = new SecretKeySpec(key, "HmacMD5");
+		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
+		mac.init(secretKey);
+		return mac.doFinal(data);
+
+	}
+
+	/**
+	 * 二行制转字符串
+	 * 
+	 * @param b
+	 * @return
+	 */
+	private static String byte2hex(byte[] b) {
+		StringBuffer hs = new StringBuffer();
+		String stmp = "";
+		for (int n = 0; n < b.length; n++) {
+			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
+			if (stmp.length() == 1)
+				hs.append("0").append(stmp);
+			else
+				hs.append(stmp);
+		}
+		return hs.toString().toUpperCase();
 	}
 	
 	private static class DefaultTrustManager implements X509TrustManager {
