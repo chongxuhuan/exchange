@@ -12,19 +12,13 @@ package com.taobao.exchange.relation;
 public class User {
 
 	private String id;
-	private String platformId;
 	private String name;
+	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getPlatformId() {
-		return platformId;
-	}
-	public void setPlatformId(String platformId) {
-		this.platformId = platformId;
 	}
 	public String getName() {
 		return name;

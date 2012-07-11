@@ -45,6 +45,5 @@ public class OpenPlatformEntry {
 	public void setAppSecret(String appSecret) {
 		this.appSecret = appSecret;
 	}
-	
 
 }

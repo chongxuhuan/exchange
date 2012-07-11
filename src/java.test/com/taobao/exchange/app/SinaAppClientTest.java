@@ -31,13 +31,13 @@ public class SinaAppClientTest {
 	public void testApi() throws AppClientException {
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		String code = "8411ccb4eee101c9d0b432cfef5c2b11";
+		String code = "d20cf17e6ff1a705aa2e9b713e8a9f5a";
 		
 		AppAuthEntity authEntity = appclient.getAccessTokenByCode(code, null, null, "web");
 		
 		appclient.addAuthToClient(authEntity);
 		
-		String result = appclient.api(authEntity.getUid(), "GET","friendships/friends/bilateral", null, null);
+		String result = appclient.api(authEntity.getUid(), "GET","friendships/friends", null, null);
 		
 		System.out.println(result);
 	}
