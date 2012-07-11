@@ -57,7 +57,7 @@ public class AppClientUtil {
 				for(Map.Entry<String, Object> e : params.entrySet())
 				{
 					reqParams.append(e.getKey())
-							.append("=").append((String)e.getValue()).append("&");
+							.append("=").append(e.getValue()).append("&");
 				}
 				
 				url += reqParams.toString();
@@ -198,7 +198,7 @@ public class AppClientUtil {
 			for(Map.Entry<String, Object> e : params.entrySet())
 			{
 				reqParams.append(e.getKey())
-						.append("=").append((String)e.getValue()).append("&");
+						.append("=").append(e.getValue()).append("&");
 			}
 			
 			httpConn.getOutputStream().write(reqParams.toString().getBytes("UTF-8"));

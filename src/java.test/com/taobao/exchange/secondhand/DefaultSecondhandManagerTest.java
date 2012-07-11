@@ -1,28 +1,19 @@
 package com.taobao.exchange.secondhand;
 
 import static org.junit.Assert.*;
-
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.app.AppRequestAttachment;
-import com.taobao.exchange.app.IAppClient;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.TopAppClient;
 import com.taobao.exchange.util.AppClientException;
@@ -54,7 +45,7 @@ public class DefaultSecondhandManagerTest {
 		secondhandManager = new DefaultSecondhandManager();
 		secondhandManager.setAppClient(appclient);
 		
-		String code = "C8cyHGZ4QHOpHq2Ws1ov0Ijo28015";
+//		String code = "C8cyHGZ4QHOpHq2Ws1ov0Ijo28015";
 //		AppAuthEntity authEntity = appclient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity authEntity = new AppAuthEntity();

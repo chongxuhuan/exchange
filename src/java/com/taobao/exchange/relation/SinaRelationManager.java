@@ -4,7 +4,13 @@
 package com.taobao.exchange.relation;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.taobao.exchange.app.SinaAppClient;
 import com.taobao.exchange.util.AppClientException;
 import com.taobao.exchange.util.Constants;
@@ -22,12 +28,12 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	ICache<String,String> relationCache;
 	
 	@Override
-	public User[] getFriendsByUser(String uid) throws AppClientException {
+	public List<User> getFriendsByUser(String uid) throws AppClientException {
 		
 		if (appClient == null)
 			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
-		User[] result = null;
+		List<User> result = new ArrayList<User>();
 		String jsonResult = null;
 		Gson gson = new Gson();	
 		
@@ -38,24 +44,44 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 		
 		if (jsonResult == null)
 		{
-			jsonResult = appClient.api(uid, "GET","friendships/friends", null, null);
+			Map<String,Object> params = new HashMap<String,Object>();
+			GetUsersResponse usersResponse;
+			int cursor = 0;
+			params.put("trim_status", 0);
+			params.put("count", 200);
 			
-			if (jsonResult != null && relationCache != null)
-				relationCache.put(uid, jsonResult);
-			
-			if (jsonResult == null || (jsonResult != null && jsonResult.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
+			do
 			{
-				throw new AppClientException(jsonResult);
+				params.put("cursor", cursor);
+				
+				jsonResult = appClient.api(uid, "GET","friendships/friends", null, params);
+				
+				if (jsonResult == null || (jsonResult != null && jsonResult.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
+				{
+					throw new AppClientException(jsonResult);
+				}
+				
+				usersResponse = gson.fromJson(jsonResult, GetUsersResponse.class);
+				
+				if (usersResponse.getTotal_number() > 0)
+				{
+					for (User u : usersResponse.getUsers())
+					{
+						result.add(u);
+					}
+					
+					cursor = usersResponse.getNext_cursor();
+				}
 			}
+			while(usersResponse != null && cursor > 0);
 			
-			GetUsersResponse usersResponse = gson.fromJson(jsonResult, GetUsersResponse.class);
-			
-			result = usersResponse.getUsers();
+			if (result.size() > 0)
+				relationCache.put(uid,gson.toJson(result));
 				
 		} 
 		else
 		{
-			result = gson.fromJson(jsonResult, User[].class);
+			result = gson.fromJson(jsonResult, new TypeToken<List<User>>(){}.getType());
 		}
 		
 		return result;
@@ -63,7 +89,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 
 	
 	@Override
-	public User[] getIndirectFriendsByUser(String uid) throws AppClientException{
+	public List<User> getIndirectFriendsByUser(String uid) throws AppClientException{
 		// TODO Auto-generated method stub
 		return null;
 	}

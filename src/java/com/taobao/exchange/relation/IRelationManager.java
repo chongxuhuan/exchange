@@ -4,6 +4,8 @@
 package com.taobao.exchange.relation;
 
 
+import java.util.List;
+
 import com.taobao.exchange.app.IAppClient;
 import com.taobao.exchange.util.AppClientException;
 import com.taobao.exchange.util.ICache;
@@ -35,14 +37,14 @@ public interface IRelationManager <C extends IAppClient,K,V>{
 	 * @param 用户id
 	 * @return
 	 */
-	User[] getFriendsByUser(String uid) throws AppClientException;
+	List<User> getFriendsByUser(String uid) throws AppClientException;
 	
 	/**
 	 * 返回当前用户的间接好友，就是朋友的朋友
 	 * @param 用户id
 	 * @return
 	 */
-	User[] getIndirectFriendsByUser(String uid) throws AppClientException;
+	List<User> getIndirectFriendsByUser(String uid) throws AppClientException;
 	
 	
 	
