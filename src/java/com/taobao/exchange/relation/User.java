@@ -10,10 +10,17 @@ package com.taobao.exchange.relation;
  *
  */
 public class User {
-
+	
+	private String platformId;
 	private String id;
 	private String name;
 	
+	public String getPlatformId() {
+		return platformId;
+	}
+	public void setPlatformId(String platformId) {
+		this.platformId = platformId;
+	}
 	public String getId() {
 		return id;
 	}

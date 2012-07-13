@@ -10,6 +10,22 @@ package com.taobao.exchange.dig;
  * 2012-7-4
  *
  */
-public class FirendsDigCondition implements IDigCondition {
+public class FirendsDigCondition extends SecondhandCondition {
+	
+	String secondHandPlatformID;
+	String secondHandUID;
+	
+	public String getSecondHandPlatformID() {
+		return secondHandPlatformID;
+	}
+	public void setSecondHandPlatformID(String secondHandPlatformID) {
+		this.secondHandPlatformID = secondHandPlatformID;
+	}
+	public String getSecondHandUID() {
+		return secondHandUID;
+	}
+	public void setSecondHandUID(String secondHandUID) {
+		this.secondHandUID = secondHandUID;
+	}
 
 }

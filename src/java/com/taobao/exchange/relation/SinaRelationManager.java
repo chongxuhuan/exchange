@@ -67,6 +67,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 				{
 					for (User u : usersResponse.getUsers())
 					{
+						u.setPlatformId(appClient.getOpenPlatformEntry().getId());
 						result.add(u);
 					}
 					

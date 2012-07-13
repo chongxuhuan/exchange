@@ -5,9 +5,6 @@ package com.taobao.exchange.app;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -26,39 +23,27 @@ public abstract class AppClient implements IAppClient{
 	
 	private static final Log logger = LogFactory.getLog(AppClient.class);
 	
-	ConcurrentMap<String,AppAuthEntity> authPools;
 	OpenPlatformEntry openPlatformEntry;
-	
-	public AppClient()
-	{
-		super();
+	IAuthKeeper authKeeper;
 		
-		authPools = new ConcurrentHashMap<String,AppAuthEntity>();
+	public IAuthKeeper getAuthKeeper() {
+		return authKeeper;
 	}
-		
-	/**
-	 * 获取内在平台信息
-	 * @return
-	 */
+
+	public void setAuthKeeper(IAuthKeeper authKeeper) {
+		this.authKeeper = authKeeper;
+	}
+
 	public OpenPlatformEntry getOpenPlatformEntry()
 	{
 		return openPlatformEntry;
 	}
 	
-	
-	/**
-	 * 设置平台信息
-	 * @param 平台信息
-	 */
 	public void setOpenPlatformEntry(OpenPlatformEntry openPlatformEntry)
 	{
 		this.openPlatformEntry = openPlatformEntry;
 	}
 
-	public void addAuthToClient(AppAuthEntity auth)
-	{
-		authPools.put(auth.getUid(), auth);
-	}
 	
 	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException
 	{

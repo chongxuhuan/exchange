@@ -12,9 +12,15 @@ import org.apache.commons.lang.StringUtils;
  * @datetime: 2012-7-4
  *
  */
-public class AppAuthEntity {
+public class AppAuthEntity implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8765771477651584870L;
 	
 	private String uid;
+	private String nick;
 	private String accessToken;
 	private int expireTime;
 	private String refreshToken;
@@ -50,6 +56,12 @@ public class AppAuthEntity {
 			if (c.indexOf("re_expires_in") >= 0)
 			{
 				this.refreshExpireTime = getIntegerValueFromJsonSplitStr(c);
+				continue;
+			}
+			
+			if (c.indexOf("taobao_user_nick") >= 0)
+			{
+				this.nick = getStringValueFromJsonSplitStr(c);
 				continue;
 			}
 			
@@ -101,7 +113,15 @@ public class AppAuthEntity {
 	{
 		return Integer.parseInt(splitStr.substring(splitStr.indexOf(":")+1).trim());
 	}
-	
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
 	public int getExpireTime() {
 		return expireTime;
 	}
@@ -160,6 +180,7 @@ public class AppAuthEntity {
 	public String toString()
 	{
 		return new StringBuilder().append("uid=").append(uid).append(" , ")
+				.append("nick=").append(nick).append(" , ")
 				.append("accessToken=").append(accessToken).append(" , ")
 				.append("refreshToken=").append(refreshToken).append(" , ")
 				.append("refreshExpireTime=").append(refreshExpireTime).append(" , ")

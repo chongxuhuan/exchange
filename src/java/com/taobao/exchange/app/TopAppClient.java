@@ -28,7 +28,7 @@ public class TopAppClient extends AppClient {
 		if (openPlatformEntry == null)
 			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
-		if (userId != null && authPools.get(userId) == null)
+		if (userId != null && authKeeper.take(userId) == null)
 			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		if(apiName == null)
@@ -53,7 +53,7 @@ public class TopAppClient extends AppClient {
 			params.put(Constants.SYS_PARAMETER_FORMAT, "json");
 		
 		if (userId != null)
-			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authPools.get(userId).getAccessToken());
+			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authKeeper.take(userId).getAccessToken());
 		else
 		{
 			//这里还要用普通的签名方式

@@ -3,7 +3,7 @@
  */
 package com.taobao.exchange.secondhand;
 
-import com.taobao.exchange.app.AppRequestAttachment;
+import com.taobao.exchange.app.RequestAttachment;
 
 /**
  * 二手物品结构定义
@@ -22,7 +22,7 @@ public class Secondhand {
 							//另，id必须对应最小的行政单位，如330100对应浙江杭州，330106对应浙江杭州西湖区，则必须传330106，否则会返回错误。
 	private String item_type;//商品类型。可选值:fixed(一口价),auction(拍卖)
 	private String describe;//宝贝描述。字数要大于5个字符，小于25000个字符，受违禁词控制
-	private AppRequestAttachment major_image;//商品主图片。支持的文件类型：gif,jpg,jpeg,png,bmp
+	private RequestAttachment major_image;//商品主图片。支持的文件类型：gif,jpg,jpeg,png,bmp
 	private String tags;//宝贝标签（关键字）。逗号分割，最多5个标签，每个标签最多7个汉字。宝贝标签作用于宝贝搜索，提高搜索的相关性。受违禁词控制
 	private String phone;//联系人手机。拍卖商品无此属性
 	private int stuff_status;//商品新旧程度。一口价商品必须指定，可选值：10（全新），9（9成新以上），8（8成新以上），7（8成新以下）。
@@ -90,10 +90,10 @@ public class Secondhand {
 	public String getItem_type() {
 		return item_type;
 	}
-	public AppRequestAttachment getMajor_image() {
+	public RequestAttachment getMajor_image() {
 		return major_image;
 	}
-	public void setMajor_image(AppRequestAttachment major_image) {
+	public void setMajor_image(RequestAttachment major_image) {
 		this.major_image = major_image;
 	}
 	public String getTags() {

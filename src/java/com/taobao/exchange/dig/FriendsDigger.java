@@ -17,7 +17,8 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 
 	@Override
 	public List<Secondhand> dig(FirendsDigCondition condition) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 

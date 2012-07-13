@@ -3,7 +3,6 @@
  */
 package com.taobao.exchange.secondhand;
 
-import java.util.List;
 
 import com.taobao.exchange.app.IAppClient;
 import com.taobao.exchange.util.AppClientException;
@@ -71,7 +70,7 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @param userId
 	 * @return
 	 */
-	List<Secondhand> getSecondhandsByUser(String userId) throws AppClientException;
+	Secondhand[] getSecondhandsByUser(String userId) throws AppClientException;
 	
 	/**
 	 * 获取二手详细信息

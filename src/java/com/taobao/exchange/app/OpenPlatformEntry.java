@@ -7,14 +7,31 @@ package com.taobao.exchange.app;
  * 2012-7-4
  *
  */
-public class OpenPlatformEntry {
+public class OpenPlatformEntry implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6423885060936123569L;
+	
+	private String id;
 	private String apiEntry;
 	private String authEntry;
 	private String appKey;
 	private String appSecret;
 	private String callbackUrl;
 	
+	public OpenPlatformEntry(String id)
+	{
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getApiEntry() {
 		return apiEntry;
 	}

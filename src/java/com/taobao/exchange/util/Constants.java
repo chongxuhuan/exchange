@@ -11,11 +11,15 @@ package com.taobao.exchange.util;
  */
 public class Constants {
 	
+	public final static String PLATFORM_ID_TAOBAO = "taobao";
+	public final static String PLATFORM_ID_SINA = "sina";
 	
 	public final static String EXCEPTION_AUTH_USER_NOT_EXIST = "authUserNotExist"; 
 	public final static String EXCEPTION_APINAME_IS_NULL = "apiNameIsNull"; 
 	public final static String EXCEPTION_PLATFORMENTRY_NOT_EXIST = "platformEntryNotExist";
 	public final static String EXCEPTION_APPCLIENT_NOT_EXIST = "appClientNotExist";
+	public final static String EXCEPTION_RELATIONMANAGER_NOT_EXIST = "relationManagerNotExist";
+	public final static String EXCEPTION_SECONDHANDMANAGER_NOT_EXIST = "secondhandManagerNotExist";
 	
 	public final static String EXCEPTION_SERVICE_ERROR = "error_response";
 	

@@ -26,7 +26,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ArrayUtils;
 
-import com.taobao.exchange.app.AppRequestAttachment;
+import com.taobao.exchange.app.RequestAttachment;
 
 /**
  * 应用客户端工具类
@@ -140,7 +140,7 @@ public class AppClientUtil {
 		
 		for(Object v : params.values())
 		{
-			if (v instanceof AppRequestAttachment)
+			if (v instanceof RequestAttachment)
 			{
 				isMutilPart = true;
 				break;
@@ -156,11 +156,11 @@ public class AppClientUtil {
 			
 			for(Map.Entry<String, Object> e : params.entrySet())
 			{
-				if (e.getValue() instanceof AppRequestAttachment)
+				if (e.getValue() instanceof RequestAttachment)
 				{
 					StringBuilder content = new StringBuilder();
 					
-					AppRequestAttachment attach = (AppRequestAttachment)e.getValue();
+					RequestAttachment attach = (RequestAttachment)e.getValue();
 					
 					content.append("Content-Disposition: form-data; name=\"").append(e.getKey())
 						.append("\"; filename=\"").append(attach.getName()).append("\"\r\n");

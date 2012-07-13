@@ -2,9 +2,13 @@ package com.taobao.exchange.app;
 
 
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.taobao.exchange.util.Constants;
 
 public class AppClientTest {
 	
@@ -12,16 +16,19 @@ public class AppClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		OpenPlatformEntry topPlatformEntry = new OpenPlatformEntry();
+		OpenPlatformEntry topPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_TAOBAO);
 				
 		topPlatformEntry.setApiEntry("https://eco.taobao.com/router/rest");
 		topPlatformEntry.setAppKey("12667915");
 		topPlatformEntry.setAppSecret("c27b029f3c377d6fa02dfb00d11788f4");
 		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
 		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		
+		IAuthKeeper authKeeper = new MemAuthKeeper();
 			
 		appclient = new TopAppClient();
 		appclient.setOpenPlatformEntry(topPlatformEntry);
+		appclient.setAuthKeeper(authKeeper);
 	}
 
 	@After
@@ -34,11 +41,13 @@ public class AppClientTest {
 		//call first then change code content
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12667915
 		
-		String code = "6Bid2CEDg7fiiSc9l1mvpjDK18587";
+		String code = "JOm2cHX53tVuX8TAMft1of6E77081";
 		
 		try
 		{
 			AppAuthEntity  appAuthEntity = appclient.getAccessTokenByCode(code, null, null, "web");
+			
+			Assert.assertNotNull(appAuthEntity);
 			
 			System.out.println(appAuthEntity);
 		}

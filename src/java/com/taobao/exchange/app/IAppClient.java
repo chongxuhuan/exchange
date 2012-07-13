@@ -18,19 +18,6 @@ import com.taobao.exchange.util.AppClientException;
 public interface IAppClient {
 	
 	/**
-	 * 获取内在平台信息
-	 * @return
-	 */
-	public OpenPlatformEntry getOpenPlatformEntry();
-	
-	
-	/**
-	 * 设置平台信息
-	 * @param 平台信息
-	 */
-	public void setOpenPlatformEntry(OpenPlatformEntry openPlatformEntry);
-	
-	/**
 	 * 服务调用接口
 	 * @param 用户身份id，如果不需要授权的服务，可以不传入
 	 * @param http方法类型，支持get和post
@@ -54,9 +41,28 @@ public interface IAppClient {
 	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException;
 	
 	/**
-	 * 将授权增加到平台客户端中，为后续服务调用使用
-	 * @param 授权对象
+	 * 设置授权的管理实现
+	 * @return
 	 */
-	public void addAuthToClient(AppAuthEntity auth);
+	public IAuthKeeper getAuthKeeper();
+	
+	/**
+	 * 获得授权的管理实现
+	 * @param authKeeper
+	 */
+	public void setAuthKeeper(IAuthKeeper authKeeper);
+	
+	/**
+	 * 获取内在平台信息
+	 * @return
+	 */
+	public OpenPlatformEntry getOpenPlatformEntry();
+	
+	
+	/**
+	 * 设置平台信息
+	 * @param 平台信息
+	 */
+	public void setOpenPlatformEntry(OpenPlatformEntry openPlatformEntry);
 
 }
