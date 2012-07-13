@@ -1,6 +1,5 @@
 package com.taobao.exchange.relation;
 
-import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -8,6 +7,7 @@ import junit.framework.Assert;
 
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
@@ -60,21 +60,22 @@ public class SinaRelationManagerTest {
 		
 	}
 
-
-
 	@Test
+	@Ignore
 	public void testGetFriendsByUser() throws AppClientException {
-		List<User> users = sinaRelationManager.getFriendsByUser(uid);
-		
-		
+		List<User> users = sinaRelationManager.getFriendsByUser(uid,uid);
+				
 		Assert.assertTrue(users.size() > 0);
 		
-		users = sinaRelationManager.getFriendsByUser(uid);
+		users = sinaRelationManager.getFriendsByUser(uid,uid);
 	}
 
 	@Test
-	public void testGetIndirectFriendsByUser() {
-		fail("Not yet implemented");
+	public void testGetIndirectFriendsByUser() throws AppClientException {
+		List<User> users = sinaRelationManager.getIndirectFriendsByUser(uid);
+			
+		Assert.assertTrue(users.size() > 0);
+		
 	}
 
 }

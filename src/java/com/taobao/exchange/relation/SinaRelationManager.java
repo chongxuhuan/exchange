@@ -28,7 +28,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	ICache<String,String> relationCache;
 	
 	@Override
-	public List<User> getFriendsByUser(String uid) throws AppClientException {
+	public List<User> getFriendsByUser(String sessionUid,String uid) throws AppClientException {
 		
 		if (appClient == null)
 			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
@@ -53,8 +53,9 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 			do
 			{
 				params.put("cursor", cursor);
+				params.put("uid", uid);
 				
-				jsonResult = appClient.api(uid, "GET","friendships/friends", null, params);
+				jsonResult = appClient.api(sessionUid, "GET","friendships/friends", null, params);
 				
 				if (jsonResult == null || (jsonResult != null && jsonResult.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 				{
@@ -91,8 +92,31 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	
 	@Override
 	public List<User> getIndirectFriendsByUser(String uid) throws AppClientException{
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (appClient == null)
+			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+		
+		List<User> result = new ArrayList<User>();
+		
+		List<User> friends = this.getFriendsByUser(uid,uid);
+		
+		int count = 0;
+		int member = 0;
+		
+		for(User u : friends)
+		{
+			List<User>  df = this.getFriendsByUser(uid,u.getId());
+			
+			if (df != null)
+				result.addAll(df);
+			
+			count += 1;
+			member += df.size();
+			
+			System.out.println("count : " + count + ", member : " + member);
+		}	
+		return result;
+		
 	}
 
 

@@ -12,7 +12,7 @@ import com.taobao.exchange.util.ICache;
 
 
 /**
- * 弱关系获取接口
+ * 系获取接口
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4
@@ -34,13 +34,14 @@ public interface IRelationManager <C extends IAppClient,K,V>{
 
 	/**
 	 * 获取当前用户的好友关系
-	 * @param 用户id
+	 * @param 授权的用户Id
+	 * @param 要查询好友的用户id
 	 * @return
 	 */
-	List<User> getFriendsByUser(String uid) throws AppClientException;
+	List<User> getFriendsByUser(String sessionUid,String uid) throws AppClientException;
 	
 	/**
-	 * 返回当前用户的间接好友，就是朋友的朋友
+	 * 返回当前用户的间接好友，就是朋友的朋友(支持到两级)
 	 * @param 用户id
 	 * @return
 	 */
