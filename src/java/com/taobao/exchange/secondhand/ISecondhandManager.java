@@ -5,6 +5,7 @@ package com.taobao.exchange.secondhand;
 
 
 import com.taobao.exchange.app.IAppClient;
+import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.AppClientException;
 
 
@@ -78,5 +79,12 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @return
 	 */
 	Secondhand getSecondhandById(String iid) throws AppClientException;
+	
+	/**
+	 * 平台提供得简单二手搜索功能
+	 * @param condition
+	 * @return
+	 */
+	Secondhand[] commonSearch(SecondhandCondition condition) throws AppClientException;
 
 }

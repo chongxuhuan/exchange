@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.taobao.exchange.app.SinaAppClient;
@@ -24,6 +27,8 @@ import com.taobao.exchange.util.ICache;
  */
 public class SinaRelationManager implements IRelationManager<SinaAppClient,String,String> {
 
+	private static final Log logger = LogFactory.getLog(SinaRelationManager.class);
+	
 	SinaAppClient appClient;
 	ICache<String,String> relationCache;
 	
@@ -113,7 +118,8 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 			count += 1;
 			member += df.size();
 			
-			System.out.println("count : " + count + ", member : " + member);
+			if (logger.isInfoEnabled())
+				logger.info("count : " + count + ", member : " + member);
 		}	
 		return result;
 		

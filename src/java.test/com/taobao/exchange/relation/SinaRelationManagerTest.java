@@ -56,7 +56,7 @@ public class SinaRelationManagerTest {
 		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(appClient);
-		sinaRelationManager.setRelationCache(new MemCache());
+		sinaRelationManager.setRelationCache(new MemCache<String,String>());
 		
 	}
 

@@ -20,6 +20,8 @@ public class Constants {
 	public final static String EXCEPTION_APPCLIENT_NOT_EXIST = "appClientNotExist";
 	public final static String EXCEPTION_RELATIONMANAGER_NOT_EXIST = "relationManagerNotExist";
 	public final static String EXCEPTION_SECONDHANDMANAGER_NOT_EXIST = "secondhandManagerNotExist";
+	public final static String EXCEPTION_CONDITION_IS_NULL = "conditionIsNull";
+	public final static String EXCEPTION_SECONDHANDPLATFORM_IS_NULL = "secondhandPlatformIsNull";
 	
 	public final static String EXCEPTION_SERVICE_ERROR = "error_response";
 	
@@ -41,5 +43,10 @@ public class Constants {
 	public final static String SYS_AUTH_PARAMETER_SCOPE = "scope";
 	public final static String SYS_AUTH_PARAMETER_STATE = "state";
 	public final static String SYS_AUTH_PARAMETER_VIEW = "view";
+	
+	
+	public final static String CONTEXT_USER = "context:user:";
+	public final static String CONTEXT_SECONDHAND = "context:secondhand:";
+	public final static String CONTEXT_SPLIT = ":ct:";
 
 }

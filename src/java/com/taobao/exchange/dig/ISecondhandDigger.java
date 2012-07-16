@@ -3,9 +3,11 @@
  */
 package com.taobao.exchange.dig;
 
-import java.util.List;
 
+import com.taobao.exchange.relation.AccountZoo;
 import com.taobao.exchange.secondhand.Secondhand;
+import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ICache;
 
 /**
  * @author fangweng
@@ -15,6 +17,11 @@ import com.taobao.exchange.secondhand.Secondhand;
  */
 public interface ISecondhandDigger<T extends IDigCondition> {
 	
-	List<Secondhand> dig(T condition);
+	void setContextCache(ICache<String, String> contextCache);
+	void setAccountZooCache(ICache<String, AccountZoo> accountZooCache);
+	
+	DigResult dig(T condition) throws AppClientException;
+	
+	boolean checkSecondhandByCondition(Secondhand s, T condition);
 
 }

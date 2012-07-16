@@ -18,6 +18,7 @@ import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.RequestAttachment;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.TopAppClient;
+import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.AppClientException;
 import com.taobao.exchange.util.Constants;
 
@@ -71,6 +72,18 @@ public class TaobaoSecondhandManagerTest {
 		Category[] categorys = secondhandManager.getSecondhandCategory();
 		
 		Assert.assertTrue(categorys.length > 0);
+	}
+	
+	@Test
+	public void testCommonSearch() throws AppClientException {
+		
+		SecondhandCondition condition = new SecondhandCondition();
+		condition.setSeller_nick("cenwenchu");
+		
+		Secondhand[] oResult = secondhandManager.commonSearch(condition);
+		
+		Assert.assertNotNull(oResult);
+		Assert.assertTrue(oResult.length > 0);
 	}
 
 	@Test
@@ -178,7 +191,7 @@ public class TaobaoSecondhandManagerTest {
 		
 		Assert.assertTrue(secondhands.length > 0);
 	}	
-
+	
 	@Test
 	public void testDelete() throws AppClientException {
 		OperationResult oResult = secondhandManager.delete(uid, iid);

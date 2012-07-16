@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.google.gson.Gson;
 import com.taobao.exchange.app.TopAppClient;
+import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.AppClientException;
 import com.taobao.exchange.util.Constants;
 
@@ -259,6 +260,97 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 					result.lastIndexOf("]")+1);
 		
 			Secondhand[] secondhands = gson.fromJson(result, Secondhand[].class);
+			return secondhands;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public Secondhand[] commonSearch(SecondhandCondition condition) throws AppClientException
+	{
+		Secondhand[] secondhands = null;
+		
+		if (appClient == null)
+			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		
+		if (condition.getCat_id() != -1)
+		{
+			params.put("cat_id", condition.getCat_id());
+		}
+		
+		if (condition.getStuff_status() != -1)
+		{
+			params.put("stuff_status", condition.getStuff_status());
+		}
+		
+		if (condition.getKeyWords() != null)
+		{
+			params.put("key_words", condition.getKeyWords());
+		}
+		
+		if (condition.getSeller_nick() != null)
+		{
+			params.put("seller_nick", condition.getSeller_nick());
+		}
+		
+		if (condition.getHas_phone() != -1)
+		{
+			params.put("has_phone", condition.getHas_phone());
+		}
+		
+		if (condition.getHas_pic()!= -1)
+		{
+			params.put("has_pic", condition.getHas_pic());
+		}
+		if (condition.getOffline() != -1)
+		{
+			params.put("offline", condition.getOffline());
+		}
+		
+		if (condition.getDivision_id()!= -1)
+		{
+			params.put("division_id", condition.getDivision_id());
+		}
+		if (condition.getStart_price() != -1)
+		{
+			params.put("start_price", condition.getStart_price());
+		}
+		
+		if (condition.getEnd_price()!= -1)
+		{
+			params.put("end_price", condition.getEnd_price());
+		}
+		
+		if (condition.getQuery_session() != null)
+		{
+			params.put("start", condition.getQuery_session());
+		}
+		
+		if (condition.getPage_size() > 0)
+		{
+			params.put("rows", condition.getPage_size());
+		}
+		
+		
+		String result = appClient.api(null, "GET", "taobao.idle.feeler.search", null, params);
+		
+		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
+		{
+			throw new AppClientException(result);
+		}
+		
+		//简单写，去掉外层的几个内容，直接从数组开始获得
+		if(result.indexOf("\"idle_search_d_o\":[") > 0)
+		{
+			Gson gson = new Gson();		
+		
+			result = result.substring(result.indexOf("\"idle_search_d_o\":") + "\"idle_search_d_o\":".length(),
+					result.lastIndexOf("]")+1);
+		
+			secondhands = gson.fromJson(result, Secondhand[].class);
 			return secondhands;
 		}
 		

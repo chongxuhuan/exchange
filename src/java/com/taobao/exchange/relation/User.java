@@ -9,8 +9,12 @@ package com.taobao.exchange.relation;
  * 2012-7-4
  *
  */
-public class User {
+public class User implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7105030970070142792L;
 	private String platformId;
 	private String id;
 	private String name;

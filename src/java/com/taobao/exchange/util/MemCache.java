@@ -12,24 +12,24 @@ import java.util.concurrent.ConcurrentMap;
  * 下午6:07:45
  *
  */
-public class MemCache implements ICache<String,String> {
+public class MemCache<K,V> implements ICache<K,V> {
 
-	ConcurrentMap<String,String> innerCache = new ConcurrentHashMap<String,String>();
+	ConcurrentMap<K,V> innerCache = new ConcurrentHashMap<K,V>();
 	
 	@Override
-	public void put(String name, String value) {
+	public void put(K name, V value) {
 		innerCache.put(name, value);
 	}
 
 
 	@Override
-	public String get(String name) {
+	public V get(K name) {
 		return innerCache.get(name);
 	}
 
 	
 	@Override
-	public String remove(String name) {
+	public V remove(K name) {
 		return innerCache.remove(name);
 	}
 

@@ -13,8 +13,15 @@ package com.taobao.exchange.dig;
 public class FirendsDigCondition extends SecondhandCondition {
 	
 	String secondHandPlatformID;
-	String secondHandUID;
+	String secondHandUID; 
+	boolean indirectRelation;
 	
+	public boolean isIndirectRelation() {
+		return indirectRelation;
+	}
+	public void setIndirectRelation(boolean indirectRelation) {
+		this.indirectRelation = indirectRelation;
+	}
 	public String getSecondHandPlatformID() {
 		return secondHandPlatformID;
 	}

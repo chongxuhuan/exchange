@@ -14,7 +14,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 2012-7-11
  *
  */
-public class AccountZoo {
+public class AccountZoo implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3370983959338992307L;
 	
 	private String secondHandPlatformID;
 	private String secondHandUID;
