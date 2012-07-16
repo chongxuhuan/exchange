@@ -19,6 +19,8 @@ public interface ISecondhandDigger<T extends IDigCondition> {
 	
 	void setContextCache(ICache<String, String> contextCache);
 	void setAccountZooCache(ICache<String, AccountZoo> accountZooCache);
+	void setRelationAccountZooCache(
+			ICache<String, AccountZoo> relationAccountZooCache);
 	
 	DigResult dig(T condition) throws AppClientException;
 	

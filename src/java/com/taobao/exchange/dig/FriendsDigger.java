@@ -34,7 +34,14 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	
 	private ICache<String,String> contextCache;
 	private ICache<String,AccountZoo> accountZooCache;
+	private ICache<String,AccountZoo> relationAccountZooCache;
 	
+	public void setRelationAccountZooCache(
+			ICache<String, AccountZoo> relationAccountZooCache) {
+		this.relationAccountZooCache = relationAccountZooCache;
+	}
+
+
 	public void setAccountZooCache(ICache<String, AccountZoo> accountZooCache) {
 		this.accountZooCache = accountZooCache;
 	}
@@ -126,7 +133,8 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 			}
 		}
 
-		if (condition.getSecondHandPlatformID() != null && condition.getSecondHandUID() != null && accountZooCache != null)
+		if (condition.getSecondHandPlatformID() != null && condition.getSecondHandUID() != null
+				&& accountZooCache != null && relationAccountZooCache != null)
 		{
 			
 			List<User> users = null;
@@ -161,7 +169,13 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 
 					for(User u : users)
 					{
-						Secondhand[] ss = secondhandManager.getSecondhandsByUser(u.getId());
+						AccountZoo z = relationAccountZooCache.get(new StringBuilder().append(u.getPlatformId())
+								.append("::").append(u.getId()).toString());
+						
+						if (z == null)
+							continue;
+						
+						Secondhand[] ss = secondhandManager.getSecondhandsByUser(z.getSecondHandUID());
 						
 						if (ss == null || (ss != null && ss.length == 0))
 							continue;

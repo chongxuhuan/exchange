@@ -47,6 +47,7 @@ public class FriendsDiggerTest {
 	static TaobaoSecondhandManager secondhandManager;
 	static SinaRelationManager sinaRelationManager;
 	static ICache<String,AccountZoo> accountZooCache;
+	static ICache<String,AccountZoo> relationAccountZooCache;
 	
 
 	/**
@@ -71,6 +72,7 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setCallbackUrl("www.mashupshow.com");
 		
 		accountZooCache = new MemCache<String,AccountZoo>();
+		relationAccountZooCache = new MemCache<String,AccountZoo>();
 		contextCache = new MemCache<String,String>();
 		
 		topAuthKeeper = new MemAuthKeeper();
@@ -87,6 +89,7 @@ public class FriendsDiggerTest {
 		digger = new FriendsDigger();
 		digger.setContextCache(contextCache);
 		digger.setAccountZooCache(accountZooCache);
+		digger.setRelationAccountZooCache(relationAccountZooCache);
 		
 		secondhandManager = new TaobaoSecondhandManager();
 		secondhandManager.setAppClient(topAppClient);
@@ -116,7 +119,7 @@ public class FriendsDiggerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		//String code = "393476a3a97b8c7ff4f4c73086fb965c";
+		//String code = "e44d5fbee14a2af5bebbd963bd0dd068";
 		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
@@ -124,40 +127,69 @@ public class FriendsDiggerTest {
 		sinaAuthEntity.setUid("1401787331");
 		sinaAuthKeeper.store(sinaAuthEntity.getUid(), sinaAuthEntity);
 		
+		AppAuthEntity sinaAuthEntity2 = new AppAuthEntity();
+		sinaAuthEntity2.setAccessToken("2.004_BepB0QLIOve19916815fqXIIDE");
+		sinaAuthEntity2.setUid("1679264133");
+		sinaAuthKeeper.store(sinaAuthEntity2.getUid(), sinaAuthEntity2);
+		
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-//		String code = "X5lCKcvEb0Rlnv23xC39X67Q163204";
+//		String code = "wBHEl6dMNghWNVee84p47tWc164481";
 //		AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity topAuthEntity = new AppAuthEntity();
-		topAuthEntity.setAccessToken("6201f282db6b77328032507dbb6da87a8e95ZZf92f2957024006395");
-		topAuthEntity.setUid("24006395");
-		topAuthEntity.setNick("cenwenchu");
+		topAuthEntity.setAccessToken("62027007ZZ8c48548eee24738d3a4d393d5d6b9b93feb2d263685215");
+		topAuthEntity.setUid("263685215");
 		topAuthKeeper.store(topAuthEntity.getUid(), topAuthEntity);
 		
-		FirendsDigCondition friendsDigCondition = new FirendsDigCondition();
+		AppAuthEntity topAuthEntity2 = new AppAuthEntity();
+		topAuthEntity2.setAccessToken("6201f282db6b77328032507dbb6da87a8e95ZZf92f2957024006395");
+		topAuthEntity2.setUid("24006395");
+		topAuthEntity2.setNick("cenwenchu");
+		topAuthKeeper.store(topAuthEntity2.getUid(), topAuthEntity2);
 		
-		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		friendsDigCondition.setSecondHandUID("24006395");
-		
+		//create az
 		AccountZoo az = new AccountZoo();
 		az.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		az.setSecondHandUID("24006395");
+		az.setSecondHandUID(topAuthEntity.getUid());
 		
 		List<User> relation = new ArrayList<User>();
 		az.setRelationAccounts(relation);
 		
 		User u = new User();
 		u.setPlatformId(Constants.PLATFORM_ID_SINA);
-		u.setId("1401787331");
-		
+		u.setId(sinaAuthEntity.getUid());	
 		relation.add(u);
 		
-		accountZooCache.put(new StringBuilder().append(Constants.PLATFORM_ID_TAOBAO)
-					.append("::").append("24006395").toString(), az);
+		relationAccountZooCache.put(new StringBuilder().append(Constants.PLATFORM_ID_SINA)
+								.append("::").append(sinaAuthEntity.getUid()).toString(), az);
 		
 		accountZooCache.put(az.generateAccountZooKey(), az);
+		
+		//create az2
+		AccountZoo az2 = new AccountZoo();
+		az2.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
+		az2.setSecondHandUID(topAuthEntity2.getUid());
+		
+		List<User> relation2 = new ArrayList<User>();
+		az2.setRelationAccounts(relation2);
+		
+		u = new User();
+		u.setPlatformId(Constants.PLATFORM_ID_SINA);
+		u.setId(sinaAuthEntity2.getUid());	
+		relation2.add(u);
+		
+		relationAccountZooCache.put(new StringBuilder().append(Constants.PLATFORM_ID_SINA)
+								.append("::").append(sinaAuthEntity2.getUid()).toString(), az2);
+		
+		accountZooCache.put(az2.generateAccountZooKey(), az2);
+		
+		
+		FirendsDigCondition friendsDigCondition = new FirendsDigCondition();
+		
+		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
+		friendsDigCondition.setSecondHandUID(az.getSecondHandUID());
 		
 		DigResult digResult = digger.dig(friendsDigCondition);
 		

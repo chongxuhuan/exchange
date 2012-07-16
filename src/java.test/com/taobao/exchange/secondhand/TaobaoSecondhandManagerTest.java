@@ -53,9 +53,9 @@ public class TaobaoSecondhandManagerTest {
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-//		String code = "YDCTzpND08mLDCKAHxnlS4wE77545";
+//		String code = "503WrmuyUwueFFw9jub5A3SW163899";
 //		AppAuthEntity authEntity = appclient.getAccessTokenByCode(code, null, null, "web");
-//		
+		
 		AppAuthEntity authEntity = new AppAuthEntity();
 		authEntity.setAccessToken("6200f2130f2bbf0491928c4f5920fhj85aede4a95f994ec24006395");
 		authEntity.setUid("24006395");
