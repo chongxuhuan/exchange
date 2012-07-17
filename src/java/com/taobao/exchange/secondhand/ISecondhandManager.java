@@ -57,6 +57,14 @@ public interface ISecondhandManager<C extends IAppClient> {
 	OperationResult delete(String userId,String iid) throws AppClientException;
 	
 	/**
+	 * 获取当前session用户的再售卖的二手商品
+	 * @param userId
+	 * @return
+	 * @throws AppClientException
+	 */
+	Secondhand[] list(String userId) throws AppClientException;
+	
+	/**
 	 * 对二手商品做出评价
 	 * @param 用户id
 	 * @param 商品id

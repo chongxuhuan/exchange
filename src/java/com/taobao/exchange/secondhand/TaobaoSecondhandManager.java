@@ -233,6 +233,38 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 	
 	@Override
+	public Secondhand[] list(String userId) throws AppClientException
+	{
+		if (appClient == null)
+			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+		
+		if (appClient.getAuthKeeper().take(userId) == null)
+			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
+		
+		//当前先做成一页面
+		Map<String,Object> params = new HashMap<String,Object>();
+		
+		params.put("page", 1);
+		params.put("page_size", 100);
+			
+		String result = appClient.api(userId, "GET", "taobao.idleapi.items.onsale.get", null, params);
+		
+		if(result.indexOf("\"idle_item_d_o\":[") > 0)
+		{
+			Gson gson = new Gson();		
+		
+			result = result.substring(result.indexOf("\"idle_item_d_o\":") + "\"idle_item_d_o\":".length(),
+					result.lastIndexOf("]")+1);
+		
+			Secondhand[] secondhands = gson.fromJson(result, Secondhand[].class);
+			return secondhands;
+		}
+		
+		return null;
+		
+	}
+	
+	@Override
 	public Secondhand[] getSecondhandsByUser(String userId) throws AppClientException {
 		if (appClient == null)
 			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);

@@ -53,11 +53,11 @@ public class TaobaoSecondhandManagerTest {
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-//		String code = "503WrmuyUwueFFw9jub5A3SW163899";
+//		String code = "eiQF8nPEQvxR4cScEuTMibUJ178453";
 //		AppAuthEntity authEntity = appclient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity authEntity = new AppAuthEntity();
-		authEntity.setAccessToken("6200f2130f2bbf0491928c4f5920fhj85aede4a95f994ec24006395");
+		authEntity.setAccessToken("6200126d6af85a44ceef003277330dac0fhjdc9fdd158d524006395");
 		authEntity.setUid("24006395");
 		authEntity.setNick("cenwenchu");
 		uid = "24006395";
@@ -85,7 +85,15 @@ public class TaobaoSecondhandManagerTest {
 		Assert.assertNotNull(oResult);
 		Assert.assertTrue(oResult.length > 0);
 	}
-
+	
+	@Test
+	public void testList() throws AppClientException {
+		
+		Secondhand[] oResult = secondhandManager.list(uid);
+		
+		Assert.assertNotNull(oResult);
+		Assert.assertTrue(oResult.length > 0);
+	}
 	@Test
 	public void testPublish() throws AppClientException, IOException {
 		
