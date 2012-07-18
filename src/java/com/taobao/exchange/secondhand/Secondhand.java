@@ -36,11 +36,37 @@ public class Secondhand {
 	private String attribute;//attribute,用于传递新浪等用户相关信息。
 	private boolean wwsuport;//是否支持物物交换
 	
+	//以下是用于查询时候获得结果的属性
+	private String nick;//卖家nick
+	private String detail_url;//在淘宝的宝贝地址
+	private String major_imageurl;//主图的地址
 	
-	public void loadFromString(String content)
-	{
-		System.out.println(content);
+	
+	
+	public String getNick() {
+		return nick;
 	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public String getDetail_url() {
+		return detail_url;
+	}
+
+	public void setDetail_url(String detail_url) {
+		this.detail_url = detail_url;
+	}
+
+	public String getMajor_imageurl() {
+		return major_imageurl;
+	}
+
+	public void setMajor_imageurl(String major_imageurl) {
+		this.major_imageurl = major_imageurl;
+	}
+
 	public String getItem_id() {
 		return item_id;
 	}

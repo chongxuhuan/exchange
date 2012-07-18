@@ -19,6 +19,7 @@ import com.taobao.exchange.secondhand.ISecondhandManager;
 import com.taobao.exchange.secondhand.Secondhand;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 
@@ -143,8 +144,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 			result.setSecondhands(secondhands);
 			int counter = 0;
 			
-			AccountZoo az = accountZooCache.get(new StringBuilder().append(condition.getSecondHandPlatformID())
-					.append("::").append(condition.getSecondHandUID()).toString());
+			AccountZoo az = accountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getSecondHandPlatformID(), condition.getSecondHandUID()));
 			
 			if (az != null && az.getRelationAccounts() != null && az.getRelationAccounts().size() > 0)
 			{
@@ -169,13 +169,12 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 
 					for(User u : users)
 					{
-						AccountZoo z = relationAccountZooCache.get(new StringBuilder().append(u.getPlatformId())
-								.append("::").append(u.getId()).toString());
+						AccountZoo z = relationAccountZooCache.get(AppClientUtil.generatePlatformUUID(u.getPlatformId(), u.getId()));
 						
 						if (z == null)
 							continue;
 						
-						Secondhand[] ss = secondhandManager.getSecondhandsByUser(z.getSecondHandUID());
+						Secondhand[] ss = secondhandManager.list(z.getSecondHandUID());
 						
 						if (ss == null || (ss != null && ss.length == 0))
 							continue;

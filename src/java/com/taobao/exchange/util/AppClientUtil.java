@@ -37,6 +37,11 @@ import com.taobao.exchange.app.RequestAttachment;
  */
 public class AppClientUtil {
 	
+	public static String generatePlatformUUID(String platformId,String uid)
+	{
+		return new StringBuilder().append(platformId)
+				.append("::").append(uid).toString();
+	}
 	
 	public static String sendRequest(String url,String httpMethod,Map<String,String>headers,Map<String,Object>params) 
 			throws AppClientException

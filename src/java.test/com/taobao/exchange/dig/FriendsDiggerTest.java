@@ -26,6 +26,7 @@ import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.secondhand.TaobaoSecondhandManager;
 import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.MemCache;
@@ -162,8 +163,7 @@ public class FriendsDiggerTest {
 		u.setId(sinaAuthEntity.getUid());	
 		relation.add(u);
 		
-		relationAccountZooCache.put(new StringBuilder().append(Constants.PLATFORM_ID_SINA)
-								.append("::").append(sinaAuthEntity.getUid()).toString(), az);
+		relationAccountZooCache.put(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_SINA,sinaAuthEntity.getUid()), az);
 		
 		accountZooCache.put(az.generateAccountZooKey(), az);
 		
@@ -180,8 +180,7 @@ public class FriendsDiggerTest {
 		u.setId(sinaAuthEntity2.getUid());	
 		relation2.add(u);
 		
-		relationAccountZooCache.put(new StringBuilder().append(Constants.PLATFORM_ID_SINA)
-								.append("::").append(sinaAuthEntity2.getUid()).toString(), az2);
+		relationAccountZooCache.put(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_SINA,sinaAuthEntity2.getUid()), az2);
 		
 		accountZooCache.put(az2.generateAccountZooKey(), az2);
 		

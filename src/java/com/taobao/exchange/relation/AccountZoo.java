@@ -7,6 +7,8 @@ package com.taobao.exchange.relation;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.taobao.exchange.util.AppClientUtil;
+
 /**
  * 用户在多个平台的集合，但一定需要设置一个二手平台帐号和一个或或者多个关系网站帐号
  * @author fangweng
@@ -60,7 +62,7 @@ public class AccountZoo implements java.io.Serializable{
 	 */
 	public String generateAccountZooKey()
 	{
-		return new StringBuilder().append(secondHandPlatformID).append("::").append(secondHandUID).toString();
+		return AppClientUtil.generatePlatformUUID(secondHandPlatformID,secondHandUID);
 	}
 
 }
