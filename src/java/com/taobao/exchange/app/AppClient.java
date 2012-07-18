@@ -8,12 +8,12 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 
 /**
- * 应用客户端抽象类实现
+ * 应用客户端抽象类实现，支持多个开放平台
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-9
@@ -23,8 +23,8 @@ public abstract class AppClient implements IAppClient{
 	
 	private static final Log logger = LogFactory.getLog(AppClient.class);
 	
-	OpenPlatformEntry openPlatformEntry;
-	IAuthKeeper authKeeper;
+	OpenPlatformEntry openPlatformEntry;//开放平台身份
+	IAuthKeeper authKeeper;//不同的client用于保存某一开放平台这个应用的授权信息
 		
 	public IAuthKeeper getAuthKeeper() {
 		return authKeeper;
@@ -45,10 +45,13 @@ public abstract class AppClient implements IAppClient{
 	}
 
 	
-	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException
+	/* 
+	 * Oauth2的server流程第二步，用code换access_token
+	 */
+	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws ServiceException
 	{
 		if (openPlatformEntry == null)
-			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		AppAuthEntity entity = new AppAuthEntity();
 				
@@ -78,7 +81,12 @@ public abstract class AppClient implements IAppClient{
 		
 		
 		if (result == null || (result != null && result.indexOf("access_token") < 0))
-			return null;
+		{
+			if (result != null)
+				throw new ServiceException(result);
+			else
+				throw new ServiceException("getAccessTokenByCode return null!");
+		}
 		else
 		{
 			entity.loadAuthInfoFromJsonString(result);

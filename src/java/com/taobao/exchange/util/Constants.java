@@ -4,6 +4,7 @@
 package com.taobao.exchange.util;
 
 /**
+ * 平台常量定义
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-9

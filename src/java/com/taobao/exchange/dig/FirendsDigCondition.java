@@ -5,6 +5,7 @@ package com.taobao.exchange.dig;
 
 
 /**
+ * 好友关系二手搜索条件定义
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4
@@ -12,9 +13,9 @@ package com.taobao.exchange.dig;
  */
 public class FirendsDigCondition extends SecondhandCondition {
 	
-	String secondHandPlatformID;
-	String secondHandUID; 
-	boolean indirectRelation;
+	String secondHandPlatformID;//二手平台标示
+	String secondHandUID; //二手平台身份id
+	boolean indirectRelation;//是否是间接关系搜索
 	
 	public boolean isIndirectRelation() {
 		return indirectRelation;

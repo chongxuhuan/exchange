@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import com.google.gson.Gson;
 import com.taobao.exchange.app.TopAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 /**
@@ -34,11 +34,14 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		this.appClient = appClient;
 	}
 	
+	/* 
+	 * 获得二手市场类目信息
+	 */
 	@Override
-	public Category[] getSecondhandCategory() throws AppClientException
+	public Category[] getSecondhandCategory() throws ServiceException
 	{
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -49,7 +52,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		//简单写，去掉外层的几个内容，直接从数组开始获得
@@ -63,10 +66,10 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 
 	@Override
-	public OperationResult publish(String userId, Secondhand secondhand) throws AppClientException{
+	public OperationResult publish(String userId, Secondhand secondhand) throws ServiceException{
 		
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -102,7 +105,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		OperationResult operationResult = new OperationResult();	
@@ -112,9 +115,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 
 	@Override
-	public OperationResult update(String userId, Secondhand secondhand) throws AppClientException {
+	public OperationResult update(String userId, Secondhand secondhand) throws ServiceException {
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -150,7 +153,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		OperationResult operationResult = new OperationResult();	
@@ -160,9 +163,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 
 	@Override
-	public OperationResult delete(String userId, String iid) throws AppClientException {
+	public OperationResult delete(String userId, String iid) throws ServiceException {
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -171,7 +174,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		OperationResult operationResult = new OperationResult();	
@@ -181,9 +184,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 
 	@Override
-	public boolean comment(String userId, String iid, String content,String title) throws AppClientException {
+	public boolean comment(String userId, String iid, String content,String title) throws ServiceException {
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -205,9 +208,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 
 	@Override
-	public Secondhand getSecondhandById(String iid) throws AppClientException {
+	public Secondhand getSecondhandById(String iid) throws ServiceException {
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -219,7 +222,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		Gson gson = new Gson();		
@@ -233,13 +236,13 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 	
 	@Override
-	public Secondhand[] list(String userId) throws AppClientException
+	public Secondhand[] list(String userId) throws ServiceException
 	{
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		if (appClient.getAuthKeeper().take(userId) == null)
-			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		//当前先做成一页面
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -265,12 +268,12 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 	
 	@Override
-	public Secondhand[] getSecondhandsByUser(String userId) throws AppClientException {
+	public Secondhand[] getSecondhandsByUser(String userId) throws ServiceException {
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		if (appClient.getAuthKeeper().take(userId) == null)
-			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 			
@@ -280,7 +283,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		
@@ -299,12 +302,12 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	}
 	
 	@Override
-	public Secondhand[] commonSearch(SecondhandCondition condition) throws AppClientException
+	public Secondhand[] commonSearch(SecondhandCondition condition) throws ServiceException
 	{
 		Secondhand[] secondhands = null;
 		
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -371,7 +374,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		
 		if (result == null || (result != null && result.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 		{
-			throw new AppClientException(result);
+			throw new ServiceException(result);
 		}
 		
 		//简单写，去掉外层的几个内容，直接从数组开始获得

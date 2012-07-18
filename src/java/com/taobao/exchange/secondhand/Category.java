@@ -4,6 +4,7 @@
 package com.taobao.exchange.secondhand;
 
 /**
+ * 类目信息
  * @author fangweng
  * email: fangweng@taobao.com
  * 下午10:42:06
@@ -11,10 +12,10 @@ package com.taobao.exchange.secondhand;
  */
 public class Category {
 	
-	private String cid;
-	private String parent_cid;
-	private String name;
-	private String is_parent;
+	private String cid;//类目id
+	private String parent_cid;//类目的父id
+	private String name;//类目名称
+	private String is_parent;//是否是父级类目
 	
 	public String getCid() {
 		return cid;

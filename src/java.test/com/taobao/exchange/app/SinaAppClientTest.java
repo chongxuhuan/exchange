@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 public class SinaAppClientTest {
@@ -35,7 +35,7 @@ public class SinaAppClientTest {
 	}
 
 	@Test
-	public void testApi() throws AppClientException {
+	public void testApi() throws ServiceException {
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
 		String code = "7fff6db5ef9080fe40cd2021fa34f595";

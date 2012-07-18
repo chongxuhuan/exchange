@@ -5,7 +5,7 @@ package com.taobao.exchange.app;
 
 import java.util.Map;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 
 
 /**
@@ -27,7 +27,7 @@ public interface IAppClient {
 	 * @return
 	 */
 	public String api(String userId,String httpMethod,String apiName,Map<String, String> headers
-			,Map<String,Object> params) throws AppClientException;
+			,Map<String,Object> params) throws ServiceException;
 	
 	
 	/**
@@ -38,7 +38,7 @@ public interface IAppClient {
 	 * @param 参看Oauth2协议
 	 * @return
 	 */
-	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws AppClientException;
+	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws ServiceException;
 	
 	/**
 	 * 设置授权的管理实现

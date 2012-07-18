@@ -6,10 +6,11 @@ package com.taobao.exchange.relation;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 /**
+ * 关系管理类注册工厂
  * @author fangweng
  * email: fangweng@taobao.com
  * 上午8:44:28
@@ -24,12 +25,12 @@ public class RelationManagerFactory {
 		pools.put(platformId, relationManager);
 	}
 	
-	public static IRelationManager<?,?,?> get(String platformId) throws AppClientException
+	public static IRelationManager<?,?,?> get(String platformId) throws ServiceException
 	{
 		if (pools.containsKey(platformId))
 			return pools.get(platformId);
 		else
-			throw new AppClientException(Constants.EXCEPTION_RELATIONMANAGER_NOT_EXIST + " , platformId : " + platformId);
+			throw new ServiceException(Constants.EXCEPTION_RELATIONMANAGER_NOT_EXIST + " , platformId : " + platformId);
 	}
 
 }

@@ -7,9 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * 内存版的缓存实现
  * @author fangweng
- * email: fangweng@taobao.com
- * 下午6:07:45
+ * @email: fangweng@taobao.com
+ * 2012－7－12
  *
  */
 public class MemCache<K,V> implements ICache<K,V> {

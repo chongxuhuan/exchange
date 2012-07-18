@@ -4,6 +4,7 @@
 package com.taobao.exchange.relation;
 
 /**
+ * 批量获得用户信息
  * @author fangweng
  * email: fangweng@taobao.com
  * 下午6:17:55

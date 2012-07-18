@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 public class TopAppClientTest {
@@ -41,7 +41,7 @@ public class TopAppClientTest {
 	}
 
 	@Test
-	public void testApi() throws AppClientException {
+	public void testApi() throws ServiceException {
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12667915
 		

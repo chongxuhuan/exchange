@@ -19,7 +19,7 @@ import com.taobao.exchange.app.RequestAttachment;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.TopAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 public class TaobaoSecondhandManagerTest {
@@ -68,14 +68,14 @@ public class TaobaoSecondhandManagerTest {
 
 
 	@Test
-	public void testGetSecondhandCategory() throws AppClientException {
+	public void testGetSecondhandCategory() throws ServiceException {
 		Category[] categorys = secondhandManager.getSecondhandCategory();
 		
 		Assert.assertTrue(categorys.length > 0);
 	}
 	
 	@Test
-	public void testCommonSearch() throws AppClientException {
+	public void testCommonSearch() throws ServiceException {
 		
 		SecondhandCondition condition = new SecondhandCondition();
 		condition.setSeller_nick("cenwenchu");
@@ -87,7 +87,7 @@ public class TaobaoSecondhandManagerTest {
 	}
 	
 	@Test
-	public void testList() throws AppClientException {
+	public void testList() throws ServiceException {
 		
 		Secondhand[] oResult = secondhandManager.list(uid);
 		
@@ -95,7 +95,7 @@ public class TaobaoSecondhandManagerTest {
 		Assert.assertTrue(oResult.length > 0);
 	}
 	@Test
-	public void testPublish() throws AppClientException, IOException {
+	public void testPublish() throws ServiceException, IOException {
 		
 		Secondhand secondhand = new Secondhand();
 		secondhand.setCat_id("50023914");
@@ -137,7 +137,7 @@ public class TaobaoSecondhandManagerTest {
 	}
 
 	@Test
-	public void testUpdate() throws IOException, AppClientException {
+	public void testUpdate() throws IOException, ServiceException {
 		
 		Secondhand secondhand = new Secondhand();
 		secondhand.setCat_id("50023914");
@@ -181,12 +181,12 @@ public class TaobaoSecondhandManagerTest {
 
 	@Test
 	@Ignore
-	public void testComment() throws AppClientException {
+	public void testComment() throws ServiceException {
 		Assert.assertTrue(secondhandManager.comment(uid, iid, "这个东西我喜欢", "超级美白防晒霜"));
 	}
 	
 	@Test
-	public void testGetSecondhandById() throws AppClientException {
+	public void testGetSecondhandById() throws ServiceException {
 		Secondhand second = secondhandManager.getSecondhandById(iid);
 		
 		Assert.assertEquals(second.getItem_id(), iid);
@@ -194,14 +194,14 @@ public class TaobaoSecondhandManagerTest {
 	
 
 	@Test
-	public void testGetSecondhandsByUser() throws AppClientException {
+	public void testGetSecondhandsByUser() throws ServiceException {
 		Secondhand[]  secondhands = secondhandManager.getSecondhandsByUser(uid);
 		
 		Assert.assertTrue(secondhands.length > 0);
 	}	
 	
 	@Test
-	public void testDelete() throws AppClientException {
+	public void testDelete() throws ServiceException {
 		OperationResult oResult = secondhandManager.delete(uid, iid);
 		
 		Assert.assertTrue(oResult.getItem_id() != null);

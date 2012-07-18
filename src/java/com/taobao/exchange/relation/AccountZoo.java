@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.taobao.exchange.util.AppClientUtil;
 
 /**
- * 用户在多个平台的集合，但一定需要设置一个二手平台帐号和一个或或者多个关系网站帐号
+ * 卖家用户，拥有一个二手平台帐号和一个或或者多个关系网站帐号
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-11
@@ -23,9 +23,9 @@ public class AccountZoo implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 3370983959338992307L;
 	
-	private String secondHandPlatformID;
-	private String secondHandUID;
-	private List<User> relationAccounts;
+	private String secondHandPlatformID;//二手交易开放平台身份
+	private String secondHandUID;//二手交易开放平台用户id
+	private List<User> relationAccounts;//多个社会化关系开放平台身份
 	
 	public AccountZoo()
 	{	

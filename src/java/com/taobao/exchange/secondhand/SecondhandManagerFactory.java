@@ -6,13 +6,14 @@ package com.taobao.exchange.secondhand;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 /**
+ * 二手管理类工厂
  * @author fangweng
- * email: fangweng@taobao.com
- * 上午8:53:49
+ * @email: fangweng@taobao.com
+ * 2012-7-12
  *
  */
 public class SecondhandManagerFactory {
@@ -24,12 +25,12 @@ public class SecondhandManagerFactory {
 		pools.put(platformId, secondhandManager);
 	}
 	
-	public static ISecondhandManager<?> get(String platformId) throws AppClientException
+	public static ISecondhandManager<?> get(String platformId) throws ServiceException
 	{
 		if (pools.containsKey(platformId))
 			return pools.get(platformId);
 		else
-			throw new AppClientException(Constants.EXCEPTION_SECONDHANDMANAGER_NOT_EXIST + " , platformId : " + platformId);
+			throw new ServiceException(Constants.EXCEPTION_SECONDHANDMANAGER_NOT_EXIST + " , platformId : " + platformId);
 	}
 
 }

@@ -6,7 +6,7 @@ package com.taobao.exchange.app;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * 应用授权实体
+ * 应用授权实体,支持多个开放平台的Oauth2协议
  * @author fangweng
  * @email: fangweng@taobao.com
  * @datetime: 2012-7-4
@@ -19,17 +19,21 @@ public class AppAuthEntity implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = -8765771477651584870L;
 	
-	private String uid;
-	private String nick;
-	private String accessToken;
-	private int expireTime;
-	private String refreshToken;
-	private int refreshExpireTime;
-	private int r1ExpireTime;
-	private int r2ExpireTime;
-	private int w1ExpireTime;
-	private int w2ExpireTime;
+	private String uid;//用户id
+	private String nick;//用户nick，不是每个平台都会有，淘宝开放平台授权后就会有，其他平台需要再多一次查询转换
+	private String accessToken;//授权token
+	private int expireTime;//OAuth的失效时间
+	private String refreshToken;//OAuth的刷新Token，不是每一个开放平台都会有，淘宝的有
+	private int refreshExpireTime;//OAuth的刷新Token失效时间
+	private int r1ExpireTime;//淘宝开放平台r1级别服务调用Token失效时间
+	private int r2ExpireTime;//淘宝开放平台r2级别服务调用Token失效时间
+	private int w1ExpireTime;//淘宝开放平台w1级别服务调用Token失效时间
+	private int w2ExpireTime;//淘宝开放平台w2级别服务调用Token失效时间
 	
+	/**
+	 * 从josn字符串中获得Oauth的属性信息
+	 * @param content
+	 */
 	public void loadAuthInfoFromJsonString(String content)
 	{
 		if (content == null)

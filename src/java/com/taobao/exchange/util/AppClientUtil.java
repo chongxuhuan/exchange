@@ -37,21 +37,35 @@ import com.taobao.exchange.app.RequestAttachment;
  */
 public class AppClientUtil {
 	
+	/**
+	 * 根据平台id和用户id获得一个组合id
+	 * @param platformId
+	 * @param uid
+	 * @return
+	 */
 	public static String generatePlatformUUID(String platformId,String uid)
 	{
 		return new StringBuilder().append(platformId)
 				.append("::").append(uid).toString();
 	}
 	
+	/**
+	 * 发送http请求（支持https），作为业务协议的通信底层
+	 * @param 请求地址
+	 * @param http的方法（GET，POST）
+	 * @param http的消息头
+	 * @param 业务参数
+	 * @return
+	 * @throws ServiceException
+	 */
 	public static String sendRequest(String url,String httpMethod,Map<String,String>headers,Map<String,Object>params) 
-			throws AppClientException
+			throws ServiceException
 	{
 		byte[] result = null;
 		HttpURLConnection httpConn = null;
 		
 		try
 		{
-			
 			SSLContext ctx = SSLContext.getInstance("TLS");
 	        ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
 	        SSLContext.setDefault(ctx);
@@ -96,7 +110,16 @@ public class AppClientUtil {
 			
 			try
 			{
-				InputStream in = httpConn.getInputStream();
+				InputStream in = null;
+				
+				if (httpConn.getResponseCode() == 200)
+				{
+					in = httpConn.getInputStream();
+				}
+				else
+				{
+					in = httpConn.getErrorStream();
+				}
 				
 				byte[] buf = new byte[3000];
 				int count = 0;
@@ -107,6 +130,7 @@ public class AppClientUtil {
 				}
 
 				result = bout.toByteArray();
+				
 			}
 			finally
 			{
@@ -122,17 +146,24 @@ public class AppClientUtil {
 			if (httpConn != null)
 				httpConn.disconnect();
 			
-			throw new AppClientException(ex);
+			throw new ServiceException(ex);
 		}
 		catch(Exception e)
 		{
-			throw new AppClientException(e);
+			throw new ServiceException(e);
 		}
 		
 		return null;
 	}
 	
 	
+	/**
+	 * 对post类型的请求做参数预处理，如果是multipart则开始组合数据对外写出
+	 * @param httpConn
+	 * @param params
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
 	static void preparePostRequest(HttpURLConnection httpConn,Map<String,Object>params) 
 			throws UnsupportedEncodingException, IOException
 	{

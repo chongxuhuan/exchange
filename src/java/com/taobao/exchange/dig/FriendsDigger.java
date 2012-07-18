@@ -18,12 +18,13 @@ import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.ISecondhandManager;
 import com.taobao.exchange.secondhand.Secondhand;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 
 /**
+ * 好友二手商品挖掘实现类
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4
@@ -33,8 +34,9 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	
 	private static final Log logger = LogFactory.getLog(FriendsDigger.class);
 	
-	private ICache<String,String> contextCache;
-	private ICache<String,AccountZoo> accountZooCache;
+	private ICache<String,String> contextCache;//用于面对搜索结果很大需要翻页保存上次搜索现场
+	private ICache<String,AccountZoo> accountZooCache;//对应帐号体系缓存，主要保存各种AZ
+	//某一个关系平台帐号与AZ的对应关系，例如新浪微博帐号是否绑定了一个AZ，如果绑定AZ，那么这个新浪帐号就会有二手发布内容的可能，是个卖家
 	private ICache<String,AccountZoo> relationAccountZooCache;
 	
 	public void setRelationAccountZooCache(
@@ -53,6 +55,9 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	}
 	
 	
+	/* 
+	 * 检查搜索出来的二手是否符合过滤条件，通常用于好友的二手搜索以后再次需要过滤
+	 */
 	@Override
 	public boolean checkSecondhandByCondition(Secondhand s, FirendsDigCondition condition)
 	{
@@ -85,18 +90,18 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 
 
 	@Override
-	public DigResult dig(FirendsDigCondition condition) throws AppClientException {
+	public DigResult dig(FirendsDigCondition condition) throws ServiceException {
 		
 		if (condition == null)
-			throw new AppClientException(Constants.EXCEPTION_CONDITION_IS_NULL);
+			throw new ServiceException(Constants.EXCEPTION_CONDITION_IS_NULL);
 		
 		if (condition.getSecondHandPlatformID() == null)
-			throw new AppClientException(Constants.EXCEPTION_SECONDHANDPLATFORM_IS_NULL);
+			throw new ServiceException(Constants.EXCEPTION_SECONDHANDPLATFORM_IS_NULL);
 		
 		ISecondhandManager<?> secondhandManager = SecondhandManagerFactory.get(condition.getSecondHandPlatformID());
 		
 		if (secondhandManager == null)
-			throw new AppClientException(Constants.EXCEPTION_SECONDHANDMANAGER_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_SECONDHANDMANAGER_NOT_EXIST);
 		
 		DigResult result = new DigResult();
 		String qSession;
@@ -155,7 +160,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 					if (relationManager == null)
 					{
 						if (relationManager == null)
-							throw new AppClientException(Constants.EXCEPTION_RELATIONMANAGER_NOT_EXIST
+							throw new ServiceException(Constants.EXCEPTION_RELATIONMANAGER_NOT_EXIST
 									+ " platform id : " + _user.getPlatformId());
 					}
 					

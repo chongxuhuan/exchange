@@ -25,7 +25,7 @@ import com.taobao.exchange.relation.SinaRelationManager;
 import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.secondhand.TaobaoSecondhandManager;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
@@ -113,10 +113,10 @@ public class FriendsDiggerTest {
 
 	/**
 	 * Test method for {@link com.taobao.exchange.dig.FriendsDigger#dig(com.taobao.exchange.dig.FirendsDigCondition)}.
-	 * @throws AppClientException 
+	 * @throws ServiceException 
 	 */
 	@Test
-	public void testDig() throws AppClientException {
+	public void testDig() throws ServiceException {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		

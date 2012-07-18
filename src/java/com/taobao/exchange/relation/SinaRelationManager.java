@@ -15,11 +15,12 @@ import org.apache.commons.logging.LogFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.taobao.exchange.app.SinaAppClient;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 
 /**
+ * 新浪关系管理实现
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-11
@@ -32,11 +33,14 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	SinaAppClient appClient;
 	ICache<String,String> relationCache;
 	
+	/* 
+	 * 获得直接好友
+	 */
 	@Override
-	public List<User> getFriendsByUser(String sessionUid,String uid) throws AppClientException {
+	public List<User> getFriendsByUser(String sessionUid,String uid) throws ServiceException {
 		
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		List<User> result = new ArrayList<User>();
 		String jsonResult = null;
@@ -64,7 +68,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 				
 				if (jsonResult == null || (jsonResult != null && jsonResult.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 				{
-					throw new AppClientException(jsonResult);
+					throw new ServiceException(jsonResult);
 				}
 				
 				usersResponse = gson.fromJson(jsonResult, GetUsersResponse.class);
@@ -95,11 +99,14 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	}
 
 	
+	/* 
+	 * 返回当前用户的间接好友，就是朋友的朋友(支持到两级)
+	 */
 	@Override
-	public List<User> getIndirectFriendsByUser(String uid) throws AppClientException{
+	public List<User> getIndirectFriendsByUser(String uid) throws ServiceException{
 		
 		if (appClient == null)
-			throw new AppClientException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		List<User> result = new ArrayList<User>();
 		

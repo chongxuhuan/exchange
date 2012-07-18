@@ -5,6 +5,7 @@ package com.taobao.exchange.dig;
 
 
 /**
+ * 二手搜索挖掘条件定义
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4

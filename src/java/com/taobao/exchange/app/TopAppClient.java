@@ -6,7 +6,7 @@ package com.taobao.exchange.app;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 
@@ -23,16 +23,16 @@ public class TopAppClient extends AppClient {
 
 	@Override
 	public String api(String userId,String httpMethod,String apiName,Map<String, String> headers
-			,Map<String,Object> params) throws AppClientException{
+			,Map<String,Object> params) throws ServiceException{
 		
 		if (openPlatformEntry == null)
-			throw new AppClientException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		if (userId != null && authKeeper.take(userId) == null)
-			throw new AppClientException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
+			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		if(apiName == null)
-			throw new AppClientException(Constants.EXCEPTION_APINAME_IS_NULL);
+			throw new ServiceException(Constants.EXCEPTION_APINAME_IS_NULL);
 		
 		if (params == null)
 			params = new HashMap<String,Object>();
@@ -68,7 +68,7 @@ public class TopAppClient extends AppClient {
 			}
 			catch(Exception ex)
 			{
-				throw new AppClientException(ex);
+				throw new ServiceException(ex);
 			}
 			
 		}

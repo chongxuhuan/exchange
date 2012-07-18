@@ -12,8 +12,8 @@ package com.taobao.exchange.app;
  */
 public class RequestAttachment {
 	
-	String name;
-	byte[] content;
+	String name;//附件的名称
+	byte[] content;//附件的二进制内容
 	
 	public String getName() {
 		return name;

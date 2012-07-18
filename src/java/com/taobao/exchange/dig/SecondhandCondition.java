@@ -5,6 +5,7 @@ package com.taobao.exchange.dig;
 
 
 /**
+ * 二手搜索属性条件类
  * @author fangweng
  * email: fangweng@taobao.com
  * 上午9:54:26

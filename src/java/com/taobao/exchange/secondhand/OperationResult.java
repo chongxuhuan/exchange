@@ -4,7 +4,7 @@
 package com.taobao.exchange.secondhand;
 
 /**
- * 操作结果
+ * 二手管理接口操作结果
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4
@@ -17,9 +17,9 @@ public class OperationResult implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 197705969719026714L;
 	
-	private String item_id;
-	private String created;
-	private String detail_url;
+	private String item_id;//二手商品id
+	private String created;//创建时间
+	private String detail_url;//具体的商品地址
 	
 	public void loadFromString(String jsonStr)
 	{

@@ -6,7 +6,7 @@ package com.taobao.exchange.secondhand;
 
 import com.taobao.exchange.app.IAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
-import com.taobao.exchange.util.AppClientException;
+import com.taobao.exchange.util.ServiceException;
 
 
 
@@ -30,7 +30,7 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * 获取二手商品类目
 	 * @return
 	 */
-	Category[] getSecondhandCategory() throws AppClientException;
+	Category[] getSecondhandCategory() throws ServiceException;
 	
 	/**
 	 * 发布二手商品
@@ -38,7 +38,7 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @param 二手商品
 	 * @return
 	 */
-	OperationResult publish(String userId,Secondhand secondhand) throws AppClientException;
+	OperationResult publish(String userId,Secondhand secondhand) throws ServiceException;
 	
 	/**
 	 * 更新二手商品
@@ -46,7 +46,7 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @param 二手商品
 	 * @return
 	 */
-	OperationResult update(String userId,Secondhand secondhand) throws AppClientException;
+	OperationResult update(String userId,Secondhand secondhand) throws ServiceException;
 	
 	/**
 	 * 删除二手商品
@@ -54,15 +54,15 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @param 商品id
 	 * @return
 	 */
-	OperationResult delete(String userId,String iid) throws AppClientException;
+	OperationResult delete(String userId,String iid) throws ServiceException;
 	
 	/**
 	 * 获取当前session用户的再售卖的二手商品
 	 * @param userId
 	 * @return
-	 * @throws AppClientException
+	 * @throws ServiceException
 	 */
-	Secondhand[] list(String userId) throws AppClientException;
+	Secondhand[] list(String userId) throws ServiceException;
 	
 	/**
 	 * 对二手商品做出评价
@@ -72,27 +72,27 @@ public interface ISecondhandManager<C extends IAppClient> {
 	 * @param title
 	 * @return
 	 */
-	boolean comment(String userId,String iid,String content,String title) throws AppClientException;
+	boolean comment(String userId,String iid,String content,String title) throws ServiceException;
 	
 	/**
 	 * 根据用户获得二手商品
 	 * @param userId
 	 * @return
 	 */
-	Secondhand[] getSecondhandsByUser(String userId) throws AppClientException;
+	Secondhand[] getSecondhandsByUser(String userId) throws ServiceException;
 	
 	/**
 	 * 获取二手详细信息
 	 * @param 商品id
 	 * @return
 	 */
-	Secondhand getSecondhandById(String iid) throws AppClientException;
+	Secondhand getSecondhandById(String iid) throws ServiceException;
 	
 	/**
 	 * 平台提供得简单二手搜索功能
 	 * @param condition
 	 * @return
 	 */
-	Secondhand[] commonSearch(SecondhandCondition condition) throws AppClientException;
+	Secondhand[] commonSearch(SecondhandCondition condition) throws ServiceException;
 
 }

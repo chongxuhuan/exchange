@@ -4,6 +4,7 @@
 package com.taobao.exchange.relation;
 
 /**
+ * 关系平台的用户信息
  * @author fangweng
  * @email: fangweng@taobao.com
  * 2012-7-4
@@ -15,9 +16,9 @@ public class User implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 7105030970070142792L;
-	private String platformId;
-	private String id;
-	private String name;
+	private String platformId;//平台id
+	private String id;//用户id
+	private String name;//用户名称
 	
 	public String getPlatformId() {
 		return platformId;

@@ -4,9 +4,10 @@
 package com.taobao.exchange.util;
 
 /**
+ * 普通缓存接口定义
  * @author fangweng
- * email: fangweng@taobao.com
- * 下午5:54:18
+ * @email: fangweng@taobao.com
+ * 2012-7-10
  *
  */
 public interface ICache<K,V> {
