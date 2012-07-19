@@ -49,7 +49,7 @@ public class FriendsDiggerTest {
 	static TaobaoSecondhandManager secondhandManager;
 	static SinaRelationManager sinaRelationManager;
 	static ICache<String,AccountZoo> accountZooCache;
-	static ICache<String,AccountZoo> relationAccountZooCache;
+	static ICache<String,AccountZoo> userToAccountZooCache;
 	static CategoryMemCache categoryCache;
 	
 
@@ -74,8 +74,9 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
 		sinaPlatformEntry.setCallbackUrl("www.mashupshow.com");
 		
+		
 		accountZooCache = new MemCache<String,AccountZoo>();
-		relationAccountZooCache = new MemCache<String,AccountZoo>();
+		userToAccountZooCache = new MemCache<String,AccountZoo>();
 		contextCache = new MemCache<String,String>();
 		categoryCache = new CategoryMemCache();
 		
@@ -93,7 +94,7 @@ public class FriendsDiggerTest {
 		digger = new FriendsDigger();
 		digger.setContextCache(contextCache);
 		digger.setAccountZooCache(accountZooCache);
-		digger.setRelationAccountZooCache(relationAccountZooCache);
+		digger.setUserToAccountZooCache(userToAccountZooCache);
 		
 		secondhandManager = new TaobaoSecondhandManager();
 		secondhandManager.setAppClient(topAppClient);
@@ -126,40 +127,39 @@ public class FriendsDiggerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		//String code = "e44d5fbee14a2af5bebbd963bd0dd068";
+		//String code = "7a7765b5e5d2354b129b683ae2b281f8";
 		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
-		sinaAuthEntity.setAccessToken("2.00FvkrWB0QLIOvc319834fafU5dvtD");
-		sinaAuthEntity.setUid("1401787331");
+		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
+		sinaAuthEntity.setUid("1679264133");
 		sinaAuthKeeper.store(sinaAuthEntity.getUid(), sinaAuthEntity);
 		
 		AppAuthEntity sinaAuthEntity2 = new AppAuthEntity();
-		sinaAuthEntity2.setAccessToken("2.004_BepB0QLIOve19916815fqXIIDE");
-		sinaAuthEntity2.setUid("1679264133");
+		sinaAuthEntity2.setAccessToken("2.00qtUcxB0QLIOv2e8dd7755f0K5UnH");
+		sinaAuthEntity2.setUid("1797111902");
 		sinaAuthKeeper.store(sinaAuthEntity2.getUid(), sinaAuthEntity2);
 		
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-//		String code = "wBHEl6dMNghWNVee84p47tWc164481";
+//		String code = "RF4e1ZADehcoccUzzmRUaxQY245783";
 //		AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity topAuthEntity = new AppAuthEntity();
-		topAuthEntity.setAccessToken("62027007ZZ8c48548eee24738d3a4d393d5d6b9b93feb2d263685215");
-		topAuthEntity.setUid("263685215");
+		topAuthEntity.setAccessToken("620170334e1ZZd45d9af7c032eee877ebb74cda85f8229924006395");
+		topAuthEntity.setUid("24006395");
+		topAuthEntity.setNick("cenwenchu");
 		topAuthKeeper.store(topAuthEntity.getUid(), topAuthEntity);
 		
-		AppAuthEntity topAuthEntity2 = new AppAuthEntity();
-		topAuthEntity2.setAccessToken("6201f282db6b77328032507dbb6da87a8e95ZZf92f2957024006395");
-		topAuthEntity2.setUid("24006395");
-		topAuthEntity2.setNick("cenwenchu");
-		topAuthKeeper.store(topAuthEntity2.getUid(), topAuthEntity2);
-		
-		//create az
+		//create 卖家帐号
 		AccountZoo az = new AccountZoo();
-		az.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		az.setSecondHandUID(topAuthEntity.getUid());
+		User keyUser = new User();
+		keyUser.setPlatformId(Constants.PLATFORM_ID_TAOBAO);
+		keyUser.setId(topAuthEntity.getUid());
+		az.setKeyAccount(keyUser);
+		
+		az.setSecondhandAccount(keyUser);
 		
 		List<User> relation = new ArrayList<User>();
 		az.setRelationAccounts(relation);
@@ -169,24 +169,25 @@ public class FriendsDiggerTest {
 		u.setId(sinaAuthEntity.getUid());	
 		relation.add(u);
 		
-		relationAccountZooCache.put(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_SINA,sinaAuthEntity.getUid()), az);
+		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser.getPlatformId(),keyUser.getId()), az);
+		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(u.getPlatformId(),u.getId()), az);
 		
 		accountZooCache.put(az.generateAccountZooKey(), az);
 		
-		//create az2
+		//create 买家帐号
 		AccountZoo az2 = new AccountZoo();
-		az2.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		az2.setSecondHandUID(topAuthEntity2.getUid());
 		
+		User keyUser2 = new User();
+		keyUser2.setPlatformId(Constants.PLATFORM_ID_SINA);
+		keyUser2.setId(sinaAuthEntity2.getUid());	
+		
+		az2.setKeyAccount(keyUser2);
+
 		List<User> relation2 = new ArrayList<User>();
 		az2.setRelationAccounts(relation2);
+		relation2.add(keyUser2);
 		
-		u = new User();
-		u.setPlatformId(Constants.PLATFORM_ID_SINA);
-		u.setId(sinaAuthEntity2.getUid());	
-		relation2.add(u);
-		
-		relationAccountZooCache.put(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_SINA,sinaAuthEntity2.getUid()), az2);
+		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser2.getPlatformId(),keyUser2.getId()), az2);
 		
 		accountZooCache.put(az2.generateAccountZooKey(), az2);
 		
@@ -194,7 +195,8 @@ public class FriendsDiggerTest {
 		FirendsDigCondition friendsDigCondition = new FirendsDigCondition();
 		
 		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		friendsDigCondition.setSecondHandUID(az.getSecondHandUID());
+		friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
+		friendsDigCondition.setUid(keyUser2.getId());
 		
 		DigResult digResult = digger.dig(friendsDigCondition);
 		
