@@ -10,7 +10,12 @@ package com.taobao.exchange.app;
  * 2012-7-9
  *
  */
-public class RequestAttachment {
+public class RequestAttachment implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4229264294463354148L;
 	
 	String name;//附件的名称
 	byte[] content;//附件的二进制内容

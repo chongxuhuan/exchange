@@ -4,7 +4,9 @@
 package com.taobao.exchange.secondhand;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,6 +32,10 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 	 */
 	TopAppClient appClient;
 
+	public TopAppClient getAppClient() {
+		return appClient;
+	}
+
 	public void setAppClient(TopAppClient appClient) {
 		this.appClient = appClient;
 	}
@@ -43,10 +49,53 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		if (appClient == null)
 			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
+		List<Category[]> categorys = new ArrayList<Category[]>();
+		Category[] result = null;
+		int count = 0;
+		
+		Category[] cs = innerCategoryLoad("50023878");
+			
+		//当前淘宝二手市场类目就两级
+		if (cs != null && cs.length > 0)
+		{
+			categorys.add(cs);
+			count += cs.length;
+					
+			for(Category c : cs)
+			{
+				if (c.getIs_parent().equals("true"))
+				{
+					Category[] childCategorys = innerCategoryLoad(c.getCid());
+					
+					if(childCategorys != null && childCategorys.length > 0)
+					{
+						categorys.add(childCategorys);
+						count += childCategorys.length;
+					}
+				}
+			}
+			
+			result = new Category[count];
+			
+			for (Category[] carray : categorys)
+			{
+				for(Category c : carray)
+				{
+					count -= 1;
+					result[count] = c;
+				}
+			}
+		}
+
+		return result;
+	}
+	
+	Category[] innerCategoryLoad(String parendCid) throws ServiceException
+	{
 		Map<String,Object> params = new HashMap<String,Object>();
 		
 		params.put("fields", "cid,parent_cid,name,is_parent");
-		params.put("parent_cid", "50023878");
+		params.put("parent_cid", parendCid);
 		
 		String result = appClient.api(null, "GET", "taobao.itemcats.get", null, params);
 		

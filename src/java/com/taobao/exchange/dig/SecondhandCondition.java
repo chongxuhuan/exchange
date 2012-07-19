@@ -3,6 +3,8 @@
  */
 package com.taobao.exchange.dig;
 
+import java.io.Serializable;
+
 
 /**
  * 二手搜索属性条件类
@@ -11,8 +13,13 @@ package com.taobao.exchange.dig;
  * 上午9:54:26
  *
  */
-public class SecondhandCondition implements IDigCondition{
+public class SecondhandCondition implements IDigCondition,Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3828396280831909964L;
+	
 	String keyWords;//关键字
 	int stuff_status = -1;//一口价商品新旧程度stuffStatus=10：全新 stuffStatus=9：9成新以上 stuffStatus=8：8成新以上 stuffStatus=7：8成新以下
 	int cat_id = -1;//类目id

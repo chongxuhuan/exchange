@@ -31,6 +31,12 @@ public interface IRelationManager <C extends IAppClient,K,V>{
 	 * @param cache
 	 */
 	void setRelationCache(ICache<K,V> cache);
+	
+	/**
+	 * 获取内置关系缓存
+	 * @return
+	 */
+	ICache<K,V> getRelationCache();
 
 	/**
 	 * 获取当前用户的好友关系

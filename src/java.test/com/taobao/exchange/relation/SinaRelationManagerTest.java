@@ -44,11 +44,11 @@ public class SinaRelationManagerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		//String code = "be50cefdfb9916ad06fbafa8f4599ead";
+		//String code = "55ef981cbdce07039f65473626d151f6";
 		//AppAuthEntity authEntity = appClient.getAccessTokenByCode(code, null, null, "web");
 		
 		AppAuthEntity authEntity = new AppAuthEntity();
-		authEntity.setAccessToken("2.004_BepB0QLIOv18a2e68bechwCHBD");
+		authEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
 		authEntity.setUid("1679264133");
 		uid = "1679264133";
 		
@@ -61,16 +61,20 @@ public class SinaRelationManagerTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGetFriendsByUser() throws ServiceException {
 		List<User> users = sinaRelationManager.getFriendsByUser(uid,uid);
 				
 		Assert.assertTrue(users.size() > 0);
 		
+		sinaRelationManager.getRelationCache().clear();
+		
+		appClient.getAuthKeeper().take(uid).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
+		
 		users = sinaRelationManager.getFriendsByUser(uid,uid);
 	}
 
 	@Test
+	@Ignore
 	public void testGetIndirectFriendsByUser() throws ServiceException {
 		List<User> users = sinaRelationManager.getIndirectFriendsByUser(uid);
 			

@@ -12,7 +12,12 @@ import com.taobao.exchange.app.RequestAttachment;
  * 2012-7-4
  *
  */
-public class Secondhand {
+public class Secondhand implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3421962448912843604L;
 	
 	private String item_id;
 	private String title;//宝贝标题。不能超过30个汉字，受违禁词控制
@@ -40,9 +45,35 @@ public class Secondhand {
 	private String nick;//卖家nick
 	private String detail_url;//在淘宝的宝贝地址
 	private String major_imageurl;//主图的地址
+	private String cid_name;//属性描述，用于展示
+	private String relationOwner;//关系圈中的用户信息
+	private boolean indirect;//是否是间接关系
 	
 	
-	
+	public String getRelationOwner() {
+		return relationOwner;
+	}
+
+	public void setRelationOwner(String relationOwner) {
+		this.relationOwner = relationOwner;
+	}
+
+	public boolean isIndirect() {
+		return indirect;
+	}
+
+	public void setIndirect(boolean indirect) {
+		this.indirect = indirect;
+	}
+
+	public String getCid_name() {
+		return cid_name;
+	}
+
+	public void setCid_name(String cid_name) {
+		this.cid_name = cid_name;
+	}
+
 	public String getNick() {
 		return nick;
 	}

@@ -25,6 +25,7 @@ import com.taobao.exchange.relation.SinaRelationManager;
 import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.secondhand.TaobaoSecondhandManager;
+import com.taobao.exchange.util.CategoryMemCache;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -49,6 +50,7 @@ public class FriendsDiggerTest {
 	static SinaRelationManager sinaRelationManager;
 	static ICache<String,AccountZoo> accountZooCache;
 	static ICache<String,AccountZoo> relationAccountZooCache;
+	static CategoryMemCache categoryCache;
 	
 
 	/**
@@ -75,6 +77,7 @@ public class FriendsDiggerTest {
 		accountZooCache = new MemCache<String,AccountZoo>();
 		relationAccountZooCache = new MemCache<String,AccountZoo>();
 		contextCache = new MemCache<String,String>();
+		categoryCache = new CategoryMemCache();
 		
 		topAuthKeeper = new MemAuthKeeper();
 		sinaAuthKeeper = new MemAuthKeeper();
@@ -94,6 +97,9 @@ public class FriendsDiggerTest {
 		
 		secondhandManager = new TaobaoSecondhandManager();
 		secondhandManager.setAppClient(topAppClient);
+		
+		categoryCache.setSecondhandManager(secondhandManager);
+		categoryCache.load();
 		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(sinaAppClient);

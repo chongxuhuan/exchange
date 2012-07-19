@@ -139,6 +139,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 			}
 		}
 
+		//基于好友的二手商品挖掘
 		if (condition.getSecondHandPlatformID() != null && condition.getSecondHandUID() != null
 				&& accountZooCache != null && relationAccountZooCache != null)
 		{
@@ -190,6 +191,16 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 							
 							if (passCheck)
 							{
+								//设置二手拥有者相关信息
+								if (condition.isIndirectRelation())
+									_s.setIndirect(true);
+								else
+									_s.setIndirect(false);
+								
+								if (!secondhandManager.getAppClient().getAuthKeeper().
+										take(z.getSecondHandUID()).getRelationConfig().isHideSecondhandUserInfo())
+									_s.setRelationOwner(u.getName());
+								
 								secondhands.add(_s);
 								counter += 1;
 							

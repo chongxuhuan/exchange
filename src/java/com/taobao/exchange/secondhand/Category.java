@@ -10,7 +10,12 @@ package com.taobao.exchange.secondhand;
  * 下午10:42:06
  *
  */
-public class Category {
+public class Category implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7743835120448964015L;
 	
 	private String cid;//类目id
 	private String parent_cid;//类目的父id

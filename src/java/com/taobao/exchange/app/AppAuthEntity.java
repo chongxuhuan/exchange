@@ -5,6 +5,8 @@ package com.taobao.exchange.app;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.taobao.exchange.relation.RelationConfig;
+
 /**
  * 应用授权实体,支持多个开放平台的Oauth2协议
  * @author fangweng
@@ -29,6 +31,13 @@ public class AppAuthEntity implements java.io.Serializable{
 	private int r2ExpireTime;//淘宝开放平台r2级别服务调用Token失效时间
 	private int w1ExpireTime;//淘宝开放平台w1级别服务调用Token失效时间
 	private int w2ExpireTime;//淘宝开放平台w2级别服务调用Token失效时间
+	
+	private RelationConfig relationConfig;
+	
+	public AppAuthEntity()
+	{
+		relationConfig = new RelationConfig();
+	}
 	
 	/**
 	 * 从josn字符串中获得Oauth的属性信息
@@ -181,6 +190,14 @@ public class AppAuthEntity implements java.io.Serializable{
 		this.accessToken = accessToken;
 	}
 	
+	public RelationConfig getRelationConfig() {
+		return relationConfig;
+	}
+
+	public void setRelationConfig(RelationConfig relationConfig) {
+		this.relationConfig = relationConfig;
+	}
+
 	public String toString()
 	{
 		return new StringBuilder().append("uid=").append(uid).append(" , ")

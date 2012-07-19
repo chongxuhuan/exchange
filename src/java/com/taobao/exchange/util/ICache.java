@@ -18,4 +18,6 @@ public interface ICache<K,V> {
 	
 	V remove(K name);
 	
+	void clear();
+	
 }

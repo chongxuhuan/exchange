@@ -64,8 +64,16 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 				params.put("cursor", cursor);
 				params.put("uid", uid);
 				
-				jsonResult = appClient.api(sessionUid, "GET","friendships/friends", null, params);
-				
+				if (appClient.getAuthKeeper().take(uid)
+						.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
+				{
+					jsonResult = appClient.api(sessionUid, "GET","friendships/friends", null, params);
+				}
+				else
+				{
+					jsonResult = appClient.api(sessionUid, "GET","friendships/friends/bilateral", null, params);
+				}
+
 				if (jsonResult == null || (jsonResult != null && jsonResult.indexOf(Constants.EXCEPTION_SERVICE_ERROR) > 0))
 				{
 					throw new ServiceException(jsonResult);
@@ -142,5 +150,12 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 	public void setRelationCache(ICache<String, String> relationCache) {
 		this.relationCache = relationCache;
 	}
+
+	@Override
+	public ICache<String, String> getRelationCache() {
+		return relationCache;
+	}
+	
+	
 
 }

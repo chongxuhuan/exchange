@@ -13,6 +13,11 @@ package com.taobao.exchange.dig;
  */
 public class FirendsDigCondition extends SecondhandCondition {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 227897228753040294L;
+	
 	String secondHandPlatformID;//二手平台标示
 	String secondHandUID; //二手平台身份id
 	boolean indirectRelation;//是否是间接关系搜索

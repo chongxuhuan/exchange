@@ -33,5 +33,10 @@ public class MemCache<K,V> implements ICache<K,V> {
 	public V remove(K name) {
 		return innerCache.remove(name);
 	}
+	
+	@Override
+	public void clear() {
+		innerCache.clear();
+	}
 
 }

@@ -27,6 +27,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.taobao.exchange.app.RequestAttachment;
+import com.taobao.exchange.secondhand.Category;
+import com.taobao.exchange.secondhand.Secondhand;
 
 /**
  * 应用客户端工具类
@@ -47,6 +49,17 @@ public class AppClientUtil {
 	{
 		return new StringBuilder().append(platformId)
 				.append("::").append(uid).toString();
+	}
+	
+	public static void translateCidToCName(Secondhand secondhand,CategoryMemCache categoryCache)
+	{
+		if (secondhand != null && categoryCache !=  null)
+		{
+			Category c = categoryCache.get(secondhand.getCat_id());
+			
+			if (c != null)
+				secondhand.setCid_name(c.getName());
+		}
 	}
 	
 	/**

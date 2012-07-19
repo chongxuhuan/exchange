@@ -19,6 +19,11 @@ import com.taobao.exchange.util.ServiceException;
  */
 public interface ISecondhandManager<C extends IAppClient> {
 	
+	/**
+	 * 获取内置平台客户端
+	 * @return
+	 */
+	C getAppClient();
 	
 	/**
 	 * 设置支持二手交易的应用客户端
