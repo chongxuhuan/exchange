@@ -133,12 +133,12 @@ public class FriendsDiggerTest {
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
 		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
 		sinaAuthEntity.setUid("1679264133");
-		sinaAuthKeeper.store(sinaAuthEntity.getUid(), sinaAuthEntity);
+		sinaAuthKeeper.store(sinaAuthEntity);
 		
 		AppAuthEntity sinaAuthEntity2 = new AppAuthEntity();
 		sinaAuthEntity2.setAccessToken("2.00qtUcxB0QLIOv2e8dd7755f0K5UnH");
 		sinaAuthEntity2.setUid("1797111902");
-		sinaAuthKeeper.store(sinaAuthEntity2.getUid(), sinaAuthEntity2);
+		sinaAuthKeeper.store(sinaAuthEntity2);
 		
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
@@ -150,7 +150,7 @@ public class FriendsDiggerTest {
 		topAuthEntity.setAccessToken("620170334e1ZZd45d9af7c032eee877ebb74cda85f8229924006395");
 		topAuthEntity.setUid("24006395");
 		topAuthEntity.setNick("cenwenchu");
-		topAuthKeeper.store(topAuthEntity.getUid(), topAuthEntity);
+		topAuthKeeper.store(topAuthEntity);
 		
 		//create 卖家帐号
 		AccountZoo az = new AccountZoo();

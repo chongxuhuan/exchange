@@ -25,10 +25,6 @@ public abstract class AppClient implements IAppClient{
 	
 	OpenPlatformEntry openPlatformEntry;//开放平台身份
 	IAuthKeeper authKeeper;//不同的client用于保存某一开放平台这个应用的授权信息
-		
-	public IAuthKeeper getAuthKeeper() {
-		return authKeeper;
-	}
 
 	public void setAuthKeeper(IAuthKeeper authKeeper) {
 		this.authKeeper = authKeeper;
@@ -44,16 +40,24 @@ public abstract class AppClient implements IAppClient{
 		this.openPlatformEntry = openPlatformEntry;
 	}
 
+	public AppAuthEntity getAuthEntityByUid(String uid) throws ServiceException
+	{
+		if (authKeeper != null)
+			return authKeeper.take(uid);
+		else
+			throw new ServiceException("authKeeper is null.");
+	}
 	
 	/* 
 	 * Oauth2的server流程第二步，用code换access_token
 	 */
-	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws ServiceException
+	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view) throws ServiceException
 	{
 		if (openPlatformEntry == null)
 			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		AppAuthEntity entity = new AppAuthEntity();
+		entity.setPlatformId(openPlatformEntry.getId());
 				
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -90,7 +94,8 @@ public abstract class AppClient implements IAppClient{
 		else
 		{
 			entity.loadAuthInfoFromJsonString(result);
-			 
+			authKeeper.store(entity); 
+			
 			logger.info(result);
 		}
 		

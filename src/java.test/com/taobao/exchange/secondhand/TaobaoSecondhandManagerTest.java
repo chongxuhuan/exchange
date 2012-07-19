@@ -62,7 +62,7 @@ public class TaobaoSecondhandManagerTest {
 		authEntity.setNick("cenwenchu");
 		uid = "24006395";
 		
-		authKeeper.store(authEntity.getUid(), authEntity);
+		authKeeper.store(authEntity);
 		
 	}
 

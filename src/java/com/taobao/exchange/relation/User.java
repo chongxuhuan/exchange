@@ -3,6 +3,7 @@
  */
 package com.taobao.exchange.relation;
 
+import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.util.AppClientUtil;
 
 /**
@@ -21,6 +22,19 @@ public class User implements java.io.Serializable{
 	private String platformId;//平台id
 	private String id;//用户id
 	private String name;//用户名称
+	
+	public User()
+	{
+		super();
+	}
+	
+	public User(AppAuthEntity authEntity)
+	{
+		super();
+		this.platformId = authEntity.getPlatformId();
+		this.id = authEntity.getUid();
+		this.name = authEntity.getNick();
+	}
 	
 	public String getPlatformId() {
 		return platformId;

@@ -21,6 +21,7 @@ public class AppAuthEntity implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = -8765771477651584870L;
 	
+	private String platformId;//平台id
 	private String uid;//用户id
 	private String nick;//用户nick，不是每个平台都会有，淘宝开放平台授权后就会有，其他平台需要再多一次查询转换
 	private String accessToken;//授权token
@@ -117,6 +118,14 @@ public class AppAuthEntity implements java.io.Serializable{
 		}
 	}
 	
+	public String getPlatformId() {
+		return platformId;
+	}
+
+	public void setPlatformId(String platformId) {
+		this.platformId = platformId;
+	}
+
 	private String getStringValueFromJsonSplitStr(String splitStr)
 	{
 		return splitStr.substring(splitStr.indexOf("\"", splitStr.indexOf(":"))+1,splitStr.lastIndexOf("\""));

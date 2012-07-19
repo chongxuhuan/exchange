@@ -64,7 +64,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 				params.put("cursor", cursor);
 				params.put("uid", uid);
 				
-				if (appClient.getAuthKeeper().take(uid)
+				if (appClient.getAuthEntityByUid(uid)
 						.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
 				{
 					jsonResult = appClient.api(sessionUid, "GET","friendships/friends", null, params);

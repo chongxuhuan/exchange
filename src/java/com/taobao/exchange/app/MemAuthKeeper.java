@@ -18,9 +18,9 @@ public class MemAuthKeeper implements IAuthKeeper {
 	ConcurrentMap<String,AppAuthEntity> authpools = new ConcurrentHashMap<String,AppAuthEntity>();
 	
 	@Override
-	public boolean store(String uid, AppAuthEntity authEntity) {
+	public boolean store(AppAuthEntity authEntity) {
 		
-		authpools.put(uid, authEntity);
+		authpools.put(authEntity.getUid(), authEntity);
 		return true;
 	}
 

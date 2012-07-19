@@ -38,19 +38,21 @@ public interface IAppClient {
 	 * @param 参看Oauth2协议
 	 * @return
 	 */
-	public AppAuthEntity getAccessTokenByCode(String code,String scope,String state,String view) throws ServiceException;
+	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view) throws ServiceException;
 	
-	/**
-	 * 设置授权的管理实现
-	 * @return
-	 */
-	public IAuthKeeper getAuthKeeper();
 	
 	/**
 	 * 获得授权的管理实现
 	 * @param authKeeper
 	 */
-	public void setAuthKeeper(IAuthKeeper authKeeper);
+	public void setAuthKeeper(IAuthKeeper authKeeper) throws ServiceException;
+	
+	/**
+	 * 根据用户id获取授权
+	 * @param uid
+	 * @return
+	 */
+	public AppAuthEntity getAuthEntityByUid(String uid) throws ServiceException;
 	
 	/**
 	 * 获取内在平台信息

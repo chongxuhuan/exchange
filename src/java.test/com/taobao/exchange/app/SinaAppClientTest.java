@@ -40,9 +40,7 @@ public class SinaAppClientTest {
 		
 		String code = "7fff6db5ef9080fe40cd2021fa34f595";
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCode(code, null, null, "web");
-		
-		authKeeper.store(authEntity.getUid(), authEntity);
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		
 		String result = appclient.api(authEntity.getUid(), "GET","friendships/friends", null, null);
 		

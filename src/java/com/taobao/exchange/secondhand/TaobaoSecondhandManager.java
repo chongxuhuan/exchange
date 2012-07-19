@@ -290,7 +290,7 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		if (appClient == null)
 			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
-		if (appClient.getAuthKeeper().take(userId) == null)
+		if (appClient.getAuthEntityByUid(userId) == null)
 			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		//当前先做成一页面
@@ -321,12 +321,12 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 		if (appClient == null)
 			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
-		if (appClient.getAuthKeeper().take(userId) == null)
+		if (appClient.getAuthEntityByUid(userId) == null)
 			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 			
-		params.put("seller_nick", appClient.getAuthKeeper().take(userId).getNick());
+		params.put("seller_nick", appClient.getAuthEntityByUid(userId).getNick());
 			
 		String result = appClient.api(null, "GET", "taobao.idle.feeler.search", null, params);
 		

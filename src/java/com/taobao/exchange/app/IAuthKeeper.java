@@ -19,7 +19,7 @@ public interface IAuthKeeper {
 	 * @param 授权信息
 	 * @return
 	 */
-	public boolean store(String uid,AppAuthEntity authEntity);
+	public boolean store(AppAuthEntity authEntity);
 	
 	/**
 	 * 获取授权信息

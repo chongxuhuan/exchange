@@ -52,7 +52,7 @@ public class SinaRelationManagerTest {
 		authEntity.setUid("1679264133");
 		uid = "1679264133";
 		
-		authKeeper.store(authEntity.getUid(),authEntity);
+		authKeeper.store(authEntity);
 		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(appClient);
@@ -68,7 +68,7 @@ public class SinaRelationManagerTest {
 		
 		sinaRelationManager.getRelationCache().clear();
 		
-		appClient.getAuthKeeper().take(uid).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
+		appClient.getAuthEntityByUid(uid).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
 		
 		users = sinaRelationManager.getFriendsByUser(uid,uid);
 	}

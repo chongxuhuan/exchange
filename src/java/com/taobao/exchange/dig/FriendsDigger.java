@@ -232,8 +232,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 							else
 								_s.setIndirect(false);
 							
-							if (!secondhandManager.getAppClient().getAuthKeeper().
-									take(z.getSecondhandAccount().getId()).getRelationConfig().isHideSecondhandUserInfo())
+							if (!secondhandManager.getAppClient().getAuthEntityByUid(z.getSecondhandAccount().getId()).getRelationConfig().isHideSecondhandUserInfo())
 								_s.setRelationOwner(u.getName());
 							
 							secondhands.add(_s);
