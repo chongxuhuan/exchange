@@ -3,6 +3,8 @@
  */
 package com.taobao.exchange.relation;
 
+import com.taobao.exchange.util.AppClientUtil;
+
 /**
  * 关系平台的用户信息
  * @author fangweng
@@ -39,5 +41,8 @@ public class User implements java.io.Serializable{
 		this.name = name;
 	}
 	
-	
+	public String generateUserKey()
+	{
+		return AppClientUtil.generatePlatformUUID(platformId, id);
+	}
 }
