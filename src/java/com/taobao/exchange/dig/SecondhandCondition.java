@@ -35,6 +35,11 @@ public class SecondhandCondition implements IDigCondition,Serializable{
 	
 	QuerySession qsession;
 
+	public SecondhandCondition()
+	{
+		qsession = new QuerySession();
+	}
+	
 	public QuerySession getQsession() {
 		return qsession;
 	}
