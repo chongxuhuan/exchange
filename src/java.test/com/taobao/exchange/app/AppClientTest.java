@@ -38,10 +38,7 @@ public class AppClientTest {
 	@Test
 	public void testGetAccessTokenByCode(){
 		
-		//call first then change code content
-		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12667915
-		
-		String code = "JOm2cHX53tVuX8TAMft1of6E77081";
+		String code = TestConstants.TOPAuthCode;
 		
 		try
 		{

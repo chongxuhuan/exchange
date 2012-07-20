@@ -127,8 +127,8 @@ public class FriendsDiggerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		//String code = "7a7765b5e5d2354b129b683ae2b281f8";
-		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCode(code, null, null, "web");
+		//String code = "70ffa417fca3ae05f8bcc16f3b912d6c";
+		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
 		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
@@ -143,11 +143,11 @@ public class FriendsDiggerTest {
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-//		String code = "RF4e1ZADehcoccUzzmRUaxQY245783";
-//		AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCode(code, null, null, "web");
+		//String code = "pjZOjqnAgh3ubEzuZ4GIvHVt259500";
+		//AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		
 		AppAuthEntity topAuthEntity = new AppAuthEntity();
-		topAuthEntity.setAccessToken("620170334e1ZZd45d9af7c032eee877ebb74cda85f8229924006395");
+		topAuthEntity.setAccessToken("6200e14567b89e4fbe2aeace2962155bd23117396c7bd5e24006395");
 		topAuthEntity.setUid("24006395");
 		topAuthEntity.setNick("cenwenchu");
 		topAuthKeeper.store(topAuthEntity);
@@ -197,6 +197,7 @@ public class FriendsDiggerTest {
 		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
 		friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
 		friendsDigCondition.setUid(keyUser2.getId());
+		friendsDigCondition.setIndirectRelation(true);
 		
 		DigResult digResult = digger.dig(friendsDigCondition);
 		

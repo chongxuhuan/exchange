@@ -18,6 +18,7 @@ import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.ISecondhandManager;
 import com.taobao.exchange.secondhand.Secondhand;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
+import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -196,64 +197,50 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 				}
 				
 				if (condition.isIndirectRelation())
-					users = relationManager.getIndirectFriendsByUser(_user.getId());
-				else
-					users = relationManager.getFriendsByUser(_user.getId(),_user.getId());
-				
-				if (users == null || (users != null && users.size() == 0))
 				{
-					if (logger.isWarnEnabled())
-						logger.warn("user :" + _user.getId() + " has no friends.");
-					continue;
-				}
+					QuerySession qs = new QuerySession();
+					qs.setCursor(0);
+					qs.setPageSize(20);
 					
-
-				for(User u : users)
-				{
-					AccountZoo z = userToAccountZooCache.get(AppClientUtil.generatePlatformUUID(u.getPlatformId(), u.getId()));
-					
-					if (z == null)
-						continue;
-					
-					Secondhand[] ss = secondhandManager.list(z.getSecondhandAccount().getId());
-					
-					if (ss == null || (ss != null && ss.length == 0))
-						continue;
-					
-					for(Secondhand _s : ss)
+					do
 					{
-						boolean passCheck = checkSecondhandByCondition(_s,condition);
+						users = relationManager.getIndirectFriendsByUser(_user.getId(),qs);
 						
-						if (passCheck)
+						if (users == null || (users != null && users.size() == 0))
 						{
-							//设置二手拥有者相关信息
-							if (condition.isIndirectRelation())
-								_s.setIndirect(true);
-							else
-								_s.setIndirect(false);
-							
-							if (!secondhandManager.getAppClient().getAuthEntityByUid(z.getSecondhandAccount().getId()).getRelationConfig().isHideSecondhandUserInfo())
-								_s.setRelationOwner(u.getName());
-							
-							secondhands.add(_s);
-							counter += 1;
-						
-							if (counter == condition.getPage_size())
-							{
-								queryContext.append(Constants.CONTEXT_SECONDHAND).append(_s.getItem_id());
-								queryContext.append(Constants.CONTEXT_SPLIT);
-								break;
-							}
+							if (logger.isWarnEnabled())
+								logger.warn("user :" + _user.getId() + " has no friends.");
 						}
+						
+						counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter,queryContext);
+						
+						if (counter >= condition.getPage_size())
+						{
+							break;
+						}
+						
 					}
+					while(qs.getCursor() > 0);
+				}
+				else
+				{
+					users = relationManager.getFriendsByUser(_user.getId(),_user.getId(),null);
 					
-					if (counter == condition.getPage_size())
+					if (users == null || (users != null && users.size() == 0))
 					{
-						queryContext.append(Constants.CONTEXT_USER).append(u.getId());
-						queryContext.append(Constants.CONTEXT_SPLIT);
+						if (logger.isWarnEnabled())
+							logger.warn("user :" + _user.getId() + " has no friends.");
+						continue;
+					}
+						
+					counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter,queryContext);
+					
+					if (counter >= condition.getPage_size())
+					{
 						break;
 					}
 				}
+
 			}
 			
 			if (contextCache != null)
@@ -268,5 +255,60 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 				logger.warn("ContextCache is null!!!");
 		}
 	}
+	
+	
+	int getSecondhandsFromUsers(List<User> users,ISecondhandManager<?> secondhandManager,
+			FirendsDigCondition condition,List<Secondhand> secondhands,int counter,StringBuilder queryContext) throws ServiceException
+	{
+		for(User u : users)
+		{
+			AccountZoo z = userToAccountZooCache.get(AppClientUtil.generatePlatformUUID(u.getPlatformId(), u.getId()));
+			
+			if (z == null || (z != null && z.getSecondhandAccount() == null))
+				continue;
+			
+			Secondhand[] ss = secondhandManager.list(z.getSecondhandAccount().getId());
+			
+			if (ss == null || (ss != null && ss.length == 0))
+				continue;
+			
+			for(Secondhand _s : ss)
+			{
+				boolean passCheck = checkSecondhandByCondition(_s,condition);
+				
+				if (passCheck)
+				{
+					//设置二手拥有者相关信息
+					if (condition.isIndirectRelation())
+						_s.setIndirect(true);
+					else
+						_s.setIndirect(false);
+					
+					if (!secondhandManager.getAppClient().getAuthEntityByUid(z.getSecondhandAccount().getId()).getRelationConfig().isHideSecondhandUserInfo())
+						_s.setRelationOwner(u.getName());
+					
+					secondhands.add(_s);
+					counter += 1;
+				
+					if (counter == condition.getPage_size())
+					{
+						queryContext.append(Constants.CONTEXT_SECONDHAND).append(_s.getItem_id());
+						queryContext.append(Constants.CONTEXT_SPLIT);
+						break;
+					}
+				}
+			}
+			
+			if (counter == condition.getPage_size())
+			{
+				queryContext.append(Constants.CONTEXT_USER).append(u.getId());
+				queryContext.append(Constants.CONTEXT_SPLIT);
+				break;
+			}
+		}
+		
+		return counter;
+	}
+	
 
 }

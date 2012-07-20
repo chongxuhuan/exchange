@@ -15,6 +15,7 @@ import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.SinaAppClient;
+import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.MemCache;
@@ -62,7 +63,7 @@ public class SinaRelationManagerTest {
 
 	@Test
 	public void testGetFriendsByUser() throws ServiceException {
-		List<User> users = sinaRelationManager.getFriendsByUser(uid,uid);
+		List<User> users = sinaRelationManager.getFriendsByUser(uid,uid,null);
 				
 		Assert.assertTrue(users.size() > 0);
 		
@@ -70,13 +71,17 @@ public class SinaRelationManagerTest {
 		
 		appClient.getAuthEntityByUid(uid).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
 		
-		users = sinaRelationManager.getFriendsByUser(uid,uid);
+		users = sinaRelationManager.getFriendsByUser(uid,uid,null);
 	}
 
 	@Test
 	@Ignore
 	public void testGetIndirectFriendsByUser() throws ServiceException {
-		List<User> users = sinaRelationManager.getIndirectFriendsByUser(uid);
+		
+		QuerySession session = new QuerySession();
+		session.setCursor(0);
+		session.setPageSize(10);
+		List<User> users = sinaRelationManager.getIndirectFriendsByUser(uid,session);
 			
 		Assert.assertTrue(users.size() > 0);
 		

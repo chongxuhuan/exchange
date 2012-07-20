@@ -42,10 +42,8 @@ public class TopAppClientTest {
 
 	@Test
 	public void testApi() throws ServiceException {
-		// first call this url 
-		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12667915
 		
-		String code = "0Pu2hjPr3rvgtsEvJRmiraBt77161";
+		String code = TestConstants.TOPAuthCode;
 		
 		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		

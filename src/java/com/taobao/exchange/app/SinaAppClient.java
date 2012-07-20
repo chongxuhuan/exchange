@@ -49,7 +49,9 @@ public class SinaAppClient extends AppClient{
 		if (userId != null)
 		{		
 			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authKeeper.take(userId).getAccessToken());
-			params.put(Constants.SYS_PARAMETER_UID, userId);
+			
+			if(!params.containsKey(Constants.SYS_PARAMETER_UID))
+				params.put(Constants.SYS_PARAMETER_UID, userId);
 		}
 				
 		response = AppClientUtil.sendRequest(url,httpMethod,headers,params);

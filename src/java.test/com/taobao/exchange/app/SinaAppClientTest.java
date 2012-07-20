@@ -36,9 +36,8 @@ public class SinaAppClientTest {
 
 	@Test
 	public void testApi() throws ServiceException {
-		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
 		
-		String code = "7fff6db5ef9080fe40cd2021fa34f595";
+		String code = TestConstants.SinaAuthCode;
 		
 		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		
