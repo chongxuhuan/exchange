@@ -5,6 +5,8 @@ package com.taobao.exchange.dig;
 
 import java.io.Serializable;
 
+import com.taobao.exchange.util.QuerySession;
+
 
 /**
  * 二手搜索属性条件类
@@ -30,28 +32,14 @@ public class SecondhandCondition implements IDigCondition,Serializable{
 	double start_price = -1;//价格区间的开始
 	double end_price = -1;//价格区间的结束
 	int division_id = -1;//地区
-	int page_size = 20;//每一页返回的结果集
-	String query_session;//用于对翻页结果查询的会话状态纪录
-	int operation = 0;//结合session，如果session不为空，则－1代表搜索上一页，1代表搜索下一页。	
 	
-	
-	public String getQuery_session() {
-		return query_session;
+	QuerySession qsession;
+
+	public QuerySession getQsession() {
+		return qsession;
 	}
-	public void setQuery_session(String query_session) {
-		this.query_session = query_session;
-	}
-	public int getPage_size() {
-		return page_size;
-	}
-	public void setPage_size(int page_size) {
-		this.page_size = page_size;
-	}
-	public int getOperation() {
-		return operation;
-	}
-	public void setOperation(int operation) {
-		this.operation = operation;
+	public void setQsession(QuerySession qsession) {
+		this.qsession = qsession;
 	}
 	public String getKeyWords() {
 		return keyWords;

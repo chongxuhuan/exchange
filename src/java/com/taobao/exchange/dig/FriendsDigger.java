@@ -5,12 +5,8 @@ package com.taobao.exchange.dig;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.taobao.exchange.relation.AccountZoo;
 import com.taobao.exchange.relation.IRelationManager;
 import com.taobao.exchange.relation.RelationManagerFactory;
@@ -18,7 +14,7 @@ import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.ISecondhandManager;
 import com.taobao.exchange.secondhand.Secondhand;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
-import com.taobao.exchange.util.QuerySession;
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -35,7 +31,6 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	
 	private static final Log logger = LogFactory.getLog(FriendsDigger.class);
 	
-	private ICache<String,String> contextCache;//用于面对搜索结果很大需要翻页保存上次搜索现场
 	private ICache<String,AccountZoo> accountZooCache;//对应帐号体系缓存，主要保存各种AZ
 	//某一个平台帐号与AZ的对应关系
 	private ICache<String,AccountZoo> userToAccountZooCache;
@@ -56,11 +51,6 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		this.accountZooCache = accountZooCache;
 	}
 
-
-	public void setContextCache(ICache<String, String> contextCache) {
-		this.contextCache = contextCache;
-	}
-	
 	
 	/* 
 	 * 检查搜索出来的二手是否符合过滤条件，通常用于好友的二手搜索以后再次需要过滤
@@ -140,46 +130,12 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	protected void diggerFromFriendsCycle(DigResult result,FirendsDigCondition condition,
 			ISecondhandManager<?> secondhandManager) throws ServiceException
 	{
-		String qSession;
-		
-		//上次搜索会话到的用户及用户的二手现场纪录
-		String session_user = null;
-		String session_secondhand = null;
-		
-		if (condition.getQuery_session() == null)
-			qSession = new StringBuilder().append(UUID.randomUUID().toString())
-				.append("--").append(System.currentTimeMillis()).toString();
-		else
-		{
-			qSession = condition.getQuery_session();
-		
-			//get session detail
-			if (contextCache != null && contextCache.get(qSession) != null)
-			{
-				String[] cs = StringUtils.splitByWholeSeparator(contextCache.get(qSession), Constants.CONTEXT_SPLIT);
-				
-				for(String c : cs)
-				{
-					if (c.startsWith(Constants.CONTEXT_SECONDHAND))
-					{
-						session_secondhand = c.substring(Constants.CONTEXT_SECONDHAND.length());
-						continue;
-					}
-					
-					if (c.startsWith(Constants.CONTEXT_USER))
-					{
-						session_user = c.substring(Constants.CONTEXT_USER.length());
-						continue;
-					}
-				}
-			}
-		}
 		
 		List<User> users = null;
 		List<Secondhand> secondhands = new ArrayList<Secondhand>();
-		StringBuilder queryContext = new StringBuilder();
 		result.setSecondhands(secondhands);
 		int counter = 0;
+		int round = 0;
 		
 		AccountZoo az = accountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getPlatformID(), condition.getUid()));
 		
@@ -198,9 +154,24 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 				
 				if (condition.isIndirectRelation())
 				{
-					QuerySession qs = new QuerySession();
-					qs.setCursor(0);
-					qs.setPageSize(20);
+					FriendSecondhandQuerySession qs;
+					
+					if(condition.getContext() != null)
+						qs = condition.getContext();
+					else
+					{
+						qs = new FriendSecondhandQuerySession();
+						qs.setCursor(0);
+						qs.setPageSize(20);
+						
+						condition.setContext(qs);
+					}
+					
+					if (qs.getRound() > round)
+					{
+						round += 1;
+						continue;
+					}
 					
 					do
 					{
@@ -212,10 +183,14 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 								logger.warn("user :" + _user.getId() + " has no friends.");
 						}
 						
-						counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter,queryContext);
+						counter = getSecondhandsFromUsers(users,secondhandManager,condition
+									,secondhands,counter);
 						
-						if (counter >= condition.getPage_size())
+						//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
+						if(counter >= condition.getQsession().getPageSize())
 						{
+							qs.setCursor(qs.getCursor() -1);
+							qs.clearFilter();
 							break;
 						}
 						
@@ -233,35 +208,38 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 						continue;
 					}
 						
-					counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter,queryContext);
-					
-					if (counter >= condition.getPage_size())
-					{
-						break;
-					}
+					counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter);
+				}
+				
+				if (counter >= condition.getQsession().getPageSize())
+				{
+					break;
 				}
 
+				round += 1;
 			}
 			
-			if (contextCache != null)
-			{
-				if (queryContext.length() > 0)
-				{
-					contextCache.put(qSession, queryContext.toString());
-					result.setQuery_session(qSession);
-				}
-			}
-			else
-				logger.warn("ContextCache is null!!!");
+			if (condition.getContext() != null)
+				condition.getContext().setRound(round);
 		}
 	}
 	
 	
 	int getSecondhandsFromUsers(List<User> users,ISecondhandManager<?> secondhandManager,
-			FirendsDigCondition condition,List<Secondhand> secondhands,int counter,StringBuilder queryContext) throws ServiceException
+			FirendsDigCondition condition,List<Secondhand> secondhands,
+			int counter) throws ServiceException
 	{
-		for(User u : users)
+		int start = 0;
+		
+		if (condition.getContext() != null && condition.getContext().getUid() != null)
 		{
+			start  = this.getUserIndex(condition.getContext().getUid(), users);
+		}
+		
+		for(int i = start; i < users.size(); i++)
+		{
+			User u = users.get(i);
+			
 			AccountZoo z = userToAccountZooCache.get(AppClientUtil.generatePlatformUUID(u.getPlatformId(), u.getId()));
 			
 			if (z == null || (z != null && z.getSecondhandAccount() == null))
@@ -272,8 +250,17 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 			if (ss == null || (ss != null && ss.length == 0))
 				continue;
 			
-			for(Secondhand _s : ss)
+			int sstart = 0;
+			
+			if (condition.getContext()!= null && condition.getContext().getSecondhandId() != null)
 			{
+				sstart = getSecondhandIndex(condition.getContext().getSecondhandId(),ss) + 1;
+			}
+			
+			for(int j = sstart; j < ss.length; j++)
+			{
+				Secondhand _s = ss[j];
+				
 				boolean passCheck = checkSecondhandByCondition(_s,condition);
 				
 				if (passCheck)
@@ -290,19 +277,21 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 					secondhands.add(_s);
 					counter += 1;
 				
-					if (counter == condition.getPage_size())
+					if (counter == condition.getQsession().getPageSize())
 					{
-						queryContext.append(Constants.CONTEXT_SECONDHAND).append(_s.getItem_id());
-						queryContext.append(Constants.CONTEXT_SPLIT);
+						if (condition.getContext() != null)
+							condition.getContext().setSecondhandId(_s.getItem_id());
+						
 						break;
 					}
 				}
 			}
 			
-			if (counter == condition.getPage_size())
+			if (counter == condition.getQsession().getPageSize())
 			{
-				queryContext.append(Constants.CONTEXT_USER).append(u.getId());
-				queryContext.append(Constants.CONTEXT_SPLIT);
+				if (condition.getContext() != null)
+					condition.getContext().setUid(u.getId());
+				
 				break;
 			}
 		}
@@ -310,5 +299,34 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		return counter;
 	}
 	
-
+	int getUserIndex(String uid,List<User> users)
+	{
+		int result = 0;
+		
+		for (User u : users)
+		{
+			if(u.getId().equals(uid))
+				return result;
+			
+			result += 1;
+		}
+		
+		return 0;
+	}
+	
+	int getSecondhandIndex(String sid,Secondhand[] secondhands)
+	{
+		int result = 0;
+		
+		for (Secondhand s : secondhands)
+		{
+			if(s.getItem_id().equals(sid))
+				return result;
+			
+			result += 1;
+		}
+		
+		return 0;
+	}
+	
 }

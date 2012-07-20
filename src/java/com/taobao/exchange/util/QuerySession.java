@@ -56,4 +56,9 @@ public class QuerySession {
 		this.pageSize = pageSize;
 	}
 	
+	public String toString()
+	{
+		return new StringBuilder().append(cursor).append(":").append(pageSize).toString();
+	}
+	
 }

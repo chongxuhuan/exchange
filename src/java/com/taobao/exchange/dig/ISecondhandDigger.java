@@ -17,11 +17,7 @@ import com.taobao.exchange.util.ICache;
  */
 public interface ISecondhandDigger<T extends IDigCondition> {
 	
-	/**
-	 * 设置上下文缓存，用于连续搜索且需要前后翻页
-	 * @param contextCache
-	 */
-	void setContextCache(ICache<String, String> contextCache);
+
 	/**
 	 * 设置AZ缓存，用于获得二手卖家类帐号（包含卖家类帐号和关系帐号组）
 	 * @param accountZooCache

@@ -3,6 +3,8 @@
  */
 package com.taobao.exchange.dig;
 
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
+
 
 /**
  * 好友关系二手搜索条件定义
@@ -22,7 +24,7 @@ public class FirendsDigCondition extends SecondhandCondition {
 	String platformID;//开放平台标示
 	String uid; //用户id
 	boolean indirectRelation;//是否是间接关系搜索
-	
+	FriendSecondhandQuerySession context;//用于存储上次返回的上下文现场（是好友的搜索位置）
 	
 	public String getSecondHandPlatformID() {
 		return secondHandPlatformID;
@@ -47,6 +49,12 @@ public class FirendsDigCondition extends SecondhandCondition {
 	}
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+	public FriendSecondhandQuerySession getContext() {
+		return context;
+	}
+	public void setContext(FriendSecondhandQuerySession context) {
+		this.context = context;
 	}
 
 }

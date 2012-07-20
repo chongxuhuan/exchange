@@ -26,6 +26,7 @@ import com.taobao.exchange.relation.User;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.secondhand.TaobaoSecondhandManager;
 import com.taobao.exchange.util.CategoryMemCache;
+import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -45,7 +46,6 @@ public class FriendsDiggerTest {
 	static TopAppClient topAppClient;
 	static IAuthKeeper topAuthKeeper;
 	static IAuthKeeper sinaAuthKeeper;
-	static ICache<String,String> contextCache;
 	static TaobaoSecondhandManager secondhandManager;
 	static SinaRelationManager sinaRelationManager;
 	static ICache<String,AccountZoo> accountZooCache;
@@ -77,7 +77,6 @@ public class FriendsDiggerTest {
 		
 		accountZooCache = new MemCache<String,AccountZoo>();
 		userToAccountZooCache = new MemCache<String,AccountZoo>();
-		contextCache = new MemCache<String,String>();
 		categoryCache = new CategoryMemCache();
 		
 		topAuthKeeper = new MemAuthKeeper();
@@ -92,7 +91,6 @@ public class FriendsDiggerTest {
 		topAppClient.setAuthKeeper(topAuthKeeper);
 		
 		digger = new FriendsDigger();
-		digger.setContextCache(contextCache);
 		digger.setAccountZooCache(accountZooCache);
 		digger.setUserToAccountZooCache(userToAccountZooCache);
 		
@@ -199,9 +197,25 @@ public class FriendsDiggerTest {
 		friendsDigCondition.setUid(keyUser2.getId());
 		friendsDigCondition.setIndirectRelation(true);
 		
+		
+		int cursor = 0;
+		QuerySession qSession = new QuerySession();
+		qSession.setPageSize(1);
+		//if indirect cursor no use
+		qSession.setCursor(cursor);
+		friendsDigCondition.setQsession(qSession);
+		
 		DigResult digResult = digger.dig(friendsDigCondition);
 		
 		Assert.assertTrue(digResult.getSecondhands() != null && digResult.getSecondhands().size() > 0);
+
+		if (friendsDigCondition.isIndirectRelation())
+		{
+			digResult = digger.dig(friendsDigCondition);
+		
+			Assert.assertTrue(digResult.getSecondhands() != null && digResult.getSecondhands().size() > 0);
+		
+		}
 		
 	}
 

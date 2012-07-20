@@ -45,10 +45,6 @@ public class Constants {
 	public final static String SYS_AUTH_PARAMETER_STATE = "state";
 	public final static String SYS_AUTH_PARAMETER_VIEW = "view";
 	
-	
-	public final static String CONTEXT_USER = "context:user:";
-	public final static String CONTEXT_SECONDHAND = "context:secondhand:";
-	public final static String CONTEXT_SPLIT = ":ct:";
 
 	public final static int RELATION_LEVEL_ONEWAY = 0;//单向关系
 	public final static int RELATION_LEVEL_BILATERAL = 1;//双向关系

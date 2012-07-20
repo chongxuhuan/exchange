@@ -408,14 +408,14 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 			params.put("end_price", condition.getEnd_price());
 		}
 		
-		if (condition.getQuery_session() != null)
+		if (condition.getQsession() != null)
 		{
-			params.put("start", condition.getQuery_session());
+			params.put("start", condition.getQsession().getCursor());
 		}
 		
-		if (condition.getPage_size() > 0)
+		if (condition.getQsession() != null)
 		{
-			params.put("rows", condition.getPage_size());
+			params.put("rows", condition.getQsession().getPageSize());
 		}
 		
 		
