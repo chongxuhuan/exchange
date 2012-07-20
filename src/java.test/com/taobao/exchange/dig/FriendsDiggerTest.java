@@ -4,9 +4,6 @@
 package com.taobao.exchange.dig;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -159,13 +156,11 @@ public class FriendsDiggerTest {
 		
 		az.setSecondhandAccount(keyUser);
 		
-		List<User> relation = new ArrayList<User>();
-		az.setRelationAccounts(relation);
 		
 		User u = new User();
 		u.setPlatformId(Constants.PLATFORM_ID_SINA);
 		u.setId(sinaAuthEntity.getUid());	
-		relation.add(u);
+		az.storeRelation(u);
 		
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser.getPlatformId(),keyUser.getId()), az);
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(u.getPlatformId(),u.getId()), az);
@@ -181,9 +176,8 @@ public class FriendsDiggerTest {
 		
 		az2.setKeyAccount(keyUser2);
 
-		List<User> relation2 = new ArrayList<User>();
-		az2.setRelationAccounts(relation2);
-		relation2.add(keyUser2);
+		
+		az2.storeRelation(keyUser2);
 		
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser2.getPlatformId(),keyUser2.getId()), az2);
 		

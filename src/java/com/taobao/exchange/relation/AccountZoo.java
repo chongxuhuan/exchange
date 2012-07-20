@@ -4,8 +4,9 @@
 package com.taobao.exchange.relation;
 
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.taobao.exchange.util.AppClientUtil;
 /**
@@ -24,11 +25,11 @@ public class AccountZoo implements java.io.Serializable{
 
 	User keyAccount;//应用内的唯一身份标示，如果是买家身份进入的，则可能是一个关系平台帐号，如果是卖家身份进入可以是二手身份，也可以是一个二手平台帐号
 	User secondhandAccount;//二手交易平台身份
-	private List<User> relationAccounts;//多个社会化关系开放平台身份
+	private ConcurrentMap<String,User> relationAccounts;//多个社会化关系开放平台身份
 	
 	public AccountZoo()
 	{	
-		relationAccounts = new CopyOnWriteArrayList<User>();
+		relationAccounts = new ConcurrentHashMap<String,User>();
 	}
 	
 	public String generateAccountZooKey()
@@ -51,13 +52,20 @@ public class AccountZoo implements java.io.Serializable{
 	public void setSecondhandAccount(User secondhandAccount) {
 		this.secondhandAccount = secondhandAccount;
 	}
-
-	public List<User> getRelationAccounts() {
-		return relationAccounts;
+	
+	public void storeRelation(User user)
+	{
+		relationAccounts.put(user.generateUserKey(), user);
 	}
-
-	public void setRelationAccounts(List<User> relationAccounts) {
-		this.relationAccounts = relationAccounts;
+	
+	public User getRelation(String relation)
+	{
+		return relationAccounts.get(relation);
+	}
+	
+	public Collection<User> getAllRelation()
+	{
+		return relationAccounts.values();
 	}
 
 }

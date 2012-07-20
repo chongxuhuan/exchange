@@ -4,6 +4,7 @@
 package com.taobao.exchange.dig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -138,10 +139,11 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		int round = 0;
 		
 		AccountZoo az = accountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getPlatformID(), condition.getUid()));
+		Collection<User> relations = az.getAllRelation();
 		
-		if (az != null && az.getRelationAccounts() != null && az.getRelationAccounts().size() > 0)
+		if (az != null && relations != null && relations.size() > 0)
 		{
-			for(User _user : az.getRelationAccounts())
+			for(User _user : relations)
 			{
 				IRelationManager<?,?,?> relationManager = RelationManagerFactory.get(_user.getPlatformId());
 				
