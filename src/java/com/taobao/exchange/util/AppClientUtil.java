@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -25,6 +27,8 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.taobao.exchange.app.RequestAttachment;
 import com.taobao.exchange.secondhand.Category;
@@ -38,6 +42,23 @@ import com.taobao.exchange.secondhand.Secondhand;
  *
  */
 public class AppClientUtil {
+	
+	private static final Log logger = LogFactory.getLog(AppClientUtil.class);
+	
+	static String ip;
+	
+	static {
+		try {
+			ip = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			logger.error(e);
+		}
+	}
+	
+	public static String getClientIp()
+	{
+		return ip;
+	}
 	
 	/**
 	 * 根据平台id和用户id获得一个组合id
@@ -301,6 +322,29 @@ public class AppClientUtil {
 		sign = DigestUtils.md5Hex(sb.toString().getBytes("utf-8"))
 				.toUpperCase();
 		}
+
+		return sign;
+	}
+	
+	public static String signatureRenRenVersion(Map<String, Object> params, String secret,String signName) 
+			throws UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException{
+		params.remove(signName);
+		String[] names = params.keySet().toArray(ArrayUtils.EMPTY_STRING_ARRAY);
+		Arrays.sort(names);
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < names.length; i++) 
+		{
+			String name = names[i];
+			sb.append(name);
+			sb.append("=");
+			sb.append(params.get(name));
+		}
+		
+		sb.append(secret);
+		
+		String sign = DigestUtils.md5Hex(sb.toString().getBytes("utf-8"))
+				.toUpperCase();
 
 		return sign;
 	}

@@ -93,7 +93,7 @@ public abstract class AppClient implements IAppClient{
 		}
 		else
 		{
-			entity.loadAuthInfoFromJsonString(result);
+			entity.loadAuthInfoFromString(result);
 			authKeeper.store(entity); 
 			
 			logger.info(result);

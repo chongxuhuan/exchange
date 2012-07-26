@@ -33,6 +33,8 @@ public class AppAuthEntity implements java.io.Serializable{
 	private int w1ExpireTime;//淘宝开放平台w1级别服务调用Token失效时间
 	private int w2ExpireTime;//淘宝开放平台w2级别服务调用Token失效时间
 	
+	private String openId;//腾讯微博特有的用户标示
+	
 	private RelationConfig relationConfig;
 	
 	public AppAuthEntity()
@@ -41,47 +43,78 @@ public class AppAuthEntity implements java.io.Serializable{
 	}
 	
 	/**
-	 * 从josn字符串中获得Oauth的属性信息
+	 * 从字符串中获得Oauth的属性信息
 	 * @param content
 	 */
-	public void loadAuthInfoFromJsonString(String content)
+	public void loadAuthInfoFromString(String content)
 	{
 		if (content == null)
 			return;
 		
-		content = content.substring(content.indexOf("{")+1,content.indexOf("}"));
+		boolean isJsonStr = false;
 		
-		String[] cs = StringUtils.splitByWholeSeparator(content, ",");
+		//部分开放平台不是json数据
+		if (content.indexOf("{") >= 0)
+		{
+			content = content.substring(content.indexOf("{")+1,content.lastIndexOf("}"));
+			isJsonStr = true;
+		}
+		
+		String[] cs;
+		
+		if (content.indexOf(",") >= 0)
+			cs = StringUtils.splitByWholeSeparator(content, ",");
+		else
+			cs = StringUtils.splitByWholeSeparator(content, "&");
 		
 		for(String c : cs)
 		{
 			if (c.indexOf("access_token") >= 0)
 			{
-				this.accessToken = getStringValueFromJsonSplitStr(c);
+				if(isJsonStr)
+					this.accessToken = getStringValueFromJsonSplitStr(c);
+				else
+					this.accessToken = StringUtils.split(c, "=")[1];
 				continue;
 			}
 			
 			if (c.indexOf("refresh_token") >= 0)
 			{
-				this.refreshToken = getStringValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.refreshToken = getStringValueFromJsonSplitStr(c);
+				else
+					this.refreshToken = StringUtils.split(c, "=")[1];
+				
 				continue;
 			}
 			
 			if (c.indexOf("re_expires_in") >= 0)
 			{
-				this.refreshExpireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.refreshExpireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.refreshExpireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+				
 				continue;
 			}
 			
-			if (c.indexOf("taobao_user_nick") >= 0)
+			if (c.indexOf("taobao_user_nick") >= 0 || c.indexOf("name") >= 0)
 			{
-				this.nick = getStringValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.nick = getStringValueFromJsonSplitStr(c);
+				else
+					this.nick = StringUtils.split(c, "=")[1];
+				
 				continue;
 			}
 			
-			if (c.indexOf("taobao_user_id") >= 0 || c.indexOf("uid") >= 0)
+			if (c.indexOf("taobao_user_id") >= 0 || c.indexOf("uid") >= 0 || c.indexOf("id") >= 0)
 			{
-				this.uid = getStringValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.uid = getStringValueFromJsonSplitStr(c);
+				else
+					this.uid = StringUtils.split(c, "=")[1];
+					
 				continue;
 			}
 			
@@ -111,7 +144,10 @@ public class AppAuthEntity implements java.io.Serializable{
 			
 			if (c.indexOf("expires_in") >= 0)
 			{
-				this.expireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.expireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.expireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
 				continue;
 			}
 			
@@ -128,7 +164,13 @@ public class AppAuthEntity implements java.io.Serializable{
 
 	private String getStringValueFromJsonSplitStr(String splitStr)
 	{
-		return splitStr.substring(splitStr.indexOf("\"", splitStr.indexOf(":"))+1,splitStr.lastIndexOf("\""));
+		if(splitStr.indexOf("{") >=0)
+		{
+			splitStr = splitStr.substring(splitStr.indexOf("{")+1);
+			return splitStr.substring(splitStr.indexOf(":")+1);
+		}
+		else
+			return splitStr.substring(splitStr.indexOf("\"", splitStr.indexOf(":"))+1,splitStr.lastIndexOf("\""));
 	}
 	
 	private int getIntegerValueFromJsonSplitStr(String splitStr)
@@ -205,6 +247,14 @@ public class AppAuthEntity implements java.io.Serializable{
 
 	public void setRelationConfig(RelationConfig relationConfig) {
 		this.relationConfig = relationConfig;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public String toString()

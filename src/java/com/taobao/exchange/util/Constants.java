@@ -14,6 +14,8 @@ public class Constants {
 	
 	public final static String PLATFORM_ID_TAOBAO = "taobao";
 	public final static String PLATFORM_ID_SINA = "sina";
+	public final static String PLATFORM_ID_TENCENT = "tencent";
+	public final static String PLATFORM_ID_RENREN = "renren";
 	
 	public final static String EXCEPTION_AUTH_USER_NOT_EXIST = "authUserNotExist"; 
 	public final static String EXCEPTION_APINAME_IS_NULL = "apiNameIsNull"; 

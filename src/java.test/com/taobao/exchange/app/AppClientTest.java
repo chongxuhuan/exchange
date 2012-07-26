@@ -16,18 +16,34 @@ public class AppClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		OpenPlatformEntry topPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_TAOBAO);
-				
-		topPlatformEntry.setApiEntry("https://eco.taobao.com/router/rest");
-		topPlatformEntry.setAppKey("12667915");
-		topPlatformEntry.setAppSecret("c27b029f3c377d6fa02dfb00d11788f4");
-		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
-		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+//		OpenPlatformEntry topPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_TAOBAO);
+//				
+//		topPlatformEntry.setApiEntry("https://eco.taobao.com/router/rest");
+//		topPlatformEntry.setAppKey("12667915");
+//		topPlatformEntry.setAppSecret("c27b029f3c377d6fa02dfb00d11788f4");
+//		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
+//		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		
+//		OpenPlatformEntry tencentPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_TENCENT);
+//		
+//		tencentPlatformEntry.setApiEntry("https://open.t.qq.com/api");
+//		tencentPlatformEntry.setAppKey("28068");
+//		tencentPlatformEntry.setAppSecret("c40b30ab26834797bfdbf67c15f3e523");
+//		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
+//		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
+		
+		OpenPlatformEntry renrenPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_RENREN);
+		
+		renrenPlatformEntry.setApiEntry("http://api.renren.com/restserver.do");
+		renrenPlatformEntry.setAppKey("382c091506ff46d3a49e6e6ed8894507");
+		renrenPlatformEntry.setAppSecret("3bb4079e67b540b7802963d42c753e53");
+		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
+		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
 		
 		IAuthKeeper authKeeper = new MemAuthKeeper();
 			
-		appclient = new TopAppClient();
-		appclient.setOpenPlatformEntry(topPlatformEntry);
+		appclient = new RenRenAppClient();
+		appclient.setOpenPlatformEntry(renrenPlatformEntry);
 		appclient.setAuthKeeper(authKeeper);
 	}
 
@@ -38,7 +54,7 @@ public class AppClientTest {
 	@Test
 	public void testGetAccessTokenByCode(){
 		
-		String code = TestConstants.TOPAuthCode;
+		String code = TestConstants.RenrenAuthCode;
 		
 		try
 		{
