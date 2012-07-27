@@ -20,7 +20,7 @@ public class TestConstants {
 	public static String SinaAuthCode = "";
 	
 	//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com
-	public static String TencentAuthCode = "d257e194e4e0ff63bbb2173f3851bf9b";
+	public static String TencentAuthCode = "c019d70bb922e74514afa682626e5de5";
 	public static String TencentOpenId = "0000000000000000000000001A5649A8";
 	
 	//https://graph.renren.com/oauth/authorize?client_id=382c091506ff46d3a49e6e6ed8894507&redirect_uri=http://www.mashupshow.com&response_type=code

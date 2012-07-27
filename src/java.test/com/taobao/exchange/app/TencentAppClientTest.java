@@ -1,6 +1,5 @@
 package com.taobao.exchange.app;
 
-import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,16 +37,17 @@ public class TencentAppClientTest {
 
 	@Test
 	public void testApi() throws ServiceException {
-		String code = TestConstants.RenrenAuthCode;
+		String code = TestConstants.TencentAuthCode;
+		String openId = TestConstants.TencentOpenId;
 		
 		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
-		
+		authEntity.setOpenId(openId);
 		
 		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("page", "1");
-		params.put("fields", "id,name,sex");
+		params.put("reqnum", "200");
+		params.put("startindex", "0");
 		
-		String result = appclient.api(authEntity.getUid(), "GET","Friends.getFriends", null, params);
+		String result = appclient.api(authEntity.getUid(), "GET","friends/idollist_s", null, params);
 		
 		System.out.println(result);
 		

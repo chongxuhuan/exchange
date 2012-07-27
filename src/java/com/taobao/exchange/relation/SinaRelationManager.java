@@ -55,7 +55,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 		if (jsonResult == null)
 		{
 			Map<String,Object> params = new HashMap<String,Object>();
-			GetUsersResponse usersResponse;
+			SinaGetUsersResponse usersResponse;
 			int cursor = 0;
 			params.put("trim_status", 0);
 			
@@ -89,7 +89,7 @@ public class SinaRelationManager implements IRelationManager<SinaAppClient,Strin
 					throw new ServiceException(jsonResult);
 				}
 				
-				usersResponse = gson.fromJson(jsonResult, GetUsersResponse.class);
+				usersResponse = gson.fromJson(jsonResult, SinaGetUsersResponse.class);
 				
 				if (usersResponse.getTotal_number() > 0)
 				{

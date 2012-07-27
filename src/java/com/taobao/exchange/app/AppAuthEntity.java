@@ -152,6 +152,12 @@ public class AppAuthEntity implements java.io.Serializable{
 			}
 			
 		}
+		
+		//处理腾迅的情况
+		if (this.nick != null && this.uid == null)
+		{
+			this.uid = this.nick;
+		}
 	}
 	
 	public String getPlatformId() {
