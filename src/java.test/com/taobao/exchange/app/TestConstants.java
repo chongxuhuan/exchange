@@ -19,7 +19,7 @@ public class TestConstants {
 	//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 	public static String SinaAuthCode = "";
 	
-	//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com
+	//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com/channel
 	public static String TencentAuthCode = "c019d70bb922e74514afa682626e5de5";
 	public static String TencentOpenId = "0000000000000000000000001A5649A8";
 	

@@ -42,8 +42,8 @@ public class TencentRelationManagerTest {
 		
 		//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com
 		
-		//String code = "e3e134dcd6ccd81c76ca1dd726f898e1";
-		//AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		//String code = "3c622f18dbb7ceb0d93fa868ea2e4526";
+		//AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web","/channel?state=sss");
 		
 		authEntity = new AppAuthEntity();
 		authEntity.setAccessToken("58a1c1c3cbd4b4a8f2c1a410e57a9f25");

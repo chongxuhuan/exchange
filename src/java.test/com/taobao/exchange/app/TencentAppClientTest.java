@@ -40,7 +40,7 @@ public class TencentAppClientTest {
 		String code = TestConstants.TencentAuthCode;
 		String openId = TestConstants.TencentOpenId;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 		authEntity.setOpenId(openId);
 		
 		Map<String, Object> params = new HashMap<String,Object>();

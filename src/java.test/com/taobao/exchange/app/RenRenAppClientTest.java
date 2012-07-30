@@ -39,7 +39,7 @@ public class RenRenAppClientTest {
 	public void testApi() throws ServiceException {
 		String code = TestConstants.RenrenAuthCode;
 	
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 	
 	
 		Map<String, Object> params = new HashMap<String,Object>();

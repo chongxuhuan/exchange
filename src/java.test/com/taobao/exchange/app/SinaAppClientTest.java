@@ -39,7 +39,7 @@ public class SinaAppClientTest {
 		
 		String code = TestConstants.SinaAuthCode;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 		
 		String result = appclient.api(authEntity.getUid(), "GET","friendships/friends", null, null);
 		

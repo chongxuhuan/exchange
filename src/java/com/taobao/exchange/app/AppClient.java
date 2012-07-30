@@ -48,10 +48,19 @@ public abstract class AppClient implements IAppClient{
 			throw new ServiceException("authKeeper is null.");
 	}
 	
-	/* 
+
+	/**
 	 * Oauth2的server流程第二步，用code换access_token
+	 * @param code
+	 * @param scope
+	 * @param state
+	 * @param view
+	 * @param cbAppend
+	 * @return
+	 * @throws ServiceException
 	 */
-	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view) throws ServiceException
+	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view
+			,String cbAppend) throws ServiceException
 	{
 		if (openPlatformEntry == null)
 			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
@@ -65,7 +74,10 @@ public abstract class AppClient implements IAppClient{
 		params.put(Constants.SYS_AUTH_PARAMETER_SECRETCODE, openPlatformEntry.getAppSecret());
 		
 		if (openPlatformEntry.getCallbackUrl() != null)
-			params.put(Constants.SYS_AUTH_PARAMETER_REDIRECT_URI, openPlatformEntry.getCallbackUrl());
+			if (cbAppend != null)
+				params.put(Constants.SYS_AUTH_PARAMETER_REDIRECT_URI, openPlatformEntry.getCallbackUrl()+cbAppend);
+			else
+				params.put(Constants.SYS_AUTH_PARAMETER_REDIRECT_URI, openPlatformEntry.getCallbackUrl());
 		
 		params.put(Constants.SYS_AUTH_PARAMETER_GRANT,"authorization_code");
 		params.put(Constants.SYS_AUTH_PARAMETER_CODE, code);

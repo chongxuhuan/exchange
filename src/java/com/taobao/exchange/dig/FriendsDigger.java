@@ -139,6 +139,10 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		int round = 0;
 		
 		AccountZoo az = accountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getPlatformID(), condition.getUid()));
+		
+		if (az == null)
+			return;
+		
 		Collection<User> relations = az.getAllRelation();
 		
 		if (az != null && relations != null && relations.size() > 0)

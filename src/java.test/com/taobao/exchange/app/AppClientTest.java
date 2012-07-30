@@ -58,7 +58,7 @@ public class AppClientTest {
 		
 		try
 		{
-			AppAuthEntity  appAuthEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+			AppAuthEntity  appAuthEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 			
 			Assert.assertNotNull(appAuthEntity);
 			

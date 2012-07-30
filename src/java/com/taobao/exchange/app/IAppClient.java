@@ -36,9 +36,10 @@ public interface IAppClient {
 	 * @param 参看Oauth2协议
 	 * @param 参看Oauth2协议
 	 * @param 参看Oauth2协议
+	 * @param 需要对callback增加的内容串，用与支持类似腾讯不支持state的情况
 	 * @return
 	 */
-	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view) throws ServiceException;
+	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view,String cbAppend) throws ServiceException;
 	
 	
 	/**

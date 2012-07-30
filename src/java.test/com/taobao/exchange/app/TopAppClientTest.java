@@ -45,7 +45,7 @@ public class TopAppClientTest {
 		
 		String code = TestConstants.TOPAuthCode;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("fields", "nick,sex,alipay_bind");
