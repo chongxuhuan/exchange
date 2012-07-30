@@ -62,7 +62,7 @@ public class RenRenAppClient extends AppClient{
 		try
 		{
 			params.put("sig",AppClientUtil
-				.signatureRenRenVersion(params, openPlatformEntry.getAppSecret(),Constants.SYS_PARAMETER_SIGN));
+				.signatureRenRenVersion(params, openPlatformEntry.getAppSecret(),"sig"));
 		}
 		catch(Exception ex)
 		{

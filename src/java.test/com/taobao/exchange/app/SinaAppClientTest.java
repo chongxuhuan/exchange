@@ -21,7 +21,7 @@ public class SinaAppClientTest {
 		sinaPlatformEntry.setAppKey("845619194");
 		sinaPlatformEntry.setAppSecret("3a69bb60ed46d0ceab5f0457657ac0f9");
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
-		sinaPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		authKeeper = new MemAuthKeeper();
 		

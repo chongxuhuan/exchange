@@ -18,8 +18,8 @@ import com.taobao.exchange.app.SinaAppClient;
 import com.taobao.exchange.app.TopAppClient;
 import com.taobao.exchange.relation.AccountZoo;
 import com.taobao.exchange.relation.RelationManagerFactory;
-import com.taobao.exchange.relation.SinaRelationManager;
 import com.taobao.exchange.relation.User;
+import com.taobao.exchange.relation.sina.SinaRelationManager;
 import com.taobao.exchange.secondhand.SecondhandManagerFactory;
 import com.taobao.exchange.secondhand.TaobaoSecondhandManager;
 import com.taobao.exchange.util.CategoryMemCache;
@@ -69,7 +69,7 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setAppKey("845619194");
 		sinaPlatformEntry.setAppSecret("3a69bb60ed46d0ceab5f0457657ac0f9");
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
-		sinaPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		
 		accountZooCache = new MemCache<String,AccountZoo>();
@@ -120,7 +120,7 @@ public class FriendsDiggerTest {
 	@Test
 	public void testDig() throws ServiceException {
 		
-		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
+		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
 		//String code = "70ffa417fca3ae05f8bcc16f3b912d6c";
 		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web");

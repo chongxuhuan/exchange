@@ -7,7 +7,6 @@ import junit.framework.Assert;
 
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
@@ -15,6 +14,7 @@ import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.SinaAppClient;
+import com.taobao.exchange.relation.sina.SinaRelationManager;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
@@ -35,7 +35,7 @@ public class SinaRelationManagerTest {
 		sinaPlatformEntry.setAppKey("845619194");
 		sinaPlatformEntry.setAppSecret("3a69bb60ed46d0ceab5f0457657ac0f9");
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
-		sinaPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		authKeeper = new MemAuthKeeper();
 		
@@ -43,13 +43,13 @@ public class SinaRelationManagerTest {
 		appClient.setOpenPlatformEntry(sinaPlatformEntry);
 		appClient.setAuthKeeper(authKeeper);
 		
-		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=845619194
+		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
-		//String code = "55ef981cbdce07039f65473626d151f6";
-		//AppAuthEntity authEntity = appClient.getAccessTokenByCode(code, null, null, "web");
+		//String code = "0a333664f9b66758869bb5c7d4bb69eb";
+		//AppAuthEntity authEntity = appClient.getAccessTokenByCodeAndStore(code, null, null, "web");
 		
 		AppAuthEntity authEntity = new AppAuthEntity();
-		authEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
+		authEntity.setAccessToken("2.004_BepB0QLIOvfa07ca5b2cKSXWqC");
 		authEntity.setUid("1679264133");
 		uid = "1679264133";
 		
@@ -75,7 +75,6 @@ public class SinaRelationManagerTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGetIndirectFriendsByUser() throws ServiceException {
 		
 		QuerySession session = new QuerySession();

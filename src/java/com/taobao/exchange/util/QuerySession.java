@@ -18,7 +18,7 @@ public class QuerySession {
 	
 	private int pageSize = 20;
 	
-	private Map<String,String> filter;//可以用于过滤以前处理过的数据
+	private Map<String,String> filter;//可以用于过滤以前处理过的数据,这里需要考虑设置容量，防止内存溢出
 
 	public QuerySession()
 	{

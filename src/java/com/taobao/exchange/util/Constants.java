@@ -51,4 +51,7 @@ public class Constants {
 	public final static int RELATION_LEVEL_ONEWAY = 0;//单向关系
 	public final static int RELATION_LEVEL_BILATERAL = 1;//双向关系
 	
+	public final static int MAX_RELATION_COUNT = 2000;//最多的直接朋友数量
+	public final static int MAX_INDIRECT_RELATION_COUNT = 5000;//最多间接朋友数量
+	
 }

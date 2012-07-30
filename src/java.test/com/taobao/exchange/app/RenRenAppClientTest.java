@@ -26,7 +26,7 @@ public class RenRenAppClientTest {
 		renrenPlatformEntry.setAppKey("382c091506ff46d3a49e6e6ed8894507");
 		renrenPlatformEntry.setAppSecret("3bb4079e67b540b7802963d42c753e53");
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
-		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
+		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		IAuthKeeper authKeeper = new MemAuthKeeper();
 			

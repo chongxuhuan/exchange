@@ -1,21 +1,19 @@
 package com.taobao.exchange.relation;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
-
 import junit.framework.Assert;
-
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-
 import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.TencentAppClient;
+import com.taobao.exchange.relation.tencent.TencentRelationManager;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.MemCache;
+import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 
 public class TencentRelationManagerTest {
@@ -61,6 +59,7 @@ public class TencentRelationManagerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetFriendsByUser() throws ServiceException {
 		List<User> users = tencentRelationManager.getFriendsByUser(authEntity.getUid(), authEntity.getUid(), null);
 		Assert.assertTrue(users.size() > 0);
@@ -75,8 +74,20 @@ public class TencentRelationManagerTest {
 	}
 
 	@Test
-	public void testGetIndirectFriendsByUser() {
-		fail("Not yet implemented");
+	public void testGetIndirectFriendsByUser() throws ServiceException {
+		
+		//List<User> users = tencentRelationManager.getIndirectFriendsByUser(authEntity.getUid(),null);
+		
+		QuerySession session = new QuerySession();
+		session.setCursor(0);
+		session.setPageSize(5);
+		List<User> users = tencentRelationManager.getIndirectFriendsByUser(authEntity.getUid(),session);
+			
+		Assert.assertTrue(users.size() > 0);
+		
+		users = tencentRelationManager.getIndirectFriendsByUser(authEntity.getUid(),session);
+		
+		Assert.assertTrue(users.size() > 0);
 	}
 
 }
