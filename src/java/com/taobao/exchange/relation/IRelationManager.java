@@ -6,7 +6,7 @@ package com.taobao.exchange.relation;
 
 import java.util.List;
 
-import com.taobao.exchange.app.IAppClient;
+import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.ICache;

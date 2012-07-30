@@ -4,7 +4,7 @@
 package com.taobao.exchange.secondhand;
 
 
-import com.taobao.exchange.app.IAppClient;
+import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.ServiceException;
 

@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.taobao.exchange.app.client.IAppClient;
+import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 

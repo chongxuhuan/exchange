@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.taobao.exchange.app.IAppClient;
+import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.QuerySession;

@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.taobao.exchange.app.RenRenAppClient;
+import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.relation.AbstractRelationManager;
 import com.taobao.exchange.relation.User;
 import com.taobao.exchange.util.Constants;

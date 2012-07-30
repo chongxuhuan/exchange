@@ -11,7 +11,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.google.gson.Gson;
-import com.taobao.exchange.app.TopAppClient;
+import com.taobao.exchange.app.client.TopAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;

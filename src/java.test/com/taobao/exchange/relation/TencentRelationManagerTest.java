@@ -9,7 +9,7 @@ import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
-import com.taobao.exchange.app.TencentAppClient;
+import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.relation.tencent.TencentRelationManager;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.MemCache;

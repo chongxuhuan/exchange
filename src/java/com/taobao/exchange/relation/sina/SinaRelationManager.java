@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.taobao.exchange.app.SinaAppClient;
+import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.relation.AbstractRelationManager;
 import com.taobao.exchange.relation.User;
 import com.taobao.exchange.util.QuerySession;

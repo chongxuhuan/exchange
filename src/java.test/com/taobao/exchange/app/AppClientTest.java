@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.taobao.exchange.app.client.IAppClient;
+import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.util.Constants;
 
 public class AppClientTest {

@@ -12,7 +12,7 @@ import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
-import com.taobao.exchange.app.RenRenAppClient;
+import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.relation.renren.RenRenRelationManager;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.MemCache;

@@ -17,7 +17,7 @@ import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.RequestAttachment;
 import com.taobao.exchange.app.OpenPlatformEntry;
-import com.taobao.exchange.app.TopAppClient;
+import com.taobao.exchange.app.client.TopAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;

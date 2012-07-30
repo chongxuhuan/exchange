@@ -9,6 +9,8 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.taobao.exchange.app.client.IAppClient;
+import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ServiceException;
 

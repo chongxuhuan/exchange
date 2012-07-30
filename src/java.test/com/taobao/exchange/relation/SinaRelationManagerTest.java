@@ -13,7 +13,7 @@ import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
-import com.taobao.exchange.app.SinaAppClient;
+import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.relation.sina.SinaRelationManager;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
