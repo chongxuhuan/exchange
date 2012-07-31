@@ -28,7 +28,7 @@ public class TopAppClientTest {
 		topPlatformEntry.setAppKey("12667915");
 		topPlatformEntry.setAppSecret("c27b029f3c377d6fa02dfb00d11788f4");
 		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
-		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		topPlatformEntry.setCallbackUrl("www.mashupshow.com/channel");
 		
 		authKeeper = new MemAuthKeeper();
 			

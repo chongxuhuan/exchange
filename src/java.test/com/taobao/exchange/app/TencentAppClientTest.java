@@ -28,7 +28,7 @@ public class TencentAppClientTest {
 		tencentPlatformEntry.setAppKey("28068");
 		tencentPlatformEntry.setAppSecret("c40b30ab26834797bfdbf67c15f3e523");
 		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
-		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
+		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		authKeeper = new MemAuthKeeper();
 		

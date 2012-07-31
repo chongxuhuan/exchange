@@ -45,7 +45,6 @@ public class FriendsDiggerTest {
 	static IAuthKeeper sinaAuthKeeper;
 	static TaobaoSecondhandManager secondhandManager;
 	static SinaRelationManager sinaRelationManager;
-	static ICache<String,AccountZoo> accountZooCache;
 	static ICache<String,AccountZoo> userToAccountZooCache;
 	static CategoryMemCache categoryCache;
 	
@@ -62,7 +61,7 @@ public class FriendsDiggerTest {
 		topPlatformEntry.setAppKey("12643042");
 		topPlatformEntry.setAppSecret("a1362a9dc2b74b7811d7acafedc99fcc");
 		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
-		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+		topPlatformEntry.setCallbackUrl("www.mashupshow.com/channel");
 		
 		OpenPlatformEntry sinaPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_SINA);
 		sinaPlatformEntry.setApiEntry("https://api.weibo.com");
@@ -71,8 +70,7 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		
-		accountZooCache = new MemCache<String,AccountZoo>();
+
 		userToAccountZooCache = new MemCache<String,AccountZoo>();
 		categoryCache = new CategoryMemCache();
 		
@@ -88,7 +86,6 @@ public class FriendsDiggerTest {
 		topAppClient.setAuthKeeper(topAuthKeeper);
 		
 		digger = new FriendsDigger();
-		digger.setAccountZooCache(accountZooCache);
 		digger.setUserToAccountZooCache(userToAccountZooCache);
 		
 		secondhandManager = new TaobaoSecondhandManager();
@@ -122,11 +119,11 @@ public class FriendsDiggerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
-		//String code = "70ffa417fca3ae05f8bcc16f3b912d6c";
-		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		//String code = "03161fa211b92e692fa8aa884143ae53";
+		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
 		
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
-		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvb5ccdf44dd0qiJ61");
+		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvfa07ca5b2cKSXWqC");
 		sinaAuthEntity.setUid("1679264133");
 		sinaAuthKeeper.store(sinaAuthEntity);
 		
@@ -151,9 +148,7 @@ public class FriendsDiggerTest {
 		AccountZoo az = new AccountZoo();
 		User keyUser = new User();
 		keyUser.setPlatformId(Constants.PLATFORM_ID_TAOBAO);
-		keyUser.setId(topAuthEntity.getUid());
-		az.setKeyAccount(keyUser);
-		
+		keyUser.setId(topAuthEntity.getUid());	
 		az.setSecondhandAccount(keyUser);
 		
 		
@@ -165,24 +160,16 @@ public class FriendsDiggerTest {
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser.getPlatformId(),keyUser.getId()), az);
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(u.getPlatformId(),u.getId()), az);
 		
-		accountZooCache.put(az.generateAccountZooKey(), az);
-		
 		//create 买家帐号
 		AccountZoo az2 = new AccountZoo();
 		
 		User keyUser2 = new User();
 		keyUser2.setPlatformId(Constants.PLATFORM_ID_SINA);
 		keyUser2.setId(sinaAuthEntity2.getUid());	
-		
-		az2.setKeyAccount(keyUser2);
 
-		
 		az2.storeRelation(keyUser2);
 		
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser2.getPlatformId(),keyUser2.getId()), az2);
-		
-		accountZooCache.put(az2.generateAccountZooKey(), az2);
-		
 		
 		FirendsDigCondition friendsDigCondition = new FirendsDigCondition();
 		

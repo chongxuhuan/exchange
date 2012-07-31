@@ -17,12 +17,6 @@ import com.taobao.exchange.util.ICache;
  */
 public interface ISecondhandDigger<T extends IDigCondition> {
 	
-
-	/**
-	 * 设置AZ缓存，用于获得二手卖家类帐号（包含卖家类帐号和关系帐号组）
-	 * @param accountZooCache
-	 */
-	void setAccountZooCache(ICache<String, AccountZoo> accountZooCache);
 	/**
 	 * 设置某一个关系帐号和二手卖家帐号的对应关系，用于将关系帐号转变为卖家帐号的场景（新浪好友A是否是个淘宝二手卖家）
 	 * @param userToAccountZooCache

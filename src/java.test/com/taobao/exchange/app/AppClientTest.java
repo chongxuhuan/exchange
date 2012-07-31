@@ -24,7 +24,7 @@ public class AppClientTest {
 //		topPlatformEntry.setAppKey("12667915");
 //		topPlatformEntry.setAppSecret("c27b029f3c377d6fa02dfb00d11788f4");
 //		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
-//		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
+//		topPlatformEntry.setCallbackUrl("www.mashupshow.com/channel");
 		
 //		OpenPlatformEntry tencentPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_TENCENT);
 //		
@@ -32,7 +32,7 @@ public class AppClientTest {
 //		tencentPlatformEntry.setAppKey("28068");
 //		tencentPlatformEntry.setAppSecret("c40b30ab26834797bfdbf67c15f3e523");
 //		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
-//		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
+//		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		OpenPlatformEntry renrenPlatformEntry = new OpenPlatformEntry(Constants.PLATFORM_ID_RENREN);
 		
@@ -40,7 +40,7 @@ public class AppClientTest {
 		renrenPlatformEntry.setAppKey("382c091506ff46d3a49e6e6ed8894507");
 		renrenPlatformEntry.setAppSecret("3bb4079e67b540b7802963d42c753e53");
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
-		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
+		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		IAuthKeeper authKeeper = new MemAuthKeeper();
 			

@@ -32,7 +32,6 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	
 	private static final Log logger = LogFactory.getLog(FriendsDigger.class);
 	
-	private ICache<String,AccountZoo> accountZooCache;//对应帐号体系缓存，主要保存各种AZ
 	//某一个平台帐号与AZ的对应关系
 	private ICache<String,AccountZoo> userToAccountZooCache;
 
@@ -46,12 +45,6 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 			ICache<String, AccountZoo> userToAccountZooCache) {
 		this.userToAccountZooCache = userToAccountZooCache;
 	}
-
-
-	public void setAccountZooCache(ICache<String, AccountZoo> accountZooCache) {
-		this.accountZooCache = accountZooCache;
-	}
-
 	
 	/* 
 	 * 检查搜索出来的二手是否符合过滤条件，通常用于好友的二手搜索以后再次需要过滤
@@ -104,8 +97,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		DigResult result = new DigResult();
 
 		//基于好友的二手商品挖掘
-		if (condition.getPlatformID() != null && condition.getUid() != null
-				&& accountZooCache != null && userToAccountZooCache != null)
+		if (condition.getPlatformID() != null && condition.getUid() != null && userToAccountZooCache != null)
 		{
 			diggerFromFriendsCycle(result,condition,secondhandManager);
 		}
@@ -138,12 +130,12 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		int counter = 0;
 		int round = 0;
 		
-		AccountZoo az = accountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getPlatformID(), condition.getUid()));
+		AccountZoo az = userToAccountZooCache.get(AppClientUtil.generatePlatformUUID(condition.getPlatformID(), condition.getUid()));
 		
 		if (az == null)
 			return;
 		
-		Collection<User> relations = az.getAllRelation();
+		Collection<User> relations = az.getAllRelations();
 		
 		if (az != null && relations != null && relations.size() > 0)
 		{
