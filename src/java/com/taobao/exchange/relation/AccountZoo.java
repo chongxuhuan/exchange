@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+
 /**
  * 卖家用户，拥有一个二手平台帐号和一个或或者多个关系网站帐号
  * @author fangweng

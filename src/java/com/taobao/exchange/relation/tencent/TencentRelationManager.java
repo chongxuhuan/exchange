@@ -83,6 +83,11 @@ public class TencentRelationManager extends AbstractRelationManager<TencentAppCl
 					throw new ServiceException(jsonResult);
 				}
 				
+				if (jsonResult.indexOf("\"data\":") < 0)
+				{
+					return result;
+				}
+				
 				jsonResult = jsonResult.substring(jsonResult.indexOf("\"data\":")+"\"data\":".length(),jsonResult.lastIndexOf("}") );
 				jsonResult = jsonResult.substring(0,jsonResult.lastIndexOf("}")+1);
 				
