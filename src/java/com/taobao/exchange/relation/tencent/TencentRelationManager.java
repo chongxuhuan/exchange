@@ -93,7 +93,7 @@ public class TencentRelationManager extends AbstractRelationManager<TencentAppCl
 				
 				usersResponse = gson.fromJson(jsonResult, TencentGetUsersResponse.class);
 				
-				if (usersResponse.getInfo() != null && usersResponse.getInfo().length > 0)
+				if (usersResponse != null && usersResponse.getInfo() != null && usersResponse.getInfo().length > 0)
 				{
 					for (TencentUser u : usersResponse.getInfo())
 					{

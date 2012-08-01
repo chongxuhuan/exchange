@@ -89,7 +89,7 @@ public class SinaRelationManager extends AbstractRelationManager<SinaAppClient> 
 				
 				usersResponse = gson.fromJson(jsonResult, SinaGetUsersResponse.class);
 				
-				if (usersResponse.getTotal_number() > 0)
+				if (usersResponse != null &&usersResponse.getTotal_number() > 0)
 				{
 					for (User u : usersResponse.getUsers())
 					{
