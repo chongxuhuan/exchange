@@ -36,7 +36,7 @@ public class RenRenRelationManagerTest {
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
 		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
+		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
 			
 		appclient = new RenRenAppClient();
 		appclient.setOpenPlatformEntry(renrenPlatformEntry);

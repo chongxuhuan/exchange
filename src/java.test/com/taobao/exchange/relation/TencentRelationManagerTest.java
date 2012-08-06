@@ -34,7 +34,7 @@ public class TencentRelationManagerTest {
 		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
 		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
 		
-		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
+		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
 		
 		appclient = new TencentAppClient();
 		appclient.setOpenPlatformEntry(tencentPlatformEntry);

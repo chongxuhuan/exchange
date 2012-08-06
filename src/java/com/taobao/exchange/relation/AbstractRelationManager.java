@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.exchange.app.client.IAppClient;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.QuerySession;
@@ -29,6 +30,20 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 	protected ICache<String> relationCache;
 	protected C appClient;
 	
+	//某一个平台帐号与AZ的对应关系
+	private ICache<AccountZoo> userToAccountZooCache;
+
+	@Override
+	public ICache<AccountZoo> getUserToAccountZooCache() {
+		return userToAccountZooCache;
+	}
+
+	@Override
+	public void setUserToAccountZooCache(
+			ICache<AccountZoo> userToAccountZooCache) {
+		this.userToAccountZooCache = userToAccountZooCache;
+	}
+	
 	@Override
 	public void setAppClient(C appClient) {
 		this.appClient = appClient;
@@ -42,6 +57,33 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 	@Override
 	public ICache<String> getRelationCache() {
 		return relationCache;
+	}
+	
+	@Override 
+	public List<User> getApplicationFriendsByUser(String sessionUid,String uid,QuerySession session) throws ServiceException
+	{
+		if (appClient == null)
+			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
+		
+		if (userToAccountZooCache == null)
+			throw new ServiceException("userToAccountZooCache is null.");
+		
+		//普通好友一次获取出来
+		List<User> friends = this.getFriendsByUser(uid,uid,null);
+		
+
+		for (int i = friends.size()-1 ; i >= 0; i--)
+		{
+			User u = friends.get(i);
+			
+			AccountZoo az = userToAccountZooCache.get(AppClientUtil.generatePlatformUUID(u.getPlatformId(), u.getId()));
+			
+			if (az == null)
+				friends.remove(i);
+		}
+		
+		return friends;
+		
 	}
 	
 	@Override
