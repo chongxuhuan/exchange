@@ -17,7 +17,7 @@ public class TestConstants {
 	public static String TOPAuthCode = "Jti4UqX19DdaW62GXq568ORG226455";
 	
 	//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
-	public static String SinaAuthCode = "0f42bd5a0eecbf20c3b1793a3f7e1348";
+	public static String SinaAuthCode = "dd163378631ec1374f67dee77c4fb90d";
 	
 	//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com/channel
 	public static String TencentAuthCode = "1a752e8b52bc3043a218c88815668ce5";

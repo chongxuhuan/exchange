@@ -112,6 +112,20 @@ public abstract class AppClient implements IAppClient{
 			entity.updateObjectFormString(result);
 			authCache.put(AppClientUtil.generatePlatformUUID(openPlatformEntry.getId(), entity.getUid()), entity); 
 			
+			//针对新浪特殊处理,获得用户名
+			if (entity.getPlatformId().endsWith(Constants.PLATFORM_ID_SINA))
+			{
+				String r = api(entity.getUid(), "GET","users/show", null, null);
+				
+				if(r.indexOf("\"name\":") > 0)
+				{
+					r = r.substring(r.indexOf("\"name\":") + "\"name\":".length()+1);
+					r = r.substring(0,r.indexOf("\""));
+					
+					entity.setNick(r);
+				}
+			}
+			
 			logger.info(result);
 		}
 		

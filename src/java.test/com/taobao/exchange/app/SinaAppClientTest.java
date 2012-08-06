@@ -27,7 +27,7 @@ public class SinaAppClientTest {
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
+		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
 		
 		appclient = new SinaAppClient();
 		appclient.setOpenPlatformEntry(sinaPlatformEntry);

@@ -40,13 +40,26 @@ public class Secondhand implements java.io.Serializable{
 	private String gps;
 	private String attribute;//attribute,用于传递新浪等用户相关信息。
 	private boolean wwsuport;//是否支持物物交换
+	private String prov;
+	private String city;
+	private String area;
+	private int ww_status;
+	
+	//为了兼容搜索接口
+	private String desc;
+	private int offline = -1;
+	private String pic_url;
+	private String seller_id;
+	private String seller_nick;
+	
 	
 	//以下是用于查询时候获得结果的属性
 	private String nick;//卖家nick
 	private String detail_url;//在淘宝的宝贝地址
 	private String major_imageurl;//主图的地址
 	private String cid_name;//属性描述，用于展示
-	private String relationOwner;//关系圈中的用户信息
+	private String relationOwner;//关系圈中的用户信息（也是物品的owner）
+	private String bridgeRelation;//如果是间接用户，这个字段说明了桥接这两个用户的关系用户
 	private boolean indirect;//是否是间接关系
 	
 	
@@ -75,7 +88,10 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getNick() {
-		return nick;
+		if (nick != null)
+			return nick;
+		else
+			return this.seller_nick;
 	}
 
 	public void setNick(String nick) {
@@ -91,7 +107,10 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getMajor_imageurl() {
-		return major_imageurl;
+		if (this.major_imageurl != null)
+			return major_imageurl;
+		else
+			return pic_url;
 	}
 
 	public void setMajor_imageurl(String major_imageurl) {
@@ -115,7 +134,11 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getDescribe() {
-		return describe;
+		
+		if (describe != null)
+			return describe;
+		else
+			return desc;
 	}
 
 	public void setDescribe(String describe) {
@@ -190,7 +213,10 @@ public class Secondhand implements java.io.Serializable{
 		this.org_price = org_price;
 	}
 	public int getOfflined() {
-		return offlined;
+		if (offlined != -1)
+			return offlined;
+		else
+			return offline;
 	}
 	public void setOfflined(int offlined) {
 		this.offlined = offlined;
@@ -213,5 +239,71 @@ public class Secondhand implements java.io.Serializable{
 	public void setWwsuport(boolean wwsuport) {
 		this.wwsuport = wwsuport;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getProv() {
+		return prov;
+	}
+
+	public void setProv(String prov) {
+		this.prov = prov;
+	}
+
+	public int getWw_status() {
+		return ww_status;
+	}
+
+	public void setWw_status(int ww_status) {
+		this.ww_status = ww_status;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public void setOffline(int offline) {
+		this.offline = offline;
+	}
+
+
+	public void setPic_url(String pic_url) {
+		this.pic_url = pic_url;
+	}
+
+	public String getSeller_id() {
+		return seller_id;
+	}
+
+	public void setSeller_id(String seller_id) {
+		this.seller_id = seller_id;
+	}
+
+	public void setSeller_nick(String seller_nick) {
+		this.seller_nick = seller_nick;
+	}
+
+	public String getBridgeRelation() {
+		return bridgeRelation;
+	}
+
+	public void setBridgeRelation(String bridgeRelation) {
+		this.bridgeRelation = bridgeRelation;
+	}
+	
 	
 }

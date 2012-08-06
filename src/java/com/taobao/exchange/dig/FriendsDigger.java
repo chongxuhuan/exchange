@@ -28,7 +28,7 @@ import com.taobao.exchange.util.ICache;
  * 2012-7-4
  *
  */
-public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
+public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 	
 	private static final Log logger = LogFactory.getLog(FriendsDigger.class);
 	
@@ -50,7 +50,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	 * 检查搜索出来的二手是否符合过滤条件，通常用于好友的二手搜索以后再次需要过滤
 	 */
 	@Override
-	public boolean checkSecondhandByCondition(Secondhand s, FirendsDigCondition condition)
+	public boolean checkSecondhandByCondition(Secondhand s, FriendsDigCondition condition)
 	{
 		boolean result = true;
 		
@@ -81,7 +81,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 
 
 	@Override
-	public DigResult dig(FirendsDigCondition condition) throws ServiceException {
+	public DigResult dig(FriendsDigCondition condition) throws ServiceException {
 		
 		if (condition == null)
 			throw new ServiceException(Constants.EXCEPTION_CONDITION_IS_NULL);
@@ -120,7 +120,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		
 	}
 	
-	protected void diggerFromFriendsCycle(DigResult result,FirendsDigCondition condition,
+	protected void diggerFromFriendsCycle(DigResult result,FriendsDigCondition condition,
 			ISecondhandManager<?> secondhandManager) throws ServiceException
 	{
 		
@@ -181,7 +181,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 								logger.warn("user :" + _user.getId() + " has no friends.");
 						}
 						
-						counter = getSecondhandsFromUsers(users,secondhandManager,condition
+						counter = getSecondhandsFromUsers(_user,users,secondhandManager,condition
 									,secondhands,counter);
 						
 						//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
@@ -206,7 +206,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 						continue;
 					}
 						
-					counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter);
+					counter = getSecondhandsFromUsers(_user,users,secondhandManager,condition,secondhands,counter);
 				}
 				
 				if (counter >= condition.getQsession().getPageSize())
@@ -223,8 +223,8 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	}
 	
 	
-	int getSecondhandsFromUsers(List<User> users,ISecondhandManager<?> secondhandManager,
-			FirendsDigCondition condition,List<Secondhand> secondhands,
+	int getSecondhandsFromUsers(User bridgeUser,List<User> users,ISecondhandManager<?> secondhandManager,
+			FriendsDigCondition condition,List<Secondhand> secondhands,
 			int counter) throws ServiceException
 	{
 		int start = 0;
@@ -265,7 +265,10 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 				{
 					//设置二手拥有者相关信息
 					if (condition.isIndirectRelation())
+					{
 						_s.setIndirect(true);
+						_s.setBridgeRelation(bridgeUser.getName());
+					}
 					else
 						_s.setIndirect(false);
 					

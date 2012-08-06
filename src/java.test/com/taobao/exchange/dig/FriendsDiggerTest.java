@@ -68,10 +68,10 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 
-		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),true);
+		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),false);
 		categoryCache = new CategoryMemCache();
 		
-		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),true);
+		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
 		
 		sinaAppClient = new SinaAppClient();
 		sinaAppClient.setOpenPlatformEntry(sinaPlatformEntry);
@@ -168,12 +168,12 @@ public class FriendsDiggerTest {
 		
 		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID(keyUser2.getPlatformId(),keyUser2.getId()), az2);
 		
-		FirendsDigCondition friendsDigCondition = new FirendsDigCondition();
+		FriendsDigCondition friendsDigCondition = new FriendsDigCondition();
 		
 		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
-		friendsDigCondition.setUid(keyUser2.getId());
-		friendsDigCondition.setIndirectRelation(true);
+		//friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
+		//friendsDigCondition.setUid(keyUser2.getId());
+		//friendsDigCondition.setIndirectRelation(true);
 		
 		
 		int cursor = 0;
