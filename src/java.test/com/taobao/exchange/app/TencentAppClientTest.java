@@ -12,12 +12,14 @@ import org.junit.Test;
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 
 public class TencentAppClientTest {
 	
 	static IAppClient appclient;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -30,11 +32,11 @@ public class TencentAppClientTest {
 		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
 		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 		
 		appclient = new TencentAppClient();
 		appclient.setOpenPlatformEntry(tencentPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 	}
 
 	@Test
@@ -42,8 +44,7 @@ public class TencentAppClientTest {
 		String code = TestConstants.TencentAuthCode;
 		String openId = TestConstants.TencentOpenId;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
-		authEntity.setOpenId(openId);
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null,openId);
 		
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("reqnum", "200");

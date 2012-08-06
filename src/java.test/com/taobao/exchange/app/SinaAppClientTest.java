@@ -8,13 +8,15 @@ import org.junit.Test;
 
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.app.client.SinaAppClient;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 public class SinaAppClientTest {
 	
 	IAppClient appclient;
-	IAuthKeeper authKeeper;
+	ICache<AppAuthEntity> authCache;
 
 	@Before
 	public void setUp() throws Exception {
@@ -25,11 +27,11 @@ public class SinaAppClientTest {
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 		
 		appclient = new SinaAppClient();
 		appclient.setOpenPlatformEntry(sinaPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 	}
 
 	@After
@@ -41,7 +43,7 @@ public class SinaAppClientTest {
 		
 		String code = TestConstants.SinaAuthCode;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 		
 		String result = appclient.api(authEntity.getUid(), "GET","friendships/friends", null, null);
 		

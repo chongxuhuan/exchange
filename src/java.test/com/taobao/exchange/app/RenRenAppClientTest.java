@@ -12,12 +12,14 @@ import org.junit.Test;
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 
 public class RenRenAppClientTest {
 	
 	static IAppClient appclient;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -30,18 +32,18 @@ public class RenRenAppClientTest {
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
 		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		IAuthKeeper authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 			
 		appclient = new RenRenAppClient();
 		appclient.setOpenPlatformEntry(renrenPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 	}
 
 	@Test
 	public void testApi() throws ServiceException {
 		String code = TestConstants.RenrenAuthCode;
 	
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 	
 	
 		Map<String, Object> params = new HashMap<String,Object>();

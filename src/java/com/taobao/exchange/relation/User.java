@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.taobao.exchange.app.AppAuthEntity;
 import com.taobao.exchange.util.AppClientUtil;
+import com.taobao.exchange.util.ILocalSerializable;
 import com.taobao.exchange.util.ServiceException;
 
 /**
@@ -16,7 +17,7 @@ import com.taobao.exchange.util.ServiceException;
  * 2012-7-4
  *
  */
-public class User implements java.io.Serializable{
+public class User implements java.io.Serializable,ILocalSerializable{
 	
 	/**
 	 * 
@@ -35,19 +36,7 @@ public class User implements java.io.Serializable{
 	
 	public User(String u) throws ServiceException
 	{
-		if (u.indexOf(split) > 0)
-		{
-			String[] us = StringUtils.splitByWholeSeparator(u, split);
-			
-			this.setPlatformId(us[0]);
-			this.setId(us[1]);
-			
-			if (!us[2].equals("null"))
-				this.setName(us[2]);
-			
-		}
-		else
-			throw new ServiceException("User string format error!");
+		updateObjectFormString(u);
 	}
 	
 	public User(AppAuthEntity authEntity)
@@ -87,20 +76,21 @@ public class User implements java.io.Serializable{
 		return new StringBuilder().append(platformId)
 				.append(split).append(id).append(split).append(name).toString();
 	}
-	
-	public static void main(String[] args) throws ServiceException
-	{
-		User t = new User();
-		t.setId("1221");
-		t.setPlatformId("sdfas");
-		
-		String a = t.toString();
-		
-		System.out.println(a.toString());
-		
-		User t1 = new User(a);
-		
-		System.out.println(t1.toString());
-		
+
+	@Override
+	public void updateObjectFormString(String content) throws ServiceException {
+		if (content.indexOf(split) > 0)
+		{
+			String[] us = StringUtils.splitByWholeSeparator(content, split);
+			
+			this.setPlatformId(us[0]);
+			this.setId(us[1]);
+			
+			if (!us[2].equals("null"))
+				this.setName(us[2]);
+			
+		}
+		else
+			throw new ServiceException("User string format error!");
 	}
 }

@@ -6,12 +6,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
-import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.relation.tencent.TencentRelationManager;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
@@ -19,7 +19,7 @@ import com.taobao.exchange.util.ServiceException;
 public class TencentRelationManagerTest {
 
 	static TencentAppClient appclient;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 	static TencentRelationManager tencentRelationManager;
 	static AppAuthEntity authEntity;
 	
@@ -34,11 +34,11 @@ public class TencentRelationManagerTest {
 		tencentPlatformEntry.setAuthEntry("https://open.t.qq.com/cgi-bin/oauth2/access_token");
 		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 		
 		appclient = new TencentAppClient();
 		appclient.setOpenPlatformEntry(tencentPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 		
 		//https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=28068&response_type=code&redirect_uri=http://www.mashupshow.com
 		
@@ -51,11 +51,11 @@ public class TencentRelationManagerTest {
 		authEntity.setNick("cenwenchu79");
 		authEntity.setOpenId("0000000000000000000000001A5649A8");
 		
-		authKeeper.store(authEntity);
+		authCache.put(AppClientUtil.generatePlatformUUID("tencent", "cenwenchu79"), authEntity);
 		
 		tencentRelationManager = new TencentRelationManager();
 		tencentRelationManager.setAppClient(appclient);
-		tencentRelationManager.setRelationCache(new MemCache<String,String>());
+		tencentRelationManager.setRelationCache(new MemCache<String>("",false));
 	}
 
 	@Test

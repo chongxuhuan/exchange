@@ -9,8 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
+import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
@@ -27,10 +27,10 @@ public abstract class AppClient implements IAppClient{
 	private static final Log logger = LogFactory.getLog(AppClient.class);
 	
 	OpenPlatformEntry openPlatformEntry;//开放平台身份
-	IAuthKeeper authKeeper;//不同的client用于保存某一开放平台这个应用的授权信息
+	private ICache<AppAuthEntity> authCache;//不同的client用于保存某一开放平台这个应用的授权信息
 
-	public void setAuthKeeper(IAuthKeeper authKeeper) {
-		this.authKeeper = authKeeper;
+	public void setAuthCache(ICache<AppAuthEntity> authCache) {
+		this.authCache = authCache;
 	}
 
 	public OpenPlatformEntry getOpenPlatformEntry()
@@ -45,8 +45,8 @@ public abstract class AppClient implements IAppClient{
 
 	public AppAuthEntity getAuthEntityByUid(String uid) throws ServiceException
 	{
-		if (authKeeper != null)
-			return authKeeper.take(uid);
+		if (authCache != null)
+			return authCache.get(AppClientUtil.generatePlatformUUID(openPlatformEntry.getId(),uid));
 		else
 			throw new ServiceException("authKeeper is null.");
 	}
@@ -63,13 +63,14 @@ public abstract class AppClient implements IAppClient{
 	 * @throws ServiceException
 	 */
 	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view
-			,String cbAppend) throws ServiceException
+			,String cbAppend,String openId) throws ServiceException
 	{
 		if (openPlatformEntry == null)
 			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
 		AppAuthEntity entity = new AppAuthEntity();
 		entity.setPlatformId(openPlatformEntry.getId());
+		entity.setOpenId(openId);
 				
 		Map<String,Object> params = new HashMap<String,Object>();
 		
@@ -108,8 +109,8 @@ public abstract class AppClient implements IAppClient{
 		}
 		else
 		{
-			entity.loadAuthInfoFromString(result);
-			authKeeper.store(entity); 
+			entity.updateObjectFormString(result);
+			authCache.put(AppClientUtil.generatePlatformUUID(openPlatformEntry.getId(), entity.getUid()), entity); 
 			
 			logger.info(result);
 		}

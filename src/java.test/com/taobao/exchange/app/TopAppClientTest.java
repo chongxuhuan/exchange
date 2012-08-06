@@ -12,13 +12,15 @@ import org.junit.Test;
 
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.app.client.TopAppClient;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
 public class TopAppClientTest {
 	
 	IAppClient appclient;
-	IAuthKeeper authKeeper;
+	ICache<AppAuthEntity> authCache;
 
 	@Before
 	public void setUp() throws Exception {
@@ -30,11 +32,11 @@ public class TopAppClientTest {
 		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
 		topPlatformEntry.setCallbackUrl("www.mashupshow.com/channel");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 			
 		appclient = new TopAppClient();
 		appclient.setOpenPlatformEntry(topPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 		
 	}
 
@@ -47,7 +49,7 @@ public class TopAppClientTest {
 		
 		String code = TestConstants.TOPAuthCode;
 		
-		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
+		AppAuthEntity authEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("fields", "nick,sex,alipay_bind");

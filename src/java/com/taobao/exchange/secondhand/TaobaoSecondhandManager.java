@@ -139,9 +139,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 			params.put("stuff_status", secondhand.getStuff_status());
 		if (secondhand.getContacter() != null)
 			params.put("contacter", secondhand.getContacter());
-		if (secondhand.getPost_fee() > 0)
+		if (secondhand.getPost_fee() != null && Double.valueOf(secondhand.getPost_fee()) > 0)
 			params.put("post_fee", secondhand.getPost_fee());
-		if (secondhand.getOrg_price() > 0)
+		if (secondhand.getOrg_price() != null && Double.valueOf(secondhand.getOrg_price()) > 0)
 			params.put("org_price", secondhand.getOrg_price());
 		if (secondhand.getOfflined() != -1)
 			params.put("offlined", secondhand.getOfflined());
@@ -187,9 +187,9 @@ public class TaobaoSecondhandManager implements ISecondhandManager<TopAppClient>
 			params.put("stuff_status", secondhand.getStuff_status());
 		if (secondhand.getContacter() != null)
 			params.put("contacter", secondhand.getContacter());
-		if (secondhand.getPost_fee() > 0)
+		if (secondhand.getPost_fee() != null && Double.valueOf(secondhand.getPost_fee()) > 0)
 			params.put("post_fee", secondhand.getPost_fee());
-		if (secondhand.getOrg_price() > 0)
+		if (secondhand.getOrg_price() != null && Double.valueOf(secondhand.getOrg_price()) > 0)
 			params.put("org_price", secondhand.getOrg_price());
 		if (secondhand.getOfflined() != -1)
 			params.put("offlined", secondhand.getOfflined());

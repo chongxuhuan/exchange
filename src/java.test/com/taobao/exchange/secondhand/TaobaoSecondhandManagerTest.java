@@ -13,12 +13,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
-import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.RequestAttachment;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.TopAppClient;
 import com.taobao.exchange.dig.SecondhandCondition;
+import com.taobao.exchange.util.AppClientUtil;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 
@@ -28,7 +29,7 @@ public class TaobaoSecondhandManagerTest {
 	static TaobaoSecondhandManager secondhandManager;
 	static String uid;
 	static String iid;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 
 	@BeforeClass
 	public static void setUp() throws Exception {	
@@ -41,11 +42,11 @@ public class TaobaoSecondhandManagerTest {
 		topPlatformEntry.setAuthEntry("https://oauth.taobao.com/token");
 		topPlatformEntry.setCallbackUrl("www.mashupshow.com");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 			
 		appclient = new TopAppClient();
 		appclient.setOpenPlatformEntry(topPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 		
 		secondhandManager = new TaobaoSecondhandManager();
 		secondhandManager.setAppClient(appclient);
@@ -62,8 +63,7 @@ public class TaobaoSecondhandManagerTest {
 		authEntity.setNick("cenwenchu");
 		uid = "24006395";
 		
-		authKeeper.store(authEntity);
-		
+		authCache.put(AppClientUtil.generatePlatformUUID("taobao", uid), authEntity);
 	}
 
 
@@ -103,10 +103,10 @@ public class TaobaoSecondhandManagerTest {
 		secondhand.setDescribe("这是一件好东西,test1234");
 		secondhand.setDivision_id("330106");
 		secondhand.setOfflined(1);
-		secondhand.setOrg_price(100.01);
+		secondhand.setOrg_price("100.01");
 		secondhand.setPhone("13067993324");
-		secondhand.setPost_fee(10.0);
-		secondhand.setPrice(80.5);
+		secondhand.setPost_fee("10.0");
+		secondhand.setPrice("80.5");
 		secondhand.setStuff_status(9);
 		secondhand.setTags("美白,防晒,防水");
 		secondhand.setTitle("超级美白防晒霜");
@@ -145,10 +145,10 @@ public class TaobaoSecondhandManagerTest {
 		secondhand.setDescribe("这是一件好东西,test1234");
 		secondhand.setDivision_id("330106");
 		secondhand.setOfflined(1);
-		secondhand.setOrg_price(100.01);
+		secondhand.setOrg_price("100.01");
 		secondhand.setPhone("13067993324");
-		secondhand.setPost_fee(10.0);
-		secondhand.setPrice(82.5);
+		secondhand.setPost_fee("10.0");
+		secondhand.setPrice("82.5");
 		secondhand.setStuff_status(9);
 		secondhand.setTags("美白,防晒,防水");
 		secondhand.setTitle("超级美白防晒霜");

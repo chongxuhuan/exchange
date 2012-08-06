@@ -15,10 +15,15 @@ import com.taobao.exchange.secondhand.ISecondhandManager;
  * 上午8:09:17
  *
  */
-public class CategoryMemCache extends MemCache<String, Category> {
+public class CategoryMemCache extends MemCache<Category> {
 	
 	private static final Log logger = LogFactory.getLog(CategoryMemCache.class);
 	
+	
+	public CategoryMemCache() {
+		super("", false);
+	}	
+
 	ISecondhandManager<?> secondhandManager;
 
 	public ISecondhandManager<?> getSecondhandManager() {

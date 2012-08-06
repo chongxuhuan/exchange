@@ -18,14 +18,14 @@ import com.taobao.exchange.util.Constants;
  */
 public class RelationManagerFactory {
 	
-	static ConcurrentMap<String,IRelationManager<?,?,?>> pools = new ConcurrentHashMap<String,IRelationManager<?,?,?>>();
+	static ConcurrentMap<String,IRelationManager<?,?>> pools = new ConcurrentHashMap<String,IRelationManager<?,?>>();
 	
-	public static void register(String platformId,IRelationManager<?,?,?> relationManager)
+	public static void register(String platformId,IRelationManager<?,?> relationManager)
 	{
 		pools.put(platformId, relationManager);
 	}
 	
-	public static IRelationManager<?,?,?> get(String platformId) throws ServiceException
+	public static IRelationManager<?,?> get(String platformId) throws ServiceException
 	{
 		if (pools.containsKey(platformId))
 			return pools.get(platformId);

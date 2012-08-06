@@ -10,11 +10,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
-import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.relation.sina.SinaRelationManager;
+import com.taobao.exchange.util.AppClientUtil;
+import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
@@ -25,7 +25,7 @@ public class SinaRelationManagerTest {
 	static SinaRelationManager sinaRelationManager;
 	static SinaAppClient appClient;
 	static String uid;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -37,11 +37,11 @@ public class SinaRelationManagerTest {
 		sinaPlatformEntry.setAuthEntry("https://api.weibo.com/oauth2/access_token");
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 		
 		appClient = new SinaAppClient();
 		appClient.setOpenPlatformEntry(sinaPlatformEntry);
-		appClient.setAuthKeeper(authKeeper);
+		appClient.setAuthCache(authCache);
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
@@ -53,11 +53,11 @@ public class SinaRelationManagerTest {
 		authEntity.setUid("1679264133");
 		uid = "1679264133";
 		
-		authKeeper.store(authEntity);
+		authCache.put(AppClientUtil.generatePlatformUUID("sina", uid), authEntity);
 		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(appClient);
-		sinaRelationManager.setRelationCache(new MemCache<String,String>());
+		sinaRelationManager.setRelationCache(new MemCache<String>("",false));
 		
 	}
 

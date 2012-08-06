@@ -11,6 +11,8 @@ import org.junit.Test;
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.ICache;
+import com.taobao.exchange.util.MemCache;
 
 public class AppClientTest {
 	
@@ -42,11 +44,11 @@ public class AppClientTest {
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
 		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		IAuthKeeper authKeeper = new MemAuthKeeper();
+		ICache<AppAuthEntity> authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 			
 		appclient = new RenRenAppClient();
 		appclient.setOpenPlatformEntry(renrenPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 	}
 
 	@After
@@ -60,7 +62,7 @@ public class AppClientTest {
 		
 		try
 		{
-			AppAuthEntity  appAuthEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
+			AppAuthEntity  appAuthEntity = appclient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 			
 			Assert.assertNotNull(appAuthEntity);
 			

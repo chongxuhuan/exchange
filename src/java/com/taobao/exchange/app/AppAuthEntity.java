@@ -6,6 +6,7 @@ package com.taobao.exchange.app;
 import org.apache.commons.lang.StringUtils;
 
 import com.taobao.exchange.relation.RelationConfig;
+import com.taobao.exchange.util.ILocalSerializable;
 
 /**
  * 应用授权实体,支持多个开放平台的Oauth2协议
@@ -14,7 +15,7 @@ import com.taobao.exchange.relation.RelationConfig;
  * @datetime: 2012-7-4
  *
  */
-public class AppAuthEntity implements java.io.Serializable{
+public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	
 	/**
 	 * 
@@ -42,11 +43,17 @@ public class AppAuthEntity implements java.io.Serializable{
 		relationConfig = new RelationConfig();
 	}
 	
+	public AppAuthEntity(String content)
+	{
+		relationConfig = new RelationConfig();
+		updateObjectFormString(content);
+	}
+	
 	/**
 	 * 从字符串中获得Oauth的属性信息
 	 * @param content
 	 */
-	public void loadAuthInfoFromString(String content)
+	public void updateObjectFormString(String content)
 	{
 		if (content == null)
 			return;
@@ -69,12 +76,27 @@ public class AppAuthEntity implements java.io.Serializable{
 		
 		for(String c : cs)
 		{
+			c = c.trim();
+			
+			if (c.indexOf("platformId") >=0)
+			{
+				if(isJsonStr)
+					this.platformId = getStringValueFromJsonSplitStr(c);
+				else
+					if (c.indexOf("=null") < 0)
+						this.platformId = StringUtils.split(c, "=")[1];
+				
+				continue;
+			}
+			
 			if (c.indexOf("access_token") >= 0)
 			{
 				if(isJsonStr)
 					this.accessToken = getStringValueFromJsonSplitStr(c);
 				else
-					this.accessToken = StringUtils.split(c, "=")[1];
+					if (c.indexOf("=null") < 0)
+						this.accessToken = StringUtils.split(c, "=")[1];
+				
 				continue;
 			}
 			
@@ -83,7 +105,8 @@ public class AppAuthEntity implements java.io.Serializable{
 				if (isJsonStr)
 					this.refreshToken = getStringValueFromJsonSplitStr(c);
 				else
-					this.refreshToken = StringUtils.split(c, "=")[1];
+					if (c.indexOf("=null") < 0)
+						this.refreshToken = StringUtils.split(c, "=")[1];
 				
 				continue;
 			}
@@ -103,7 +126,8 @@ public class AppAuthEntity implements java.io.Serializable{
 				if (isJsonStr)
 					this.nick = getStringValueFromJsonSplitStr(c);
 				else
-					this.nick = StringUtils.split(c, "=")[1];
+					if (c.indexOf("=null") < 0)
+						this.nick = StringUtils.split(c, "=")[1];
 				
 				continue;
 			}
@@ -113,32 +137,49 @@ public class AppAuthEntity implements java.io.Serializable{
 				if (isJsonStr)
 					this.uid = getStringValueFromJsonSplitStr(c);
 				else
-					this.uid = StringUtils.split(c, "=")[1];
+					if (c.indexOf("=null") < 0)
+						this.uid = StringUtils.split(c, "=")[1];
 					
 				continue;
 			}
 			
 			if (c.indexOf("r1_expires_in") >= 0)
 			{
-				this.r1ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.r1ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.r1ExpireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+				
 				continue;
 			}
 			
 			if (c.indexOf("r2_expires_in") >= 0)
 			{
-				this.r2ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.r2ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.r2ExpireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+				
 				continue;
 			}
 			
 			if (c.indexOf("w1_expires_in") >= 0)
 			{
-				this.w1ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.w1ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.w1ExpireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+					
 				continue;
 			}
 			
 			if (c.indexOf("w2_expires_in") >= 0)
 			{
-				this.w2ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				if (isJsonStr)
+					this.w2ExpireTime = getIntegerValueFromJsonSplitStr(c);
+				else
+					this.w2ExpireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+					
 				continue;
 			}
 			
@@ -148,6 +189,30 @@ public class AppAuthEntity implements java.io.Serializable{
 					this.expireTime = getIntegerValueFromJsonSplitStr(c);
 				else
 					this.expireTime = Integer.valueOf(StringUtils.split(c, "=")[1]);
+				continue;
+			}
+			
+			if (c.indexOf("openId") >= 0)
+			{
+				if (isJsonStr)
+					this.openId = getStringValueFromJsonSplitStr(c);
+				else
+					if (c.indexOf("=null") < 0)
+						this.openId = StringUtils.split(c, "=")[1];
+				continue;
+			}
+			
+			if (c.indexOf("relationConfig.hideSecondhandUserInfo") >= 0)
+			{
+				this.relationConfig.setHideSecondhandUserInfo(Boolean.valueOf(StringUtils.split(c, "=")[1]));
+				
+				continue;
+			}
+			
+			if (c.indexOf("relationConfig.relationLevel") >= 0)
+			{
+				this.relationConfig.setRelationLevel(Integer.parseInt((StringUtils.split(c, "=")[1])));
+				
 				continue;
 			}
 			
@@ -265,15 +330,20 @@ public class AppAuthEntity implements java.io.Serializable{
 
 	public String toString()
 	{
-		return new StringBuilder().append("uid=").append(uid).append(" , ")
-				.append("nick=").append(nick).append(" , ")
-				.append("accessToken=").append(accessToken).append(" , ")
-				.append("refreshToken=").append(refreshToken).append(" , ")
-				.append("refreshExpireTime=").append(refreshExpireTime).append(" , ")
-				.append("r1ExpireTime=").append(r1ExpireTime).append(" , ")
-				.append("r2ExpireTime=").append(r2ExpireTime).append(" , ")
-				.append("w1ExpireTime=").append(w1ExpireTime).append(" , ")
-				.append("w2ExpireTime=").append(w2ExpireTime).append(" , ").toString();
+		return new StringBuilder().append("platformId=").append(platformId).append(",")
+				.append("uid=").append(uid).append(",")
+				.append("name=").append(nick).append(",")
+				.append("access_token=").append(accessToken).append(",")
+				.append("refresh_token=").append(refreshToken).append(",")
+				.append("re_expires_in=").append(refreshExpireTime).append(",")
+				.append("r1_expires_in=").append(r1ExpireTime).append(",")
+				.append("r2_expires_in=").append(r2ExpireTime).append(",")
+				.append("w1_expires_in=").append(w1ExpireTime).append(",")
+				.append("w2_expires_in=").append(w2ExpireTime).append(",")
+				.append("expires_in=").append(expireTime).append(",")
+				.append("openId=").append(openId).append(",")
+				.append("relationConfig.hideSecondhandUserInfo=").append(relationConfig.isHideSecondhandUserInfo()).append(",") 
+				.append("relationConfig.relationLevel=").append(relationConfig.getRelationLevel()).toString();
 	}
 
 }

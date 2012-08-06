@@ -19,7 +19,7 @@ import com.taobao.exchange.util.ICache;
  * 2012-7-4
  *
  */
-public interface IRelationManager <C extends IAppClient,K,V>{
+public interface IRelationManager <C extends IAppClient,V>{
 	
 	/**
 	 * 设置支持获取关系数据的应用客户端
@@ -31,13 +31,13 @@ public interface IRelationManager <C extends IAppClient,K,V>{
 	 * 注入cache支持关系缓存
 	 * @param cache
 	 */
-	void setRelationCache(ICache<K,V> cache);
+	void setRelationCache(ICache<V> cache);
 	
 	/**
 	 * 获取内置关系缓存
 	 * @return
 	 */
-	ICache<K,V> getRelationCache();
+	ICache<V> getRelationCache();
 
 	/**
 	 * 获取当前用户的好友关系

@@ -9,19 +9,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
-import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.relation.renren.RenRenRelationManager;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.MemCache;
 import com.taobao.exchange.util.ServiceException;
 
 public class RenRenRelationManagerTest {
 	
 	static RenRenAppClient appclient;
-	static IAuthKeeper authKeeper;
+	static ICache<AppAuthEntity> authCache;
 	static RenRenRelationManager renrenRelationManager;
 	static AppAuthEntity authEntity;
 
@@ -36,11 +36,11 @@ public class RenRenRelationManagerTest {
 		renrenPlatformEntry.setAuthEntry("https://graph.renren.com/oauth/token");
 		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
-		authKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>("AppAuth",true);
 			
 		appclient = new RenRenAppClient();
 		appclient.setOpenPlatformEntry(renrenPlatformEntry);
-		appclient.setAuthKeeper(authKeeper);
+		appclient.setAuthCache(authCache);
 		
 		//https://graph.renren.com/oauth/authorize?client_id=382c091506ff46d3a49e6e6ed8894507&redirect_uri=http://www.mashupshow.com/channel&response_type=code
 			
@@ -52,11 +52,11 @@ public class RenRenRelationManagerTest {
 		authEntity.setUid("254283491");
 		authEntity.setNick("岑文初");
 		
-		authKeeper.store(authEntity);
+		authCache.put(AppClientUtil.generatePlatformUUID("renren", "254283491"), authEntity);
 		
 		renrenRelationManager = new RenRenRelationManager();
 		renrenRelationManager.setAppClient(appclient);
-		renrenRelationManager.setRelationCache(new MemCache<String,String>());
+		renrenRelationManager.setRelationCache(new MemCache<String>("",false));
 	}
 
 	@Test

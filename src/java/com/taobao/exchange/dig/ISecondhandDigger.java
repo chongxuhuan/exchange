@@ -22,7 +22,7 @@ public interface ISecondhandDigger<T extends IDigCondition> {
 	 * @param userToAccountZooCache
 	 */
 	void setUserToAccountZooCache(
-			ICache<String, AccountZoo> userToAccountZooCache);
+			ICache<AccountZoo> userToAccountZooCache);
 	
 	/**
 	 * 挖掘二手商品

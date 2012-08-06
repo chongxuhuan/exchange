@@ -10,13 +10,13 @@ package com.taobao.exchange.util;
  * 2012-7-10
  *
  */
-public interface ICache<K,V> {
+public interface ICache<V> {
 
-	void put(K name, V value);
+	void put(String name, V value);
 	
-	V get(K name);
+	V get(String name);
 	
-	V remove(K name);
+	V remove(String name);
 	
 	void clear();
 	

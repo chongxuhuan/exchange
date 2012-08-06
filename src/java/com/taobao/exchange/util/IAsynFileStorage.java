@@ -10,7 +10,7 @@ package com.taobao.exchange.util;
  * 2012-8-1
  *
  */
-public interface IAsynFileStorage {
+public interface IAsynFileStorage<T> {
 	
 	/**
 	 * 设置存储文件名称
@@ -22,11 +22,12 @@ public interface IAsynFileStorage {
 	 * 异步存储对象到文件
 	 * @param 要存储的对象
 	 */
-	void asynStore(Object obj);
+	void asynStore(T obj);
 	
 	/**
 	 * 异步从文件中载入数据
+	 * @param 文件名称
 	 */
-	void asynLoadFormFile();
+	void asynLoadFormFile(String fileName);
 	
 }

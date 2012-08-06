@@ -33,16 +33,16 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 	private static final Log logger = LogFactory.getLog(FriendsDigger.class);
 	
 	//某一个平台帐号与AZ的对应关系
-	private ICache<String,AccountZoo> userToAccountZooCache;
+	private ICache<AccountZoo> userToAccountZooCache;
 
 
-	public ICache<String, AccountZoo> getUserToAccountZooCache() {
+	public ICache<AccountZoo> getUserToAccountZooCache() {
 		return userToAccountZooCache;
 	}
 
 
 	public void setUserToAccountZooCache(
-			ICache<String, AccountZoo> userToAccountZooCache) {
+			ICache<AccountZoo> userToAccountZooCache) {
 		this.userToAccountZooCache = userToAccountZooCache;
 	}
 	
@@ -66,10 +66,10 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		if(condition.getDivision_id() != -1 && (Integer.valueOf(s.getDivision_id()) != condition.getDivision_id()))
 			return false;
 		
-		if (condition.getStart_price() != -1 && (s.getPrice() < condition.getStart_price() ))
+		if (condition.getStart_price() != -1 && (Double.valueOf(s.getPrice()) < Double.valueOf(condition.getStart_price() )))
 			return false;
 		
-		if (condition.getEnd_price() != -1 && (s.getPrice() > condition.getEnd_price() ))
+		if (condition.getEnd_price() != -1 && (Double.valueOf(s.getPrice()) > Double.valueOf(condition.getEnd_price()) ))
 			return false;
 		
 		if(condition.getHas_phone() != -1 && (s.getPhone() == null))
@@ -141,7 +141,7 @@ public class FriendsDigger implements ISecondhandDigger<FirendsDigCondition> {
 		{
 			for(User _user : relations)
 			{
-				IRelationManager<?,?,?> relationManager = RelationManagerFactory.get(_user.getPlatformId());
+				IRelationManager<?,?> relationManager = RelationManagerFactory.get(_user.getPlatformId());
 				
 				if (relationManager == null)
 				{

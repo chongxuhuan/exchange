@@ -26,7 +26,7 @@ public class TencentAppClient extends AppClient{
 		if (openPlatformEntry == null)
 			throw new ServiceException(Constants.EXCEPTION_PLATFORMENTRY_NOT_EXIST);
 		
-		if (userId != null && authKeeper.take(userId) == null)
+		if (userId != null && getAuthEntityByUid(userId) == null)
 			throw new ServiceException(Constants.EXCEPTION_AUTH_USER_NOT_EXIST);
 		
 		if(apiName == null)
@@ -47,10 +47,10 @@ public class TencentAppClient extends AppClient{
 		
 		params.put("oauth_consumer_key", openPlatformEntry.getAppKey());
 		
-		if (userId != null && authKeeper.take(userId) != null)
+		if (userId != null && getAuthEntityByUid(userId) != null)
 		{		
-			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, authKeeper.take(userId).getAccessToken());
-			params.put("openid", authKeeper.take(userId).getOpenId());
+			params.put(Constants.SYS_PARAMETER_ACCESS_TOKEN, getAuthEntityByUid(userId).getAccessToken());
+			params.put("openid", getAuthEntityByUid(userId).getOpenId());
 		}
 		else
 		{

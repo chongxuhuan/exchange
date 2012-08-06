@@ -6,8 +6,8 @@ package com.taobao.exchange.app.client;
 import java.util.Map;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
+import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.ServiceException;
 
 
@@ -40,16 +40,17 @@ public interface IAppClient {
 	 * @param 参看Oauth2协议
 	 * @param 参看Oauth2协议
 	 * @param 需要对callback增加的内容串，用与支持类似腾讯不支持state的情况
+	 * @param 腾讯特殊的字符串
 	 * @return
 	 */
-	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view,String cbAppend) throws ServiceException;
+	public AppAuthEntity getAccessTokenByCodeAndStore(String code,String scope,String state,String view,String cbAppend,String openId) throws ServiceException;
 	
 	
 	/**
 	 * 获得授权的管理实现
-	 * @param authKeeper
+	 * @param authCache
 	 */
-	public void setAuthKeeper(IAuthKeeper authKeeper) throws ServiceException;
+	public void setAuthCache(ICache<AppAuthEntity> authCache) throws ServiceException;
 	
 	/**
 	 * 根据用户id获取授权

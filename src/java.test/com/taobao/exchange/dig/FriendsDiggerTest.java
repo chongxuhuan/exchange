@@ -11,8 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
-import com.taobao.exchange.app.IAuthKeeper;
-import com.taobao.exchange.app.MemAuthKeeper;
 import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.app.client.TopAppClient;
@@ -41,11 +39,10 @@ public class FriendsDiggerTest {
 	static FriendsDigger digger;
 	static SinaAppClient sinaAppClient;
 	static TopAppClient topAppClient;
-	static IAuthKeeper topAuthKeeper;
-	static IAuthKeeper sinaAuthKeeper;
+	static ICache<AppAuthEntity> authCache;
 	static TaobaoSecondhandManager secondhandManager;
 	static SinaRelationManager sinaRelationManager;
-	static ICache<String,AccountZoo> userToAccountZooCache;
+	static ICache<AccountZoo> userToAccountZooCache;
 	static CategoryMemCache categoryCache;
 	
 
@@ -71,19 +68,18 @@ public class FriendsDiggerTest {
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 
-		userToAccountZooCache = new MemCache<String,AccountZoo>();
+		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),true);
 		categoryCache = new CategoryMemCache();
 		
-		topAuthKeeper = new MemAuthKeeper();
-		sinaAuthKeeper = new MemAuthKeeper();
+		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),true);
 		
 		sinaAppClient = new SinaAppClient();
 		sinaAppClient.setOpenPlatformEntry(sinaPlatformEntry);
-		sinaAppClient.setAuthKeeper(sinaAuthKeeper);
+		sinaAppClient.setAuthCache(authCache);
 		
 		topAppClient = new TopAppClient();
 		topAppClient.setOpenPlatformEntry(topPlatformEntry);
-		topAppClient.setAuthKeeper(topAuthKeeper);
+		topAppClient.setAuthCache(authCache);
 		
 		digger = new FriendsDigger();
 		digger.setUserToAccountZooCache(userToAccountZooCache);
@@ -96,7 +92,7 @@ public class FriendsDiggerTest {
 		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(sinaAppClient);
-		sinaRelationManager.setRelationCache(new MemCache<String,String>());
+		sinaRelationManager.setRelationCache(new MemCache<String>("",false));
 		
 		SecondhandManagerFactory.register(topAppClient.getOpenPlatformEntry().getId(), secondhandManager);
 		RelationManagerFactory.register(sinaAppClient.getOpenPlatformEntry().getId(), sinaRelationManager);
@@ -125,12 +121,13 @@ public class FriendsDiggerTest {
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
 		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvfa07ca5b2cKSXWqC");
 		sinaAuthEntity.setUid("1679264133");
-		sinaAuthKeeper.store(sinaAuthEntity);
+		authCache.put(AppClientUtil.generatePlatformUUID("sina","1679264133"),sinaAuthEntity);
 		
 		AppAuthEntity sinaAuthEntity2 = new AppAuthEntity();
 		sinaAuthEntity2.setAccessToken("2.00qtUcxB0QLIOv2e8dd7755f0K5UnH");
 		sinaAuthEntity2.setUid("1797111902");
-		sinaAuthKeeper.store(sinaAuthEntity2);
+		authCache.put(AppClientUtil.generatePlatformUUID("sina","1797111902"),sinaAuthEntity);
+	
 		
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
@@ -142,7 +139,7 @@ public class FriendsDiggerTest {
 		topAuthEntity.setAccessToken("6200e14567b89e4fbe2aeace2962155bd23117396c7bd5e24006395");
 		topAuthEntity.setUid("24006395");
 		topAuthEntity.setNick("cenwenchu");
-		topAuthKeeper.store(topAuthEntity);
+		authCache.put(AppClientUtil.generatePlatformUUID("taobao","24006395"),topAuthEntity);
 		
 		//create 卖家帐号
 		AccountZoo az = new AccountZoo();

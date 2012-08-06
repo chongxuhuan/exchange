@@ -22,11 +22,11 @@ import com.taobao.exchange.util.ServiceException;
  *
  */
 public abstract class AbstractRelationManager<C extends IAppClient> implements
-		IRelationManager<C,String,String> {
+		IRelationManager<C,String> {
 	
 	private static final Log logger = LogFactory.getLog(AbstractRelationManager.class);
 	
-	protected ICache<String,String> relationCache;
+	protected ICache<String> relationCache;
 	protected C appClient;
 	
 	@Override
@@ -35,12 +35,12 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 	}
 	
 	@Override
-	public void setRelationCache(ICache<String, String> relationCache) {
+	public void setRelationCache(ICache<String> relationCache) {
 		this.relationCache = relationCache;
 	}
 
 	@Override
-	public ICache<String, String> getRelationCache() {
+	public ICache<String> getRelationCache() {
 		return relationCache;
 	}
 	
