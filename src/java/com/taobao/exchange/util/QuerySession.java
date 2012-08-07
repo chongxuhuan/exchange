@@ -12,7 +12,12 @@ import java.util.Map;
  * 下午11:51:10
  *
  */
-public class QuerySession {
+public class QuerySession implements java.io.Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7122552414003182536L;
 
 	private int cursor = 0;
 	

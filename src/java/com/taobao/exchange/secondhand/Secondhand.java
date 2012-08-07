@@ -88,10 +88,7 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getNick() {
-		if (nick != null)
-			return nick;
-		else
-			return this.seller_nick;
+		return nick;
 	}
 
 	public void setNick(String nick) {
@@ -107,10 +104,7 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getMajor_imageurl() {
-		if (this.major_imageurl != null)
 			return major_imageurl;
-		else
-			return pic_url;
 	}
 
 	public void setMajor_imageurl(String major_imageurl) {
@@ -134,11 +128,7 @@ public class Secondhand implements java.io.Serializable{
 	}
 
 	public String getDescribe() {
-		
-		if (describe != null)
-			return describe;
-		else
-			return desc;
+		return describe;
 	}
 
 	public void setDescribe(String describe) {
@@ -213,10 +203,7 @@ public class Secondhand implements java.io.Serializable{
 		this.org_price = org_price;
 	}
 	public int getOfflined() {
-		if (offlined != -1)
-			return offlined;
-		else
-			return offline;
+		return offlined;
 	}
 	public void setOfflined(int offlined) {
 		this.offlined = offlined;
@@ -274,15 +261,18 @@ public class Secondhand implements java.io.Serializable{
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+		this.describe = desc;
 	}
 
 	public void setOffline(int offline) {
 		this.offline = offline;
+		this.offlined = offline;
 	}
 
 
 	public void setPic_url(String pic_url) {
 		this.pic_url = pic_url;
+		this.major_imageurl = pic_url;
 	}
 
 	public String getSeller_id() {
@@ -295,6 +285,7 @@ public class Secondhand implements java.io.Serializable{
 
 	public void setSeller_nick(String seller_nick) {
 		this.seller_nick = seller_nick;
+		this.nick = seller_nick;
 	}
 
 //	public String getBridgeRelation() {
