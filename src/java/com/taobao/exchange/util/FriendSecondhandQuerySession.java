@@ -11,6 +11,11 @@ package com.taobao.exchange.util;
  */
 public class FriendSecondhandQuerySession extends QuerySession {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2624462792829588148L;
+
 	private String secondhandId;
 	
 	private String uid;

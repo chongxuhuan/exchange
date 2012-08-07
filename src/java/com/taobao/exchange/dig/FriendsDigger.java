@@ -150,27 +150,28 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 								+ " platform id : " + _user.getPlatformId());
 				}
 				
+				//定位上下文，通过上一次的会话
+				FriendSecondhandQuerySession qs;
+				
+				if(condition.getContext() != null)
+					qs = condition.getContext();
+				else
+				{
+					qs = new FriendSecondhandQuerySession();
+					qs.setCursor(0);
+					qs.setPageSize(20);
+					
+					condition.setContext(qs);
+				}
+				
+				if (qs.getRound() > round)
+				{
+					round += 1;
+					continue;
+				}
+				
 				if (condition.isIndirectRelation())
 				{
-					FriendSecondhandQuerySession qs;
-					
-					if(condition.getContext() != null)
-						qs = condition.getContext();
-					else
-					{
-						qs = new FriendSecondhandQuerySession();
-						qs.setCursor(0);
-						qs.setPageSize(20);
-						
-						condition.setContext(qs);
-					}
-					
-					if (qs.getRound() > round)
-					{
-						round += 1;
-						continue;
-					}
-					
 					do
 					{
 						users = relationManager.getIndirectFriendsByUser(_user.getId(),qs);
@@ -187,7 +188,9 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 						//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
 						if(counter >= condition.getQsession().getPageSize())
 						{
-							qs.setCursor(qs.getCursor() -1);
+							if (qs.getCursor() > 0)
+								qs.setCursor(qs.getCursor() -1);
+							
 							qs.clearFilter();
 							break;
 						}
@@ -207,6 +210,16 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 					}
 						
 					counter = getSecondhandsFromUsers(_user,users,secondhandManager,condition,secondhands,counter);
+					
+					//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
+					if(counter >= condition.getQsession().getPageSize())
+					{
+						if (qs.getCursor() > 0)
+							qs.setCursor(qs.getCursor() -1);
+						
+						qs.clearFilter();
+						break;
+					}
 				}
 				
 				if (counter >= condition.getQsession().getPageSize())
@@ -215,6 +228,16 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 				}
 
 				round += 1;
+			}
+			
+			//这轮所有内容总和都不满足一页
+			if(counter < condition.getQsession().getPageSize())
+			{
+				condition.getContext().setRound(0);
+				condition.getContext().setCursor(0);
+				condition.getContext().setSecondhandId(null);
+				condition.getContext().setUid(null);
+				return;
 			}
 			
 			if (condition.getContext() != null)
