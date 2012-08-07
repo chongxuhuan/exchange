@@ -31,6 +31,11 @@ public class MemCache<V> extends AbstractAsynFileStorage<String> implements ICac
 	public final static String delete = "-";
 	public final static String clear = "--";
 	
+	public MemCache()
+	{
+		super(null,false);
+	}
+	
 	public MemCache(String className, boolean needStartAsynMode) {
 		super(className, needStartAsynMode);
 	}
