@@ -93,6 +93,7 @@ public class FriendsDiggerTest {
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(sinaAppClient);
 		sinaRelationManager.setRelationCache(new MemCache<String>("",false));
+		sinaRelationManager.setUserToAccountZooCache(userToAccountZooCache);
 		
 		SecondhandManagerFactory.register(topAppClient.getOpenPlatformEntry().getId(), secondhandManager);
 		RelationManagerFactory.register(sinaAppClient.getOpenPlatformEntry().getId(), sinaRelationManager);
@@ -115,28 +116,30 @@ public class FriendsDiggerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
-		//String code = "03161fa211b92e692fa8aa884143ae53";
-		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web",null);
+		//String code = "a32ea1f31445d4025d1eb1684aec00fc";
+		//AppAuthEntity sinaAuthEntity = sinaAppClient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 		
 		AppAuthEntity sinaAuthEntity = new AppAuthEntity();
-		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOvfa07ca5b2cKSXWqC");
+		sinaAuthEntity.setAccessToken("2.004_BepB0QLIOva7f0c2bc6dSmCrGC");
 		sinaAuthEntity.setUid("1679264133");
+		sinaAuthEntity.setNick("放翁_文初");
 		authCache.put(AppClientUtil.generatePlatformUUID("sina","1679264133"),sinaAuthEntity);
 		
 		AppAuthEntity sinaAuthEntity2 = new AppAuthEntity();
-		sinaAuthEntity2.setAccessToken("2.00qtUcxB0QLIOv2e8dd7755f0K5UnH");
+		sinaAuthEntity2.setAccessToken("2.00qtUcxB0QLIOve90b742c5cMpxJmB");
 		sinaAuthEntity2.setUid("1797111902");
-		authCache.put(AppClientUtil.generatePlatformUUID("sina","1797111902"),sinaAuthEntity);
+		sinaAuthEntity2.setNick("朱棣");
+		authCache.put(AppClientUtil.generatePlatformUUID("sina","1797111902"),sinaAuthEntity2);
 	
 		
 		// first call this url 
 		//https://oauth.taobao.com/authorize?response_type=code&redirect_uri=www.mashupshow.com&client_id=12643042
 		
-		//String code = "pjZOjqnAgh3ubEzuZ4GIvHVt259500";
-		//AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		//String code = "j5s5KDxCqCfNfcjj5480UtZ91137";
+		//AppAuthEntity topAuthEntity = topAppClient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 		
 		AppAuthEntity topAuthEntity = new AppAuthEntity();
-		topAuthEntity.setAccessToken("6200e14567b89e4fbe2aeace2962155bd23117396c7bd5e24006395");
+		topAuthEntity.setAccessToken("6201c02d28ZZ002a3b86bd1e2effe297e9215e503a69c0a24006395");
 		topAuthEntity.setUid("24006395");
 		topAuthEntity.setNick("cenwenchu");
 		authCache.put(AppClientUtil.generatePlatformUUID("taobao","24006395"),topAuthEntity);
@@ -171,9 +174,9 @@ public class FriendsDiggerTest {
 		FriendsDigCondition friendsDigCondition = new FriendsDigCondition();
 		
 		friendsDigCondition.setSecondHandPlatformID(Constants.PLATFORM_ID_TAOBAO);
-		//friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
-		//friendsDigCondition.setUid(keyUser2.getId());
-		//friendsDigCondition.setIndirectRelation(true);
+		friendsDigCondition.setPlatformID(keyUser2.getPlatformId());
+		friendsDigCondition.setUid(keyUser2.getId());
+		friendsDigCondition.setIndirectRelation(true);
 		
 		
 		int cursor = 0;

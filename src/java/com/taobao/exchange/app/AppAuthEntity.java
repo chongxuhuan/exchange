@@ -4,8 +4,6 @@
 package com.taobao.exchange.app;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.taobao.exchange.relation.RelationConfig;
 import com.taobao.exchange.util.ILocalSerializable;
 
 /**
@@ -36,16 +34,10 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	
 	private String openId;//腾讯微博特有的用户标示
 	
-	private RelationConfig relationConfig;
-	
-	public AppAuthEntity()
-	{
-		relationConfig = new RelationConfig();
-	}
+	public AppAuthEntity(){}
 	
 	public AppAuthEntity(String content)
 	{
-		relationConfig = new RelationConfig();
 		updateObjectFormString(content);
 	}
 	
@@ -202,20 +194,6 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 				continue;
 			}
 			
-			if (c.indexOf("relationConfig.hideSecondhandUserInfo") >= 0)
-			{
-				this.relationConfig.setHideSecondhandUserInfo(Boolean.valueOf(StringUtils.split(c, "=")[1]));
-				
-				continue;
-			}
-			
-			if (c.indexOf("relationConfig.relationLevel") >= 0)
-			{
-				this.relationConfig.setRelationLevel(Integer.parseInt((StringUtils.split(c, "=")[1])));
-				
-				continue;
-			}
-			
 		}
 		
 		//处理腾迅的情况
@@ -311,14 +289,6 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
-	
-	public RelationConfig getRelationConfig() {
-		return relationConfig;
-	}
-
-	public void setRelationConfig(RelationConfig relationConfig) {
-		this.relationConfig = relationConfig;
-	}
 
 	public String getOpenId() {
 		return openId;
@@ -341,9 +311,7 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 				.append("w1_expires_in=").append(w1ExpireTime).append(",")
 				.append("w2_expires_in=").append(w2ExpireTime).append(",")
 				.append("expires_in=").append(expireTime).append(",")
-				.append("openId=").append(openId).append(",")
-				.append("relationConfig.hideSecondhandUserInfo=").append(relationConfig.isHideSecondhandUserInfo()).append(",") 
-				.append("relationConfig.relationLevel=").append(relationConfig.getRelationLevel()).toString();
+				.append("openId=").append(openId).toString();
 	}
 
 }

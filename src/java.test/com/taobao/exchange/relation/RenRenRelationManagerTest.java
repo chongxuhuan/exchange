@@ -24,6 +24,7 @@ public class RenRenRelationManagerTest {
 	static ICache<AppAuthEntity> authCache;
 	static RenRenRelationManager renrenRelationManager;
 	static AppAuthEntity authEntity;
+	static ICache<AccountZoo> userToAccountZooCache;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -37,6 +38,7 @@ public class RenRenRelationManagerTest {
 		renrenPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
+		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),false);
 			
 		appclient = new RenRenAppClient();
 		appclient.setOpenPlatformEntry(renrenPlatformEntry);
@@ -57,6 +59,7 @@ public class RenRenRelationManagerTest {
 		renrenRelationManager = new RenRenRelationManager();
 		renrenRelationManager.setAppClient(appclient);
 		renrenRelationManager.setRelationCache(new MemCache<String>("",false));
+		renrenRelationManager.setUserToAccountZooCache(userToAccountZooCache);
 	}
 
 	@Test

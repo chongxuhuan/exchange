@@ -60,7 +60,7 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 	}
 	
 	@Override 
-	public List<User> getApplicationFriendsByUser(String sessionUid,String uid,QuerySession session) throws ServiceException
+	public List<User> getApplicationFriendsByUser(String uid) throws ServiceException
 	{
 		if (appClient == null)
 			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);

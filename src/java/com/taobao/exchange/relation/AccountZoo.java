@@ -32,15 +32,28 @@ public class AccountZoo implements java.io.Serializable,ILocalSerializable{
 
 	User secondhandAccount;//二手交易平台身份
 	private ConcurrentMap<String,User> relationAccounts;//多个社会化关系开放平台身份
+	private RelationConfig relationConfig;
 	
 	public AccountZoo()
 	{	
 		relationAccounts = new ConcurrentHashMap<String,User>();
+		relationConfig = new RelationConfig();
 	}
 	
 	public AccountZoo(String az) throws ServiceException
 	{
+		relationAccounts = new ConcurrentHashMap<String,User>();
+		relationConfig = new RelationConfig();
+		
 		this.updateObjectFormString(az);		
+	}
+
+	public RelationConfig getRelationConfig() {
+		return relationConfig;
+	}
+
+	public void setRelationConfig(RelationConfig relationConfig) {
+		this.relationConfig = relationConfig;
 	}
 
 	public User getSecondhandAccount() {
@@ -76,6 +89,10 @@ public class AccountZoo implements java.io.Serializable,ILocalSerializable{
 	{
 		StringBuilder result = new StringBuilder();
 		
+		result.append(relationConfig.isHideSecondhandUserInfo())
+			.append(split).append(relationConfig.getRelationLevel()).append(split);
+		
+		
 		if (secondhandAccount != null)
 			result.append(secondhandAccount.toString());
 		else
@@ -96,25 +113,28 @@ public class AccountZoo implements java.io.Serializable,ILocalSerializable{
 
 	@Override
 	public void updateObjectFormString(String content) throws ServiceException {
-		relationAccounts = new ConcurrentHashMap<String,User>();
+		relationAccounts.clear();
 		
 		if (content.indexOf(split) > 0)
 		{
-			String[] users = StringUtils.splitByWholeSeparator(content, split);
+			String[] cs = StringUtils.splitByWholeSeparator(content, split);
 			
-			if (!users[0].equals("null"))
+			relationConfig.setHideSecondhandUserInfo(Boolean.valueOf(cs[0]));
+			relationConfig.setRelationLevel(Integer.valueOf(cs[1]));
+			
+			if (!cs[2].equals("null"))
 			{
-				secondhandAccount = new User(users[0]);
+				secondhandAccount = new User(cs[2]);
 			}
 			
-			if (users.length > 1)
+			if (cs.length > 3)
 			{
-				for (int i = 1; i < users.length; i++)
+				for (int i = 3; i < cs.length; i++)
 				{
-					if (users[i].indexOf(User.split) < 0)
+					if (cs[i].indexOf(User.split) < 0)
 						continue;
 						
-					User u = new User(users[i]);
+					User u = new User(cs[i]);
 					relationAccounts.put(u.generateUserKey(), u);
 				}
 			}

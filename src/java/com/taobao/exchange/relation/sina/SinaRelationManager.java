@@ -16,7 +16,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.relation.AbstractRelationManager;
+import com.taobao.exchange.relation.AccountZoo;
 import com.taobao.exchange.relation.User;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
@@ -72,8 +74,10 @@ public class SinaRelationManager extends AbstractRelationManager<SinaAppClient> 
 				params.put("uid", uid);
 				
 				
-				if (appClient.getAuthEntityByUid(sessionUid)
-						.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
+				AccountZoo az = getUserToAccountZooCache().
+									get(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_SINA, sessionUid));
+				
+				if (az.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
 				{
 					jsonResult = appClient.api(sessionUid, "GET","friendships/friends", null, params);
 				}

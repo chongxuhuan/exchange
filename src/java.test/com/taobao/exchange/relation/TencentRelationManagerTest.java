@@ -22,6 +22,7 @@ public class TencentRelationManagerTest {
 	static ICache<AppAuthEntity> authCache;
 	static TencentRelationManager tencentRelationManager;
 	static AppAuthEntity authEntity;
+	static ICache<AccountZoo> userToAccountZooCache;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -35,6 +36,7 @@ public class TencentRelationManagerTest {
 		tencentPlatformEntry.setCallbackUrl("http://www.mashupshow.com");
 		
 		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
+		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),false);
 		
 		appclient = new TencentAppClient();
 		appclient.setOpenPlatformEntry(tencentPlatformEntry);
@@ -53,9 +55,15 @@ public class TencentRelationManagerTest {
 		
 		authCache.put(AppClientUtil.generatePlatformUUID("tencent", "cenwenchu79"), authEntity);
 		
+		AccountZoo az = new AccountZoo();
+		
+		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID("tencent", "cenwenchu79"), az);
+		
+		
 		tencentRelationManager = new TencentRelationManager();
 		tencentRelationManager.setAppClient(appclient);
 		tencentRelationManager.setRelationCache(new MemCache<String>("",false));
+		tencentRelationManager.setUserToAccountZooCache(userToAccountZooCache);
 	}
 
 	@Test
@@ -66,7 +74,8 @@ public class TencentRelationManagerTest {
 		
 		tencentRelationManager.getRelationCache().clear();
 		
-		appclient.getAuthEntityByUid("cenwenchu79").getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
+		userToAccountZooCache.get(AppClientUtil.generatePlatformUUID("tencent", "cenwenchu79"))
+			.getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
 		
 		users = tencentRelationManager.getFriendsByUser(authEntity.getUid(), authEntity.getUid(), null);
 		

@@ -63,12 +63,10 @@ public interface IRelationManager <C extends IAppClient,V>{
 	
 	/**
 	 * 获取当前用户已经授权给这个应用的好友关系
-	 * @param 授权的用户Id
 	 * @param 要查询好友的用户id
-	 * @param 查询分页用的上下文，每次查询会修改这个对象作为下次查询的输入(注意用了这个就不会用缓存)
 	 * @return
 	 */
-	List<User> getApplicationFriendsByUser(String sessionUid,String uid,QuerySession session) throws ServiceException;
+	List<User> getApplicationFriendsByUser(String uid) throws ServiceException;
 	
 	/**
 	 * 返回当前用户的间接好友，就是朋友的朋友(支持到两级)

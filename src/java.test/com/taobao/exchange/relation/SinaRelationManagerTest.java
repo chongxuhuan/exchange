@@ -26,6 +26,7 @@ public class SinaRelationManagerTest {
 	static SinaAppClient appClient;
 	static String uid;
 	static ICache<AppAuthEntity> authCache;
+	static ICache<AccountZoo> userToAccountZooCache;
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -38,6 +39,7 @@ public class SinaRelationManagerTest {
 		sinaPlatformEntry.setCallbackUrl("http://www.mashupshow.com/channel");
 		
 		authCache = new MemCache<AppAuthEntity>(AppAuthEntity.class.getName(),false);
+		userToAccountZooCache = new MemCache<AccountZoo>(AccountZoo.class.getName(),false);
 		
 		appClient = new SinaAppClient();
 		appClient.setOpenPlatformEntry(sinaPlatformEntry);
@@ -55,10 +57,14 @@ public class SinaRelationManagerTest {
 		
 		authCache.put(AppClientUtil.generatePlatformUUID("sina", uid), authEntity);
 		
+		AccountZoo az = new AccountZoo();
+		
+		userToAccountZooCache.put(AppClientUtil.generatePlatformUUID("sina", uid), az);
+		
 		sinaRelationManager = new SinaRelationManager();
 		sinaRelationManager.setAppClient(appClient);
 		sinaRelationManager.setRelationCache(new MemCache<String>("",false));
-		
+		sinaRelationManager.setUserToAccountZooCache(userToAccountZooCache);
 	}
 
 	@Test
@@ -69,7 +75,7 @@ public class SinaRelationManagerTest {
 		
 		sinaRelationManager.getRelationCache().clear();
 		
-		appClient.getAuthEntityByUid(uid).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
+		userToAccountZooCache.get(AppClientUtil.generatePlatformUUID("sina", uid)).getRelationConfig().setRelationLevel(Constants.RELATION_LEVEL_ONEWAY);
 		
 		users = sinaRelationManager.getFriendsByUser(uid,uid,null);
 	}

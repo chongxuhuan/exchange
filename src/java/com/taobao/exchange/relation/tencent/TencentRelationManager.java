@@ -16,7 +16,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.relation.AbstractRelationManager;
+import com.taobao.exchange.relation.AccountZoo;
 import com.taobao.exchange.relation.User;
+import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
@@ -67,9 +69,10 @@ public class TencentRelationManager extends AbstractRelationManager<TencentAppCl
 				else
 					params.put("startindex", cursor);
 				
+				AccountZoo az = getUserToAccountZooCache().
+						get(AppClientUtil.generatePlatformUUID(Constants.PLATFORM_ID_TENCENT, sessionUid));
 				
-				if (appClient.getAuthEntityByUid(sessionUid)
-						.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
+				if (az.getRelationConfig().getRelationLevel() == Constants.RELATION_LEVEL_ONEWAY)
 				{
 					jsonResult = appClient.api(sessionUid, "GET","friends/idollist_s", null, params);
 				}
