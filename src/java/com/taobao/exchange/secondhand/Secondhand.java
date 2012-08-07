@@ -258,6 +258,22 @@ public class Secondhand implements java.io.Serializable{
 	public void setWw_status(int ww_status) {
 		this.ww_status = ww_status;
 	}
+	
+	public String getDesc() {
+		return desc;
+	}
+
+	public int getOffline() {
+		return offline;
+	}
+
+	public String getPic_url() {
+		return pic_url;
+	}
+
+	public String getSeller_nick() {
+		return seller_nick;
+	}
 
 	public void setDesc(String desc) {
 		this.desc = desc;
