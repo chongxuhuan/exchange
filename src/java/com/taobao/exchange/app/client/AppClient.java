@@ -117,9 +117,9 @@ public abstract class AppClient implements IAppClient{
 			{
 				String r = api(entity.getUid(), "GET","users/show", null, null);
 				
-				if(r.indexOf("\"name\":") > 0)
+				if(r.indexOf("\"screen_name\":") > 0)
 				{
-					r = r.substring(r.indexOf("\"name\":") + "\"name\":".length()+1);
+					r = r.substring(r.indexOf("\"screen_name\":") + "\"screen_name\":".length()+1);
 					r = r.substring(0,r.indexOf("\""));
 					
 					entity.setNick(r);
