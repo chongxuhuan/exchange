@@ -107,7 +107,13 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 				List<User>  df = this.getFriendsByUser(uid,u.getId(),null);
 				
 				if (df != null)
-					result.addAll(df);
+				{
+					for(User iu : df)
+					{
+						iu.setBridgeUser(u.getName());
+						result.add(iu);
+					}
+				}
 				
 				count += 1;
 				member += df.size();
@@ -149,6 +155,7 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 					{
 						if (!session.needFilter(uc.getId()))
 						{
+							uc.setBridgeUser(u.getName());
 							result.add(uc);
 							member +=1;
 							session.addFilterEntry(uc.getId(), uc.getId());

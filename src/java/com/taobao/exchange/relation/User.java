@@ -26,6 +26,7 @@ public class User implements java.io.Serializable,ILocalSerializable{
 	private String platformId;//平台id
 	private String id;//用户id
 	private String name;//用户名称
+	private String bridgeUser;//如果是间接用户，则会被设置关联桥接的用户name
 	
 	public static String split = "\"-\"";
 	
@@ -65,6 +66,14 @@ public class User implements java.io.Serializable,ILocalSerializable{
 		this.name = name;
 	}
 	
+	public String getBridgeUser() {
+		return bridgeUser;
+	}
+
+	public void setBridgeUser(String bridgeUser) {
+		this.bridgeUser = bridgeUser;
+	}
+
 	public String generateUserKey()
 	{
 		return AppClientUtil.generatePlatformUUID(platformId, id);
@@ -74,7 +83,7 @@ public class User implements java.io.Serializable,ILocalSerializable{
 	public String toString()
 	{
 		return new StringBuilder().append(platformId)
-				.append(split).append(id).append(split).append(name).toString();
+				.append(split).append(id).append(split).append(name).append(split).append(bridgeUser).toString();
 	}
 
 	@Override
@@ -88,6 +97,9 @@ public class User implements java.io.Serializable,ILocalSerializable{
 			
 			if (!us[2].equals("null"))
 				this.setName(us[2]);
+			
+			if (!us[3].equals("null"))
+				this.setBridgeUser(us[3]);
 			
 		}
 		else

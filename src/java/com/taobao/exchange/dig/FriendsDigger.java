@@ -182,7 +182,7 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 								logger.warn("user :" + _user.getId() + " has no friends.");
 						}
 						
-						counter = getSecondhandsFromUsers(_user,users,secondhandManager,condition
+						counter = getSecondhandsFromUsers(users,secondhandManager,condition
 									,secondhands,counter);
 						
 						//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
@@ -209,7 +209,7 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 						continue;
 					}
 						
-					counter = getSecondhandsFromUsers(_user,users,secondhandManager,condition,secondhands,counter);
+					counter = getSecondhandsFromUsers(users,secondhandManager,condition,secondhands,counter);
 					
 					//如果在本轮好友中获得足够数据，下次还需要从这轮用户里面获取
 					if(counter >= condition.getQsession().getPageSize())
@@ -246,7 +246,7 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 	}
 	
 	
-	int getSecondhandsFromUsers(User bridgeUser,List<User> users,ISecondhandManager<?> secondhandManager,
+	int getSecondhandsFromUsers(List<User> users,ISecondhandManager<?> secondhandManager,
 			FriendsDigCondition condition,List<Secondhand> secondhands,
 			int counter) throws ServiceException
 	{
@@ -290,8 +290,8 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 					if (condition.isIndirectRelation())
 					{
 						_s.setIndirect(true);
-//						_s.setBridgeRelation(new StringBuilder().append(bridgeUser.getName()).append("(")
-//								.append(bridgeUser.getPlatformId()).append(")").toString());
+						_s.setBridgeRelation(new StringBuilder().append(u.getBridgeUser()).append("(")
+								.append(u.getPlatformId()).append(")").toString());
 					}
 					else
 						_s.setIndirect(false);

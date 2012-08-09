@@ -59,7 +59,7 @@ public class Secondhand implements java.io.Serializable{
 	private String major_imageurl;//主图的地址
 	private String cid_name;//属性描述，用于展示
 	private String relationOwner;//关系圈中的用户信息（也是物品的owner）
-	//private String bridgeRelation;//如果是间接用户，这个字段说明了桥接这两个用户的关系用户,暂时不考虑
+	private String bridgeRelation;//如果是间接用户，这个字段说明了桥接这两个用户的关系用户
 	private boolean indirect;//是否是间接关系
 	
 	
@@ -304,13 +304,13 @@ public class Secondhand implements java.io.Serializable{
 		this.nick = seller_nick;
 	}
 
-//	public String getBridgeRelation() {
-//		return bridgeRelation;
-//	}
-//
-//	public void setBridgeRelation(String bridgeRelation) {
-//		this.bridgeRelation = bridgeRelation;
-//	}
+	public String getBridgeRelation() {
+		return bridgeRelation;
+	}
+
+	public void setBridgeRelation(String bridgeRelation) {
+		this.bridgeRelation = bridgeRelation;
+	}
 	
 	
 }
