@@ -191,7 +191,7 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 
 			}
 			
-			if (count <= (friendSession.getFriendCursor()) * friendSession.getFriendPageSize())
+			if (count <= (friendSession.getFriendCursor()+1) * friendSession.getFriendPageSize())
 			{
 				friendSession.setFriendCursor(0);
 				friendSession.clearFilter();
