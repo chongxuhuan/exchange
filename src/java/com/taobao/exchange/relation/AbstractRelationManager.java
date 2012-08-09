@@ -110,8 +110,12 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 				{
 					for(User iu : df)
 					{
-						iu.setBridgeUser(u.getName());
-						result.add(iu);
+						//不要把自己加入进去了
+						if (iu.getId() != uid)
+						{
+							iu.setBridgeUser(u.getName());
+							result.add(iu);
+						}
 					}
 				}
 				
@@ -153,6 +157,12 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 				{
 					for(User uc : df)
 					{
+						//不要把自己加入进去了
+						if (uc.getId() == uid)
+							continue;
+						
+						//fixme
+						//这里后续考虑如何用更小的内存容纳更多的用户信息
 						if (!session.needFilter(uc.getId()))
 						{
 							uc.setBridgeUser(u.getName());
@@ -177,6 +187,7 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 			if (count <= (session.getCursor()) * session.getPageSize())
 			{
 				session.setCursor(0);
+				session.clearFilter();
 			}
 			
 		}
