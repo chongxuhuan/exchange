@@ -175,6 +175,11 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 							member +=1;
 							friendSession.addFilterEntry(uc.getId(), uc.getId());
 						}
+						else
+						{
+							u.getName();
+						}
+						
 					}
 				}
 				

@@ -7,6 +7,7 @@ import junit.framework.Assert;
 
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.taobao.exchange.app.AppAuthEntity;
@@ -47,11 +48,11 @@ public class SinaRelationManagerTest {
 		
 		//https://api.weibo.com/oauth2/authorize?response_type=code&redirect_uri=http://www.mashupshow.com/channel&client_id=845619194
 		
-		//String code = "0a333664f9b66758869bb5c7d4bb69eb";
-		//AppAuthEntity authEntity = appClient.getAccessTokenByCodeAndStore(code, null, null, "web");
+		//String code = "9f98195dd8f628246dc4191ce3afb002";
+		//AppAuthEntity authEntity = appClient.getAccessTokenByCodeAndStore(code, null, null, "web",null,null);
 		
 		AppAuthEntity authEntity = new AppAuthEntity();
-		authEntity.setAccessToken("2.004_BepB0QLIOvfa07ca5b2cKSXWqC");
+		authEntity.setAccessToken("2.004_BepB0QLIOv04f7c5eed7D2XQUB");
 		authEntity.setUid("1679264133");
 		uid = "1679264133";
 		
@@ -68,6 +69,7 @@ public class SinaRelationManagerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetFriendsByUser() throws ServiceException {
 		List<User> users = sinaRelationManager.getFriendsByUser(uid,uid,null);
 				

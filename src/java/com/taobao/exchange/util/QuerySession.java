@@ -3,8 +3,9 @@
  */
 package com.taobao.exchange.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.taobao.top.xbox.bloom.ByteBloomFilter;
+
+
 
 /**
  * @author fangweng
@@ -23,26 +24,34 @@ public class QuerySession implements java.io.Serializable{
 	
 	private int pageSize = 20;
 	
-	private Map<String,String> filter;//可以用于过滤以前处理过的数据,这里需要考虑设置容量，防止内存溢出
+	//可以用于过滤以前处理过的数据,这里需要考虑设置容量，防止内存溢出
+	//fixme 要用bloom filter
+	//private Map<String,String> filter;
+	ByteBloomFilter bloomFilter;
 
 	public QuerySession()
 	{
-		filter = new HashMap<String,String>();
+		//filter = new HashMap<String,String>();
+		bloomFilter = new ByteBloomFilter(10000,0.0001F,1);
 	}
 	
 	public void addFilterEntry(String k,String v)
 	{
-		filter.put(k, v);
+		bloomFilter.add(k.getBytes());
+		//filter.put(k, v);
 	}
 	
 	public void clearFilter()
 	{
-		filter.clear();
+		bloomFilter = null;
+		bloomFilter = new ByteBloomFilter(10000,0.0001F,1);
+		//filter.clear();
 	}
 	
 	public boolean needFilter(String k)
 	{
-		return filter.containsKey(k);
+		return bloomFilter.contains(k.getBytes());
+		//return filter.containsKey(k);
 	}
 	
 	public int getCursor() {
