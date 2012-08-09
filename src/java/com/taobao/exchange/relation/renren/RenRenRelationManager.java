@@ -17,6 +17,7 @@ import com.taobao.exchange.app.client.RenRenAppClient;
 import com.taobao.exchange.relation.AbstractRelationManager;
 import com.taobao.exchange.relation.User;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
 import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 
@@ -109,7 +110,7 @@ public class RenRenRelationManager extends AbstractRelationManager<RenRenAppClie
 	}
 	
 	@Override
-	public List<User> getIndirectFriendsByUser(String uid, QuerySession session)
+	public List<User> getIndirectFriendsByUser(String uid, FriendSecondhandQuerySession session)
 			throws ServiceException 
 	{
 		throw new java.lang.UnsupportedOperationException("Renren not support getIndirectFriendsByUser method");

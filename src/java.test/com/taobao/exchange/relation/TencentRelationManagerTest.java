@@ -11,9 +11,9 @@ import com.taobao.exchange.app.client.TencentAppClient;
 import com.taobao.exchange.relation.tencent.TencentRelationManager;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
 import com.taobao.exchange.util.ICache;
 import com.taobao.exchange.util.MemCache;
-import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 
 public class TencentRelationManagerTest {
@@ -87,9 +87,9 @@ public class TencentRelationManagerTest {
 		
 		//List<User> users = tencentRelationManager.getIndirectFriendsByUser(authEntity.getUid(),null);
 		
-		QuerySession session = new QuerySession();
-		session.setCursor(0);
-		session.setPageSize(5);
+		FriendSecondhandQuerySession session = new FriendSecondhandQuerySession();
+		session.setFriendCursor(0);
+		session.setFriendPageSize(5);
 		List<User> users = tencentRelationManager.getIndirectFriendsByUser(authEntity.getUid(),session);
 			
 		Assert.assertTrue(users.size() > 0);

@@ -14,8 +14,8 @@ import com.taobao.exchange.app.OpenPlatformEntry;
 import com.taobao.exchange.app.client.SinaAppClient;
 import com.taobao.exchange.relation.sina.SinaRelationManager;
 import com.taobao.exchange.util.AppClientUtil;
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
 import com.taobao.exchange.util.ICache;
-import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 import com.taobao.exchange.util.Constants;
 import com.taobao.exchange.util.MemCache;
@@ -83,9 +83,9 @@ public class SinaRelationManagerTest {
 	@Test
 	public void testGetIndirectFriendsByUser() throws ServiceException {
 		
-		QuerySession session = new QuerySession();
-		session.setCursor(0);
-		session.setPageSize(10);
+		FriendSecondhandQuerySession session = new FriendSecondhandQuerySession();
+		session.setFriendCursor(0);
+		session.setFriendPageSize(20);
 		List<User> users = sinaRelationManager.getIndirectFriendsByUser(uid,session);
 			
 		Assert.assertTrue(users.size() > 0);

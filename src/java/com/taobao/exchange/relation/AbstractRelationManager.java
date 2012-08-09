@@ -12,8 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import com.taobao.exchange.app.client.IAppClient;
 import com.taobao.exchange.util.AppClientUtil;
 import com.taobao.exchange.util.Constants;
+import com.taobao.exchange.util.FriendSecondhandQuerySession;
 import com.taobao.exchange.util.ICache;
-import com.taobao.exchange.util.QuerySession;
 import com.taobao.exchange.util.ServiceException;
 
 /**
@@ -87,21 +87,22 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 	}
 	
 	@Override
-	public List<User> getIndirectFriendsByUser(String uid, QuerySession session)
+	public List<User> getIndirectFriendsByUser(String uid, FriendSecondhandQuerySession friendSession)
 			throws ServiceException {
 		if (appClient == null)
 			throw new ServiceException(Constants.EXCEPTION_APPCLIENT_NOT_EXIST);
 		
 		List<User> result = new ArrayList<User>();
 		
-		//普通好友一次获取出来
-		List<User> friends = this.getFriendsByUser(uid,uid,null);
 		
 		int count = 0;
 		int member = 0;
 		
-		if (session == null)
+		if (friendSession == null)
 		{
+			//普通好友一次获取出来
+			List<User> friends = this.getFriendsByUser(uid,uid,null);
+			
 			for(User u : friends)
 			{
 				List<User>  df = this.getFriendsByUser(uid,u.getId(),null);
@@ -134,19 +135,23 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 		}
 		else
 		{
+			//普通好友一次获取出来
+			//fixme
+			List<User> friends = this.getFriendsByUser(uid,uid,null);
+			
 			for(User u : friends)
 			{
 				count += 1;
 				
-				if (count <= session.getCursor() * session.getPageSize())
+				if (count <= friendSession.getFriendCursor() * friendSession.getFriendPageSize())
 				{
 					continue;
 				}
 				else
 				{
-					if (count > (session.getCursor()+1) * session.getPageSize())
+					if (count > (friendSession.getFriendCursor()+1) * friendSession.getFriendPageSize())
 					{
-						session.setCursor(session.getCursor()+ 1);
+						friendSession.setFriendCursor(friendSession.getFriendCursor()+ 1);
 						break;
 					}
 				}
@@ -163,12 +168,12 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 						
 						//fixme
 						//这里后续考虑如何用更小的内存容纳更多的用户信息
-						if (!session.needFilter(uc.getId()))
+						if (!friendSession.needFilter(uc.getId()))
 						{
 							uc.setBridgeUser(u.getName());
 							result.add(uc);
 							member +=1;
-							session.addFilterEntry(uc.getId(), uc.getId());
+							friendSession.addFilterEntry(uc.getId(), uc.getId());
 						}
 					}
 				}
@@ -180,14 +185,16 @@ public abstract class AbstractRelationManager<C extends IAppClient> implements
 				}
 				
 				if (logger.isInfoEnabled())
-					logger.info("count : " + (count - session.getCursor() * session.getPageSize()) + ", member : " + member);
+					logger.info("friend count : " + 
+							(count - friendSession.getFriendCursor() * friendSession.getFriendPageSize()) 
+							+ ", vaildate friend count : " + member);
 
 			}
 			
-			if (count <= (session.getCursor()) * session.getPageSize())
+			if (count <= (friendSession.getFriendCursor()) * friendSession.getFriendPageSize())
 			{
-				session.setCursor(0);
-				session.clearFilter();
+				friendSession.setFriendCursor(0);
+				friendSession.clearFilter();
 			}
 			
 		}
