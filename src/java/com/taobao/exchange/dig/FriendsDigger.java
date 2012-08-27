@@ -297,8 +297,11 @@ public class FriendsDigger implements ISecondhandDigger<FriendsDigCondition> {
 						_s.setIndirect(false);
 					
 					if (!z.getRelationConfig().isHideSecondhandUserInfo())
-						_s.setRelationOwner(new StringBuilder().append(u.getName()).append("(")
-								.append(u.getPlatformId()).append(")").toString());
+					{
+						_s.setRelationOwner(u.getName());
+						_s.setRelationOwnerId(u.getId());
+						_s.setRelationOwnerPlatform(u.getPlatformId());
+					}
 					
 					secondhands.add(_s);
 					counter += 1;

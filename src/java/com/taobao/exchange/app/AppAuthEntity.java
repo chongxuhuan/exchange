@@ -31,6 +31,7 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	private int r2ExpireTime;//淘宝开放平台r2级别服务调用Token失效时间
 	private int w1ExpireTime;//淘宝开放平台w1级别服务调用Token失效时间
 	private int w2ExpireTime;//淘宝开放平台w2级别服务调用Token失效时间
+	private long createTime;//什么时候创建的，如果调用刷新也会更新这个字段。
 	
 	private String openId;//腾讯微博特有的用户标示
 	
@@ -49,6 +50,8 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	{
 		if (content == null)
 			return;
+		
+		createTime = System.currentTimeMillis();
 		
 		boolean isJsonStr = false;
 		
@@ -79,6 +82,11 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 						this.platformId = StringUtils.split(c, "=")[1];
 				
 				continue;
+			}
+			
+			if (c.indexOf("createTime") >= 0)
+			{
+				this.createTime = Long.valueOf(StringUtils.split(c, "=")[1]);
 			}
 			
 			if (c.indexOf("access_token") >= 0)
@@ -297,12 +305,22 @@ public class AppAuthEntity implements java.io.Serializable,ILocalSerializable{
 	public void setOpenId(String openId) {
 		this.openId = openId;
 	}
+	
+
+	public long getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
 
 	public String toString()
 	{
 		return new StringBuilder().append("platformId=").append(platformId).append(",")
 				.append("uid=").append(uid).append(",")
 				.append("name=").append(nick).append(",")
+				.append("createTime=").append(createTime).append(",")
 				.append("access_token=").append(accessToken).append(",")
 				.append("refresh_token=").append(refreshToken).append(",")
 				.append("re_expires_in=").append(refreshExpireTime).append(",")

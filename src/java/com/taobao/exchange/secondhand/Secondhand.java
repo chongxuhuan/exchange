@@ -59,10 +59,27 @@ public class Secondhand implements java.io.Serializable{
 	private String major_imageurl;//主图的地址
 	private String cid_name;//属性描述，用于展示
 	private String relationOwner;//关系圈中的用户信息（也是物品的owner）
+	private String relationOwnerId;//关系圈中的用户信息id
+	private String relationOwnerPlatform;//关系圈中用户平台信息。
 	private String bridgeRelation;//如果是间接用户，这个字段说明了桥接这两个用户的关系用户
 	private boolean indirect;//是否是间接关系
-	
-	
+		
+	public String getRelationOwnerPlatform() {
+		return relationOwnerPlatform;
+	}
+
+	public void setRelationOwnerPlatform(String relationOwnerPlatform) {
+		this.relationOwnerPlatform = relationOwnerPlatform;
+	}
+
+	public String getRelationOwnerId() {
+		return relationOwnerId;
+	}
+
+	public void setRelationOwnerId(String relationOwnerId) {
+		this.relationOwnerId = relationOwnerId;
+	}
+
 	public String getRelationOwner() {
 		return relationOwner;
 	}
